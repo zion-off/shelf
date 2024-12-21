@@ -15,6 +15,7 @@ export default {
       },
       fontFamily: {
         gambarino: ["Gambarino-Regular", "Helvetica", "sans-serif"],
+        switzer: ["Switzer-Regular", "Helvetica", "sans-serif"],
       },
     },
   },

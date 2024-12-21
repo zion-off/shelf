@@ -1,7 +1,9 @@
+import Header from "@/components/navigation/header";
+
 export default function Home() {
   return (
-    <main>
-      <div>test feed</div>
+    <main className="p-6">
+      <div>Test feed</div>
     </main>
   );
 }
