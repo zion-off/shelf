@@ -1,92 +1,36 @@
-# Shelf
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-A place for everything you can read that isn't a book.
+## Getting Started
 
-# Requirements
+First, run the development server:
 
-## Functional requirements
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-- Register and login using a social media provider.
-- Users should be able to sign out.
-- Users should be able to create folders in their shelf.
-- Inside a folder, users can add an item by entering a title.
-- Optional item fields include author, link, notes, visibility, and read check.
-- Users should be able to edit fields of each item in their shelf.
-- Users should be able to delete items from their shelf.
-- Users should be able to add other users to their network and see each other's activity on a feed.
-- Users should be able to comment on other users' activity.
-- Users should be able to generate a PDF of a linked article.
-- Users should have a profile page where they have the option to see their friend list and their collections.
-- A public profile page will show the user's public collections and a list of recently added items.
-- Users should receive notifications for comments on their activity or updates in their network.
-- Users should be able to search for and filter items and folders within their shelf.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Non-functional requirements
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-- Metadata fields are automatically retrieved when the user pastes an external link.
-- Items should have a thumbnail that is automatically generated.
-- Users should be able to sort items in a folder based on title, author, and date added.
-- Users should be able to rearrange folders and items in their shelf by dragging and dropping.
-- Mobile users should see a desktop equivalent shelf, feed, profile, and directory.
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-# Architecture
+## Learn More
 
-## Frontend
+To learn more about Next.js, take a look at the following resources:
 
-- The frontend is built with Next.js 15.
-- The UI is responsive, adapting seamlessly to different screen sizes.
-- Authentication and authorization flows are handled via a secure provider using NextAuth.js.
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-## Backend
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-- The backend is built with Next.js API routes.
-- Responses include appropriate caching headers so items can be cached.
-- RESTful APIs are provided for CRUD operations on users, folders, and items.
-- PDF generation is handled via a different microservice
+## Deploy on Vercel
 
-## Database
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-- MongoDB is the primary database.
-- Indexes are used for optimizing queries on title, author, and date added.
-- Relationships between users, folders, and items are maintained using references.
-
-## Data model
-
-### Users collection
-
-**User data model**
-- `name`: string
-- `email`: string
-- `folders`: folder[]
-- `friends`: user[]
-- `requests`: user[]
-- `notifications`: notification[]
-
-### Items collection
-
-**Item data model**
-- `title`: string
-- `author`: string
-- `link`: string
-- `read`: boolean
-- `public`: boolean
-- `date_added`: Date
-- `notes`: string
-- `thumbnail`: image
-
-### Folders collection
-
-**Folder data model**
-- `name`: string
-- `owner`: user
-- `items`: item[]
-
-### Notifications collection
-
-**Notification data model**
-- `type`: string ("comment", "request")
-- `message`: string
-- `date`: Date
-- `read`: boolean
-- `user`: user
-
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
