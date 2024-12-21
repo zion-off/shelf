@@ -1,11 +1,10 @@
-// components
-import Header from "@/components/navigation/header";
-
 export default function Hero() {
   return (
-    <main className="p-4">
-      <Header />
-      <div>Hero Section</div>
+    <main className="h-screen absolute flex items-center justify-center w-full">
+      <h1 className="p-4 font-gambarino text-5xl text-center">
+        Lorem ipsum odor amet,<br />
+        consectetuer adipiscing elit.
+      </h1>
     </main>
   );
 }

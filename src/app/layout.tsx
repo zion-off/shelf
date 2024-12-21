@@ -4,16 +4,7 @@ import "./globals.css";
 
 // components
 import AuthCheck from "@/auth/authCheck";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import Header from "@/components/navigation/header";
 
 export const metadata: Metadata = {
   title: "Shelf",
@@ -26,9 +17,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className="h-screen w-screen flex flex-col">
+        <Header />
         <AuthCheck>{children}</AuthCheck>
       </body>
     </html>

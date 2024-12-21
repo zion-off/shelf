@@ -2,15 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "Gambarino-Regular";
+  src: url("/fonts/Gambarino-Regular.woff2") format("woff2"),
+    url("/fonts/Gambarino-Regular.woff") format("woff"),
+    url("/fonts/Gambarino-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+
+.gambarino {
+  font-family: "Gambarino-Regular", Helvetica, sans-serif;
+}
+
 :root {
   --background: #fffcf7;
   --foreground: #161413;
+  --component: #635045;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #161413;
     --foreground: #fffcf7;
+    --component: #c2b4a6;
   }
 }
 

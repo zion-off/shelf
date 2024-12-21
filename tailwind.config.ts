@@ -11,6 +11,10 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        component: "var(--component)",
+      },
+      fontFamily: {
+        gambarino: ["Gambarino-Regular", "Helvetica", "sans-serif"],
       },
     },
   },
