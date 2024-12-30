@@ -1,15 +1,25 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose from "mongoose";
+import { INotification } from "../interfaces/notification.interface";
 
-export interface INotification extends Document {
-  message: string;
-  // Add other notification properties here
-}
-
-export const NotificationSchema: Schema = new Schema({
-  message: { type: String, required: true },
-  // Define other notification properties here
+const notificationSchema = new mongoose.Schema<INotification>({
+  recipient: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  actor: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  post: { type: mongoose.Schema.Types.ObjectId, ref: "Post", required: true },
+  created_at: { type: Date, default: Date.now },
+  type: { type: String, required: true },
+  is_read: { type: Boolean, default: false },
 });
 
-const Notification = mongoose.model<INotification>('Notification', NotificationSchema);
+// Index on recipient and created_at
+notificationSchema.index({ recipient: 1, created_at: -1 });
+
+const Notification = mongoose.model<INotification>(
+  "Notification",
+  notificationSchema
+);
 
 export default Notification;

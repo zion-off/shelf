@@ -1,25 +1,13 @@
-import mongoose, { Schema, Document } from "mongoose";
-import { IFolder, FolderSchema } from "./Folder.model";
-import { INotification, NotificationSchema } from "./Notification.model";
+import mongoose from "mongoose";
+import { IUser } from "../interfaces/user.interface";
 
-interface IUser extends Document {
-  name: string;
-  email: string;
-  folders: IFolder[];
-  friends: IUser[];
-  requests: IUser[];
-  notifications: INotification[];
-}
-
-const UserSchema: Schema = new Schema({
+const userSchema = new mongoose.Schema<IUser>({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
-  folders: { type: [FolderSchema], default: [] },
-  friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
-  requests: [{ type: Schema.Types.ObjectId, ref: "User" }],
-  notifications: { type: [NotificationSchema], default: [] },
+  username: { type: String, required: true, unique: true },
+  created_at: { type: Date, default: Date.now },
 });
 
-const User = mongoose.model<IUser>("User", UserSchema);
+const User = mongoose.model<IUser>("User", userSchema);
 
 export default User;

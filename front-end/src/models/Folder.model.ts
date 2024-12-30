@@ -1,15 +1,17 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose from 'mongoose';
+import { IFolder } from '../interfaces/folder.interface';
 
-export interface IFolder extends Document {
-  name: string;
-  // Add other folder properties here
-}
-
-export const FolderSchema: Schema = new Schema({
+const folderSchema = new mongoose.Schema<IFolder>({
+  owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   name: { type: String, required: true },
-  // Define other folder properties here
+  public: { type: Boolean, default: false },
+  created_at: { type: Date, default: Date.now },
+  last_modified: { type: Date, default: Date.now }
 });
 
-const Folder = mongoose.model<IFolder>("Folder", FolderSchema);
+// Index on owner
+folderSchema.index({ owner: 1 });
+
+const Folder = mongoose.model<IFolder>('Folder', folderSchema);
 
 export default Folder;

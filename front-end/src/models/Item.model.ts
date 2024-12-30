@@ -1,26 +1,24 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose from "mongoose";
+import { IItem } from "../interfaces/item.interface";
 
-interface IItem extends Document {
-  title: string;
-  author: string;
-  link: string;
-  read: boolean;
-  public: boolean;
-  date_added: Date;
-  notes: string;
-  thumbnail: string;
-}
-
-const itemSchema: Schema = new Schema({
+const itemSchema = new mongoose.Schema<IItem>({
+  owner: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   title: { type: String, required: true },
-  author: { type: String, required: false },
-  link: { type: String, required: false },
+  author: { type: String, required: true },
+  notes: { type: String },
+  link: { type: String },
   read: { type: Boolean, default: false },
-  public: { type: Boolean, default: true },
-  date_added: { type: Date, default: Date.now },
-  notes: { type: String, default: "" },
-  thumbnail: { type: String, required: true },
+  in_folder: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Folder",
+    default: null,
+  },
+  created_at: { type: Date, default: Date.now },
+  last_modified: { type: Date, default: Date.now },
 });
+
+// Composite index on owner and in_folder
+itemSchema.index({ owner: 1, in_folder: 1 });
 
 const Item = mongoose.model<IItem>("Item", itemSchema);
 
