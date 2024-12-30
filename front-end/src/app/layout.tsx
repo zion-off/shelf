@@ -7,7 +7,7 @@ import AuthCheck from "@/auth/authCheck";
 import Header from "@/components/navigation/header";
 
 export const metadata: Metadata = {
-  title: "Shelf",
+  title: "Title",
 };
 
 export default function RootLayout({
