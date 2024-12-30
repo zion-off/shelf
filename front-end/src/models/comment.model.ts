@@ -10,6 +10,6 @@ const commentSchema = new mongoose.Schema<IComment>({
 // Index on post
 commentSchema.index({ post: 1 });
 
-const Comment = mongoose.model<IComment>("Comment", commentSchema);
+const Comment = mongoose.models.Comment || mongoose.model<IComment>("Comment", commentSchema);
 
 export default Comment;

@@ -10,6 +10,6 @@ const likeSchema = new mongoose.Schema<ILike>({
 likeSchema.index({ post: 1 });
 likeSchema.index({ owner: 1 });
 
-const Like = mongoose.model<ILike>('Like', likeSchema);
+const Like = mongoose.models.Like || mongoose.model<ILike>("Like", likeSchema);
 
 export default Like;

@@ -14,9 +14,8 @@ const friendRequestSchema = new mongoose.Schema<IFriendRequest>({
 friendRequestSchema.index({ receiver: 1 });
 friendRequestSchema.index({ sender: 1 });
 
-const FriendRequest = mongoose.model<IFriendRequest>(
-  "FriendRequest",
-  friendRequestSchema
-);
+const FriendRequest =
+  mongoose.models.FriendRequest ||
+  mongoose.model<IFriendRequest>("FriendRequest", friendRequestSchema);
 
 export default FriendRequest;

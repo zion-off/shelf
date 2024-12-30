@@ -17,6 +17,6 @@ const friendshipSchema = new mongoose.Schema<IFriendship>({
 // Compound index on user_one and user_two for efficient friendship lookups
 friendshipSchema.index({ user_one: 1, user_two: 1 });
 
-const Friendship = mongoose.model<IFriendship>("Friendship", friendshipSchema);
+const Friendship = mongoose.models.Friendship || mongoose.model<IFriendship>("Friendship", friendshipSchema);
 
 export default Friendship;

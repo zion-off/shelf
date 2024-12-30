@@ -17,9 +17,8 @@ const notificationSchema = new mongoose.Schema<INotification>({
 // Index on recipient and created_at
 notificationSchema.index({ recipient: 1, created_at: -1 });
 
-const Notification = mongoose.model<INotification>(
-  "Notification",
-  notificationSchema
-);
+const Notification =
+  mongoose.models.Notification ||
+  mongoose.model<INotification>("Notification", notificationSchema);
 
 export default Notification;

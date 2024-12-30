@@ -13,6 +13,6 @@ const postSchema = new mongoose.Schema<IPost>({
 // Index on owner
 postSchema.index({ owner: 1 });
 
-const Post = mongoose.model<IPost>('Post', postSchema);
+const Post = mongoose.models.Post || mongoose.model<IPost>("Post", postSchema);
 
 export default Post;

@@ -20,6 +20,6 @@ const itemSchema = new mongoose.Schema<IItem>({
 // Composite index on owner and in_folder
 itemSchema.index({ owner: 1, in_folder: 1 });
 
-const Item = mongoose.model<IItem>("Item", itemSchema);
+const Item = mongoose.models.Item || mongoose.model<IItem>("Item", itemSchema);
 
 export default Item;

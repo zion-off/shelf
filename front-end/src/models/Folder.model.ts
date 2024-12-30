@@ -12,6 +12,6 @@ const folderSchema = new mongoose.Schema<IFolder>({
 // Index on owner
 folderSchema.index({ owner: 1 });
 
-const Folder = mongoose.model<IFolder>('Folder', folderSchema);
+const Folder = mongoose.models.Folder || mongoose.model<IFolder>("Folder", folderSchema);
 
 export default Folder;
