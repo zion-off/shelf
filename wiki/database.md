@@ -6,12 +6,13 @@ MongoDB is the primary database.
 
 **`users` model**
 
-| Field    | Type       |
-| -------- | ---------- |
-| `_id`    | `ObjectId` |
-| name     | `string`   |
-| email    | `string`   |
-| username | `string`   |
+| Field      | Type       |
+| ---------- | ---------- |
+| `_id`      | `ObjectId` |
+| name       | `string`   |
+| email      | `string`   |
+| username   | `string`   |
+| created_at | `Date`     |
 
 **`items` model**
 
