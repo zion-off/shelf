@@ -2,9 +2,9 @@
 
 MongoDB is the primary database.
 
-## Data models
+### User
 
-**`users` model**
+#### `User` schema
 
 | Field      | Type       |
 | ---------- | ---------- |
@@ -14,7 +14,9 @@ MongoDB is the primary database.
 | username   | `string`   |
 | created_at | `Date`     |
 
-**`items` model**
+### Item
+
+#### `Item` schema
 
 | Field         | Type                 |
 | ------------- | -------------------- |
@@ -29,9 +31,13 @@ MongoDB is the primary database.
 | created_at    | `Date`               |
 | last_modified | `Date`               |
 
-- Composite index: `(owner, in_folder)`, for quickly retrieving a user's items
+#### Indexes
 
-**`folders` model**
+- Composite index on `(owner, in_folder)`, for quickly retrieving a user's items
+
+### Folder
+
+#### `Folder` schema
 
 | Field         | Type       |
 | ------------- | ---------- |
@@ -42,9 +48,13 @@ MongoDB is the primary database.
 | created_at    | `Date`     |
 | last_modified | `Date`     |
 
-- Index: `owner`, for quickly retrieving a user's folders
+#### Indexes
 
-**`notifications` model**
+- `owner`, for quickly retrieving a user's folders
+
+### Notification
+
+#### `Notification` schema
 
 | Field      | Type       |
 | ---------- | ---------- |
@@ -56,10 +66,14 @@ MongoDB is the primary database.
 | type       | `string`   |
 | is_read    | `boolean`  |
 
-- Index: `(recipient, created_at)`, for quickly retrieving a user's
+#### Indexes
+
+- Composite index on `(recipient, created_at)`, for quickly retrieving a user's
   notifications in sorted order
 
-**`posts` model**
+### Post
+
+#### `posts` model
 
 | Field         | Type       |
 | ------------- | ---------- |
@@ -71,9 +85,13 @@ MongoDB is the primary database.
 | created_at    | `Date`     |
 | last_modified | `Date`     |
 
+#### Indexes
+
 - Index: `(owner)`
 
-**`likes` model**
+### Like
+
+#### `Like` schema
 
 | Field | Type       |
 | ----- | ---------- |
@@ -81,10 +99,14 @@ MongoDB is the primary database.
 | owner | `ObjectId` |
 | post  | `ObjectId` |
 
+#### Indexes
+
 - Index: `post`, for quickly retrieving likes on a post, `owner` for quickly
   retrieving a user's own likes
 
-**`comments` model**
+### Comment
+
+#### `Comment` schema
 
 | Field   | Type       |
 | ------- | ---------- |
@@ -93,9 +115,13 @@ MongoDB is the primary database.
 | post    | `ObjectId` |
 | content | string     |
 
+#### Indexes
+
 - Index: `post`, for quickly retrieving comments on a post
 
-**`friend_requests` model**
+### FriendRequest
+
+#### `FriendRequest` schema
 
 | Field    | Type       |
 | -------- | ---------- |
@@ -103,10 +129,14 @@ MongoDB is the primary database.
 | sender   | `ObjectId` |
 | receiver | `ObjectId` |
 
+#### Indexes
+
 - Index: `receiver`, for quickly retrieving a user has received, and `sender`,
   for quickly retrieving requests a user has sent
 
-**`friendships` model**
+### Friendship
+
+#### `Friendship` schema
 
 | Field    | Type       |
 | -------- | ---------- |
@@ -114,4 +144,6 @@ MongoDB is the primary database.
 | user_one | `ObjectId` |
 | user_two | `ObjectId` |
 
-- Index: `(user_one, user_two)`, for quickly retrieving friendships
+#### Indexes
+
+- Composite index on `(user_one, user_two)`, for quickly retrieving friendships
