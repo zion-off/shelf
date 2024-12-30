@@ -2,8 +2,6 @@
 
 A place for everything you can read that isn't a book.
 
-
-
 # Architecture
 
 ## Frontend
@@ -21,56 +19,3 @@ The `Shelf` component is a container for a `Sidebar`, which shows the folders an
 - RESTful APIs are provided for CRUD operations on users, folders, and items.
 - PDF generation is handled via a different microservice
 
-## Database
-
-- MongoDB is the primary database.
-- Relationships between users, folders, and items are maintained using references.
-
-## Data model
-
-### Users collection
-
-**User data model**
-- `name`: string
-- `email`: string
-- `folders`: folder[]
-- `friends`: user[]
-- `requests`: user[]
-- `notifications`: notification[]
-- `activities`: activity[]
-
-### Items collection
-
-**Item data model**
-- `title`: string
-- `author`: string
-- `link`: string
-- `read`: boolean
-- `public`: boolean
-- `date_added`: Date
-- `date_edited`: Date
-- `notes`: string
-- `thumbnail`: image
-
-### Folders collection
-
-**Folder data model**
-- `name`: string
-- `owner`: user
-- `items`: item[]
-
-### Notifications collection
-
-**Notification data model**
-- `type`: string ("comment", "request")
-- `message`: string
-- `date`: Date
-- `read`: boolean
-- `user`: user
-
-### Activities collection
-
-**Activity data model**
-- `type`: string ("comment", "add", "edit")
-- `item`: item
-- `date`: Date
