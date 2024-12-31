@@ -6,6 +6,8 @@ const configSchema = new mongoose.Schema<IConfig>({
   default_folder: { type: mongoose.Schema.Types.ObjectId, ref: "Folder", default: null },
 });
 
+configSchema.index({ user: 1 });
+
 const Config =
   mongoose.models.Config || mongoose.model<IConfig>("Config", configSchema);
 

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 // components
@@ -17,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="h-screen w-screen flex flex-col">
+      <body className="h-screen w-screen flex flex-col font-switzer">
         <Header />
         <AuthCheck>{children}</AuthCheck>
       </body>
