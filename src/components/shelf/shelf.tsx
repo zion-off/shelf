@@ -1,8 +1,9 @@
 import { auth } from "@/auth";
 import mongo from "@/lib/mongodb";
 import { User, Config, Item } from "@/models";
-import ShelfView from "./shelfView";
 import { IItem } from "@/interfaces";
+import ShelfView from "./shelfView";
+import ShelfHeader from "./shelfHeader";
 
 export const dynamic = "force-dynamic";
 
@@ -27,7 +28,8 @@ export default async function Shelf() {
   }
 
   return (
-    <main className="grow h-full bg-slate-400 mx-4">
+    <main className="grow h-full bg-slate-400 mx-4 flex flex-col">
+      <ShelfHeader />
       <ShelfView items={items} />
     </main>
   );
