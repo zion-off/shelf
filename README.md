@@ -6,7 +6,7 @@ A place for everything you can read that isn't a book.
 
 ## Frontend
 
-The frontend is built with Next.js 15. Authentication and authorization flows are handled via a secure provider, Google, using NextAuth.js.
+The frontend is built with Next.js 14. Authentication and authorization flows are handled via a secure provider, Google, using NextAuth.js.
 
 ### Shelf
 

@@ -1,0 +1,10 @@
+export { default as Comment } from "./comment.model";
+export { default as Config } from "./config.model";
+export { default as Folder } from "./folder.model";
+export { default as FriendRequest } from "./friendRequest.model";
+export { default as Friendship } from "./friendship.model";
+export { default as Item } from "./item.model";
+export { default as Like } from "./like.model";
+export { default as Notification } from "./notification.model";
+export { default as Post } from "./post.model";
+export { default as User } from "./user.model";

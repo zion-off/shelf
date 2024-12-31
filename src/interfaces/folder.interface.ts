@@ -1,6 +1,7 @@
 import { Document, Types } from 'mongoose';
 
 export interface IFolder extends Document {
+  _id: Types.ObjectId;
   owner: Types.ObjectId;
   name: string;
   public: boolean;

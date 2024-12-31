@@ -1,6 +1,7 @@
 import { Document, Types } from 'mongoose';
 
 export interface IItem extends Document {
+  _id: Types.ObjectId;
   owner: Types.ObjectId;
   title: string;
   author: string;

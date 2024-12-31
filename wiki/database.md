@@ -18,6 +18,10 @@ Read my blog post on how I came to choose MongoDB for this project [here](https:
 | username   | `string`   |
 | created_at | `Date`     |
 
+#### Indexes
+
+- `email`, for quickly retrieving a user using their email address
+
 ### Item
 
 #### `Item` schema

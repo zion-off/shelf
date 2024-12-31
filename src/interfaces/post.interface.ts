@@ -1,6 +1,7 @@
 import { Document, Types } from "mongoose";
 
 export interface IPost extends Document {
+  _id: Types.ObjectId;
   owner: Types.ObjectId;
   content: string;
   attachments?: string;
