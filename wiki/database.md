@@ -1,6 +1,10 @@
-## Database
+# Database
 
-MongoDB is the primary database.
+## Overview
+
+Read my blog post on how I came to choose MongoDB for this project [here](https://sh.zzzzion.com/blog/shelf-database).
+
+## Schema
 
 ### User
 
@@ -82,42 +86,46 @@ MongoDB is the primary database.
 | content       | `string`   |
 | attachments   | `string`   |
 | like_count    | `number`   |
+| comment_count | `number`   |
 | created_at    | `Date`     |
 | last_modified | `Date`     |
 
 #### Indexes
 
-- Index: `(owner)`
+- `(owner)`
 
 ### Like
 
 #### `Like` schema
 
-| Field | Type       |
-| ----- | ---------- |
-| `_id` | `ObjectId` |
-| owner | `ObjectId` |
-| post  | `ObjectId` |
+| Field      | Type       |
+| ---------- | ---------- |
+| `_id`      | `ObjectId` |
+| owner      | `ObjectId` |
+| post       | `ObjectId` |
+| created_at | `Date`     |
 
 #### Indexes
 
-- Index: `post`, for quickly retrieving likes on a post, `owner` for quickly
-  retrieving a user's own likes
+- `post`, for quickly retrieving likes on a post, `owner` for quickly retrieving
+  a user's own likes
 
 ### Comment
 
 #### `Comment` schema
 
-| Field   | Type       |
-| ------- | ---------- |
-| `_id`   | `ObjectId` |
-| author  | `ObjectId` |
-| post    | `ObjectId` |
-| content | string     |
+| Field         | Type       |
+| ------------- | ---------- |
+| `_id`         | `ObjectId` |
+| author        | `ObjectId` |
+| post          | `ObjectId` |
+| content       | string     |
+| created_at    | `Date`     |
+| last_modified | `Date`     |
 
 #### Indexes
 
-- Index: `post`, for quickly retrieving comments on a post
+- `post`, for quickly retrieving comments on a post
 
 ### FriendRequest
 
@@ -131,8 +139,8 @@ MongoDB is the primary database.
 
 #### Indexes
 
-- Index: `receiver`, for quickly retrieving a user has received, and `sender`,
-  for quickly retrieving requests a user has sent
+- `receiver`, for quickly retrieving a user has received, and `sender`, for
+  quickly retrieving requests a user has sent
 
 ### Friendship
 
