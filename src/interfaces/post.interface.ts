@@ -7,4 +7,6 @@ export interface IPost extends Document {
   like_count: number;
   created_at: Date;
   last_modified: Date;
+  likes: Types.ObjectId[];
+  comments: Types.ObjectId[];
 }
