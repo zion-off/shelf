@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-
-// components
 import AuthCheck from "@/auth/authCheck";
-import Header from "@/components/navigation/header";
 
 export const metadata: Metadata = {
   title: "Title",
