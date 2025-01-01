@@ -1,22 +1,21 @@
 "use client";
-
 import { createContext, useContext, useState, ReactNode } from "react";
 
 const ShelfContext = createContext<{
-  drawerOpen: boolean;
-  toggleDrawerOpen: () => void;
+  dialogOpen: boolean;
+  toggleDialogOpen: () => void;
 } | null>(null);
 
 export function ShelfProvider({ children }: { children: ReactNode }) {
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
-  const toggleDrawerOpen = () => {
-    setDrawerOpen((prev) => !prev);
+  const toggleDialogOpen = () => {
+    setDialogOpen((prev) => !prev);
   };
 
   const value = {
-    drawerOpen,
-    toggleDrawerOpen,
+    dialogOpen,
+    toggleDialogOpen,
   };
 
   return (

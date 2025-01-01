@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
 import AuthCheck from "@/auth/authCheck";
 
@@ -13,8 +14,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="font-switzer h-screen">
-        <AuthCheck>{children}</AuthCheck>
+      <body className="font-switzer h-screen bg-z-background text-z-foreground">
+        <AuthCheck>
+          {children}
+          <Toaster />
+        </AuthCheck>
       </body>
     </html>
   );

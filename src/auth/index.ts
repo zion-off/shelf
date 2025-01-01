@@ -1,7 +1,8 @@
 import NextAuth, { User as GoogleUser } from "next-auth";
 import Google from "next-auth/providers/google";
 import { createNewUser } from "@/utils/createNewUser";
-import { User } from "@/models"
+import { User } from "@/models";
+import mongo from "@/lib/mongodb";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [Google],
@@ -12,6 +13,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         return await createNewUser(user);
       }
       return true;
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        await mongo();
+        const email = user.email;
+        const dbUser = await User.findOne({ email }).select("_id");
+        token.id = dbUser._id;
+      }
+      return token;
+    },
+    session({ session, token }) {
+      session.user.id = token.id as string;
+      return session;
     },
   },
 });
