@@ -28,7 +28,7 @@ export default async function Shelf() {
   }
 
   return (
-    <main className="grow h-full bg-slate-400 mx-4 flex flex-col">
+    <main className="grow h-full bg-slate-400 ml-4 flex flex-col">
       <ShelfHeader />
       <ShelfView items={items} />
     </main>
