@@ -18,7 +18,7 @@ export async function addItem({
   author,
   link,
   notes,
-}: AddItem): Promise<void> {
+}: AddItem): Promise<IItem> {
   const session = await auth();
   const owner = new mongoose.Types.ObjectId(session?.user?.id);
   await mongo();
@@ -29,5 +29,6 @@ export async function addItem({
     link: link,
     notes: notes,
   });
-  await newItem.save();
+  
+  return await newItem.save().then((item) => JSON.parse(JSON.stringify(item)));
 }

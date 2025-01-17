@@ -27,3 +27,17 @@ run-rs --keep
 ```
 
 To stop the server, hit `Ctrl+C`.
+
+## Client setup
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run development server:
+
+```bash
+npm run dev
+```

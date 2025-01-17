@@ -26,9 +26,10 @@ import { addItemForm } from "@/schema";
 import { addItemFormValues } from "@/types/shelf";
 
 export default function AddItemDialog() {
-  const { dialogOpen, toggleDialogOpen, saving, toggleSaving } =
-    useShelfContext();
   const { toast } = useToast();
+
+  const { dialogOpen, toggleDialogOpen, saving, toggleSaving, addSingleItem } =
+    useShelfContext();
 
   const form = useForm<addItemFormValues>({
     resolver: zodResolver(addItemForm),
@@ -43,9 +44,10 @@ export default function AddItemDialog() {
   async function onSubmit(values: addItemFormValues) {
     toggleSaving();
     try {
-      await addItem(values);
+      const newItem = await addItem(values);
       toggleDialogOpen();
       form.reset();
+      addSingleItem(newItem);
       toast({
         title: "Success",
         description: "Item added successfully",

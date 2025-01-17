@@ -1,6 +1,17 @@
-import { IItem } from "@/interfaces";
+"use client";
 
-export default function ShelfView({ items }: { items: IItem[] }) {
+import { useShelfContext } from "@/context/shelfContext";
+import { IItem } from "@/interfaces";
+import { useEffect } from "react";
+
+export default function ShelfView({ fetchedItems }: { fetchedItems: IItem[] }) {
+  const { items, updateAllItems: updateItems } = useShelfContext();
+
+  // Load items on mount
+  useEffect(() => {
+    updateItems(fetchedItems);
+  }, []);
+
   return (
     <div>
       {items.length > 0

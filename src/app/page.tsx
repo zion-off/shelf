@@ -1,5 +1,5 @@
 import Header from "@/components/navigation/header";
-import Shelf from "@/components/shelf/shelf";
+import Shelf from "@/components/shelf/shelfRoot";
 import Sidebar from "@/components/sidebar/sidebar";
 
 export default function Home() {

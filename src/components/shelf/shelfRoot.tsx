@@ -22,16 +22,16 @@ export default async function Shelf() {
     items = await Item.find({
       owner: dbID,
       in_folder: default_folder,
-    });
+    }).then((docs) => JSON.parse(JSON.stringify(docs)));
   } catch (error) {
     console.error("Error fetching items: ", error);
   }
 
   return (
-    <ShelfProvider >
+    <ShelfProvider>
       <main className="grow h-full bg-slate-400 ml-4 flex flex-col">
         <ShelfHeader />
-        <ShelfView items={items} />
+        <ShelfView fetchedItems={items} />
       </main>
     </ShelfProvider>
   );

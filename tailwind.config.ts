@@ -13,6 +13,7 @@ export default {
         "z-background": "var(--z-background)",
         "z-foreground": "var(--z-foreground)",
         "z-component": "var(--z-component)",
+        "button": "hsl(var(--z-button))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         component: "var(--component)",
