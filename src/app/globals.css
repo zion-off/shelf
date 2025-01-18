@@ -23,8 +23,10 @@
 }
 
 :root {
-  --z-background: #fffcf7;
-  --z-foreground: #161413;
+  --z-background--primary: #fffcf7;
+  --z-background-secondary: #e1e6db;
+  --z-foreground-primary: #161413;
+  --z-foreground-secondary: #2f292b;
   --z-component: #635045;
 
   --background: 0 0% 100%;
@@ -56,8 +58,10 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --z-background: #161413;
-    --z-foreground: #fffcf7;
+    --z-background-primary: #161413;
+    --z-background-secondary: #2f292b;
+    --z-foreground-primary: #fffcf7;
+    --z-foreground-secondary: #e1e6db;
     --z-component: #c2b4a6;
 
     --background: 0 0% 3.9%;

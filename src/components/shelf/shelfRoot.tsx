@@ -17,7 +17,7 @@ export default async function Shelf() {
     const config = await Config.findOne({ user: dbID }).select(
       "default_folder"
     );
-    const { default_folder } = config;
+    const default_folder = config?.default_folder ? config.default_folder : null;
     items = await Item.find({
       owner: dbID,
       in_folder: default_folder,
@@ -27,7 +27,7 @@ export default async function Shelf() {
   }
 
   return (
-    <main className="grow h-full bg-slate-400 ml-4 flex flex-col">
+    <main className="grow h-full ml-4 flex flex-col">
       <ShelfHeader />
       <ShelfView fetchedItems={items} />
     </main>

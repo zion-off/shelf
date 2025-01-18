@@ -1,3 +1,4 @@
+import { tailwindSafeColors } from "./src/utils/";
 import type { Config } from "tailwindcss";
 
 export default {
@@ -10,10 +11,17 @@ export default {
   theme: {
     extend: {
       colors: {
-        "z-background": "var(--z-background)",
-        "z-foreground": "var(--z-foreground)",
+        "z-background": {
+          DEFAULT: "var(--z-background-primary)",
+          secondary: "var(--z-background-secondary)"
+        },
+        "z-foreground": {
+          DEFAULT: "var(--z-foreground-primary)",
+          secondary: "var(--z-foreground-secondary)",
+        },
         "z-component": "var(--z-component)",
-        "button": "hsl(var(--z-button))",
+        button: "hsl(var(--z-button))",
+
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         component: "var(--component)",
@@ -67,5 +75,6 @@ export default {
       },
     },
   },
+  safelist: tailwindSafeColors,
   plugins: [require("tailwindcss-animate")],
 } satisfies Config;

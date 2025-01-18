@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import mongo from "@/lib/mongodb";
 import { IItem } from "@/interfaces/models";
 import { Item } from "@/models";
+import { getRandomHex } from "@/utils";
 
 interface AddItem {
   title: string;
@@ -27,8 +28,9 @@ export async function addItem({
     title: title,
     author: author,
     link: link,
+    placeholderCover: getRandomHex(),
     notes: notes,
   });
-  
+
   return await newItem.save().then((item) => JSON.parse(JSON.stringify(item)));
 }
