@@ -1,11 +1,11 @@
 "use client";
 
-import { useShelfContext } from "@/context/shelfContext";
+import { useHomeContext } from "@/context/homeContext";
 import { IItem } from "@/interfaces/models";
 import { useEffect } from "react";
 
 export default function ShelfView({ fetchedItems }: { fetchedItems: IItem[] }) {
-  const { items, updateAllItems: updateItems } = useShelfContext();
+  const { items, updateAllItems: updateItems } = useHomeContext();
 
   // Load items on mount
   useEffect(() => {

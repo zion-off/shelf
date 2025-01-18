@@ -3,7 +3,7 @@
 import { IItem } from "@/interfaces/models";
 import { createContext, useContext, useState, ReactNode } from "react";
 
-const ShelfContext = createContext<{
+const HomeContext = createContext<{
   dialogOpen: boolean;
   toggleDialogOpen: () => void;
   saving: boolean;
@@ -13,7 +13,7 @@ const ShelfContext = createContext<{
   addSingleItem: (newItem: IItem) => void;
 } | null>(null);
 
-export function ShelfProvider({ children }: { children: ReactNode }) {
+export function HomeProvider({ children }: { children: ReactNode }) {
   // Dialog for adding new item
   const [dialogOpen, setDialogOpen] = useState(false);
   const toggleDialogOpen = () => {
@@ -49,12 +49,12 @@ export function ShelfProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <ShelfContext.Provider value={value}>{children}</ShelfContext.Provider>
+    <HomeContext.Provider value={value}>{children}</HomeContext.Provider>
   );
 }
 
-export function useShelfContext() {
-  const context = useContext(ShelfContext);
+export function useHomeContext() {
+  const context = useContext(HomeContext);
   if (!context) {
     throw new Error("Shelf header context unavailable");
   }

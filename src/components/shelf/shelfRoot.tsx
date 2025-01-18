@@ -4,7 +4,6 @@ import { Config, Item } from "@/models";
 import { IItem } from "@/interfaces/models";
 import ShelfView from "./shelfView";
 import ShelfHeader from "./shelfHeader";
-import { ShelfProvider } from "@/context/shelfContext";
 
 export const dynamic = "force-dynamic";
 
@@ -28,11 +27,9 @@ export default async function Shelf() {
   }
 
   return (
-    <ShelfProvider>
-      <main className="grow h-full bg-slate-400 ml-4 flex flex-col">
-        <ShelfHeader />
-        <ShelfView fetchedItems={items} />
-      </main>
-    </ShelfProvider>
+    <main className="grow h-full bg-slate-400 ml-4 flex flex-col">
+      <ShelfHeader />
+      <ShelfView fetchedItems={items} />
+    </main>
   );
 }

@@ -18,7 +18,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useShelfContext } from "@/context/shelfContext";
+import { useHomeContext } from "@/context/homeContext";
 import { addItem } from "@/actions";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
@@ -29,7 +29,7 @@ export default function AddItemDialog() {
   const { toast } = useToast();
 
   const { dialogOpen, toggleDialogOpen, saving, toggleSaving, addSingleItem } =
-    useShelfContext();
+    useHomeContext();
 
   const form = useForm<addItemFormValues>({
     resolver: zodResolver(addItemForm),
