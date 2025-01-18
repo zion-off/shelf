@@ -72,10 +72,10 @@ export default function AddItemDialog() {
 
   return (
     <Dialog open={dialogOpen} onOpenChange={toggleDialogOpen}>
-      <DialogTrigger asChild>
+      <DialogTrigger asChild className="w-11 p-2">
         <Plus
           size={"40px"}
-          className="transition-colors shadow-sm stroke-[1.5px] bg-neutral-100 stroke-neutral-400 border border-input md:hover:border-neutral-300 dark:bg-neutral-900 dark:md:hover:border-neutral-500 aspect-square rounded-md p-2   cursor-pointer"
+          className="transition-colors shadow-sm stroke-[1.5px] bg-neutral-100 stroke-neutral-400 border border-input md:hover:border-z-component dark:bg-neutral-900 aspect-square rounded-md cursor-pointer"
         />
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] bg-z-background border-none">

@@ -16,12 +16,12 @@ export default function ShelfView({ fetchedItems }: { fetchedItems: IItem[] }) {
   }, []);
 
   return (
-    <div className="w-full flex gap-2 py-4">
+    <div className="w-full flex gap-2 py-4 h-full">
       {items.length > 0
         ? items.map((item) => {
             return <Item key={item._id.toString()} item={item} />;
           })
-        : "Nothing to see here... yet"}
+        : <div className="flex h-full items-center w-full justify-center"><p className="text-z-foreground">Nothing to see here... yet</p></div>}
     </div>
   );
 }
