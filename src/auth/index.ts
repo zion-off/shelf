@@ -1,6 +1,6 @@
 import NextAuth, { User as GoogleUser } from "next-auth";
 import Google from "next-auth/providers/google";
-import { createNewUser } from "@/utils/createNewUser";
+import { createNewUser } from "@/actions/user";
 import { User } from "@/models";
 import mongo from "@/lib/mongodb";
 

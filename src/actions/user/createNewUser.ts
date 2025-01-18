@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import mongo from "@/lib/mongodb";
 import User from "@/models/user.model";
 import Config from "@/models/config.model";
-import { collectionExists, createNewCollection } from "@/utils";
+import { collectionExists, createNewCollection } from "@/actions/collection";
 import { IUser, IConfig } from "@/interfaces/models";
 import { User as GoogleUser } from "next-auth";
 
