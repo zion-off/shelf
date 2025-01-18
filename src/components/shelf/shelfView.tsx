@@ -42,7 +42,7 @@ const Item = ({ item }: { item: IItem }) => {
 
   return (
     <div className="w-full md:w-1/4 flex flex-col border dark:border-neutral-700 rounded-md overflow-clip shadow-md">
-      <div className="basis-2/3 w-full h-20">
+      <div className="basis-2/3 w-full h-24">
         {thumbnail ? (
           <Image src={thumbnail} alt={title} />
         ) : (
@@ -52,7 +52,7 @@ const Item = ({ item }: { item: IItem }) => {
           />
         )}
       </div>
-      <div className="flex flex-col p-2 text-z-background bg-z-background-secondary text-xs">
+      <div className="flex flex-col p-2 text-z-background bg-z-background-secondary text-xs ">
         <h3 className="text-z-foreground">{title}</h3>
         <p className="text-z-foreground-secondary">{author}</p>
       </div>
