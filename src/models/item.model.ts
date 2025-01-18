@@ -7,6 +7,8 @@ const itemSchema = new mongoose.Schema<IItem>({
   author: { type: String, required: true },
   notes: { type: String },
   link: { type: String },
+  thumbnail: { type: String },
+  placeholderCover: { type: String },
   read: { type: Boolean, default: false },
   in_folder: {
     type: mongoose.Schema.Types.ObjectId,

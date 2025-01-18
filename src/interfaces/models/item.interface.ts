@@ -7,6 +7,8 @@ export interface IItem extends Document {
   author: string;
   notes?: string;
   link?: string;
+  thumbnail?: string;
+  placeholderCover?: string;
   read: boolean;
   in_folder: Types.ObjectId | null;
   created_at: Date;
