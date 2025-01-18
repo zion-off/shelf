@@ -1,15 +1,14 @@
 import { HomeProvider } from "@/context/homeContext";
 import Header from "@/components/navigation/header";
 import Shelf from "@/components/shelf/shelfRoot";
-import Sidebar from "@/components/sidebar/sidebar";
 
 export default function Home() {
   return (
-    <main className="flex flex-col h-full">
+    <main className="flex flex-col h-full absolute inset-0">
       <Header />
-      <div className="w-full flex p-6 grow">
+      <div className="w-full flex px-4 grow relative">
         <HomeProvider>
-          <Sidebar />
+          {/* <Sidebar /> */}
           <Shelf />
         </HomeProvider>
       </div>
