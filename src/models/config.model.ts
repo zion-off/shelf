@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { IConfig } from "@/interfaces/config.interface";
+import { IConfig } from "@/interfaces/models/config.interface";
 
 const configSchema = new mongoose.Schema<IConfig>({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },

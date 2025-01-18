@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import mongo from "@/lib/mongodb";
 import { Config, Item } from "@/models";
-import { IItem } from "@/interfaces";
+import { IItem } from "@/interfaces/models";
 import ShelfView from "./shelfView";
 import ShelfHeader from "./shelfHeader";
 import { ShelfProvider } from "@/context/shelfContext";

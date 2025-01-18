@@ -3,7 +3,7 @@
 import { auth } from "@/auth";
 import mongoose from "mongoose";
 import mongo from "@/lib/mongodb";
-import { IItem } from "@/interfaces";
+import { IItem } from "@/interfaces/models";
 import { Item } from "@/models";
 
 interface AddItem {

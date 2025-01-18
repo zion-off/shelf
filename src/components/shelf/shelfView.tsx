@@ -1,7 +1,7 @@
 "use client";
 
 import { useShelfContext } from "@/context/shelfContext";
-import { IItem } from "@/interfaces";
+import { IItem } from "@/interfaces/models";
 import { useEffect } from "react";
 
 export default function ShelfView({ fetchedItems }: { fetchedItems: IItem[] }) {

@@ -1,6 +1,6 @@
 "use client";
 
-import { IItem } from "@/interfaces";
+import { IItem } from "@/interfaces/models";
 import { createContext, useContext, useState, ReactNode } from "react";
 
 const ShelfContext = createContext<{

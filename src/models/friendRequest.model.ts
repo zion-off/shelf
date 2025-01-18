@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { IFriendRequest } from "../interfaces/friendRequest.interface";
+import { IFriendRequest } from "../interfaces/models/friendRequest.interface";
 
 const friendRequestSchema = new mongoose.Schema<IFriendRequest>({
   sender: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },

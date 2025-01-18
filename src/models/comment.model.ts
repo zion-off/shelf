@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { IComment } from "../interfaces/comment.interface";
+import { IComment } from "../interfaces/models/comment.interface";
 
 const commentSchema = new mongoose.Schema<IComment>({
   author: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },

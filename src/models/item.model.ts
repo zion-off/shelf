@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { IItem } from "../interfaces/item.interface";
+import { IItem } from "../interfaces/models/item.interface";
 
 const itemSchema = new mongoose.Schema<IItem>({
   owner: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },

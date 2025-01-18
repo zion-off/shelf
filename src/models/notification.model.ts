@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { INotification } from "../interfaces/notification.interface";
+import { INotification } from "../interfaces/models/notification.interface";
 
 const notificationSchema = new mongoose.Schema<INotification>({
   recipient: {

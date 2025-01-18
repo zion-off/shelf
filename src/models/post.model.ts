@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { IPost } from '../interfaces/post.interface';
+import { IPost } from '../interfaces/models/post.interface';
 
 const postSchema = new mongoose.Schema<IPost>({
   owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },

@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { ILike } from '../interfaces/like.interface';
+import { ILike } from '../interfaces/models/like.interface';
 
 const likeSchema = new mongoose.Schema<ILike>({
   owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },

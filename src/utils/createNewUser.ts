@@ -3,7 +3,7 @@ import mongo from "@/lib/mongodb";
 import User from "@/models/user.model";
 import Config from "@/models/config.model";
 import { collectionExists, createNewCollection } from "@/utils";
-import { IUser, IConfig } from "@/interfaces";
+import { IUser, IConfig } from "@/interfaces/models";
 import { User as GoogleUser } from "next-auth";
 
 export async function createNewUser(user: GoogleUser): Promise<boolean> {

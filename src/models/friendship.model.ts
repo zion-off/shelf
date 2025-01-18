@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { IFriendship } from "../interfaces/friendship.interface";
+import { IFriendship } from "../interfaces/models/friendship.interface";
 
 const friendshipSchema = new mongoose.Schema<IFriendship>({
   user_one: {
