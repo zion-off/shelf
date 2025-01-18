@@ -24,6 +24,8 @@ import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
 import { addItemForm } from "@/schema";
 import { addItemFormValues } from "@/types/shelf";
+import { FormInputProps } from "@/interfaces/items";
+import { useCallback } from "react";
 
 export default function AddItemDialog() {
   const { toast } = useToast();
@@ -41,28 +43,31 @@ export default function AddItemDialog() {
     },
   });
 
-  async function onSubmit(values: addItemFormValues) {
-    toggleSaving();
-    try {
-      const newItem = await addItem(values);
-      toggleDialogOpen();
-      form.reset();
-      addSingleItem(newItem);
-      toast({
-        title: "Success",
-        description: "Item added successfully",
-        duration: 3000,
-      });
-    } catch (error) {
-      toast({
-        title: "Something went wrong",
-        description: "Couldn't add item. Try again later?",
-        duration: 3000,
-      });
-    } finally {
+  const onSubmit = useCallback(
+    async (values: addItemFormValues) => {
       toggleSaving();
-    }
-  }
+      try {
+        const newItem = await addItem(values);
+        toggleDialogOpen();
+        form.reset();
+        addSingleItem(newItem);
+        toast({
+          title: "Success",
+          description: "Item added successfully",
+          duration: 3000,
+        });
+      } catch (error) {
+        toast({
+          title: "Something went wrong",
+          description: "Couldn't add item. Try again later?",
+          duration: 3000,
+        });
+      } finally {
+        toggleSaving();
+      }
+    },
+    [form]
+  );
 
   return (
     <Dialog open={dialogOpen} onOpenChange={toggleDialogOpen}>
@@ -78,53 +83,25 @@ export default function AddItemDialog() {
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
+            <FormInput
+              formControl={form.control}
               name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input placeholder="Title" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              placeholder="Title"
             />
-            <FormField
-              control={form.control}
+            <FormInput
+              formControl={form.control}
               name="author"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input placeholder="Author" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              placeholder="Author"
             />
-            <FormField
-              control={form.control}
+            <FormInput
+              formControl={form.control}
               name="link"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input placeholder="https://..." {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              placeholder="https://..."
             />
-            <FormField
-              control={form.control}
+            <FormInput
+              formControl={form.control}
               name="notes"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input placeholder="Notes" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              placeholder="Notes"
             />
             <Button
               type="submit"
@@ -139,3 +116,20 @@ export default function AddItemDialog() {
     </Dialog>
   );
 }
+
+const FormInput = ({ formControl, name, placeholder }: FormInputProps) => {
+  return (
+    <FormField
+      control={formControl}
+      name={name}
+      render={({ field }) => (
+        <FormItem>
+          <FormControl>
+            <Input placeholder={placeholder} {...field} />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+  );
+};
