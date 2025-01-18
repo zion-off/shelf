@@ -26,6 +26,7 @@ import { addItemForm } from "@/schema";
 import { addItemFormValues } from "@/types/shelf";
 import { FormInputProps } from "@/interfaces/items";
 import { useCallback } from "react";
+import { SquarePlus } from "lucide-react";
 
 export default function AddItemDialog() {
   const { toast } = useToast();
@@ -72,7 +73,7 @@ export default function AddItemDialog() {
   return (
     <Dialog open={dialogOpen} onOpenChange={toggleDialogOpen}>
       <DialogTrigger asChild>
-        <Button>Add</Button>
+        <SquarePlus stroke="black" />
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] bg-z-background border-none">
         <DialogHeader>
