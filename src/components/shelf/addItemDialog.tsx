@@ -19,7 +19,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useHomeContext } from "@/context/homeContext";
-import { addItem } from "@/actions";
+import { addItem } from "@/actions/item";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
 import { addItemForm } from "@/schema";
