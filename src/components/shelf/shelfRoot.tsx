@@ -4,7 +4,7 @@ import { Config, Item } from "@/models";
 import { IItem } from "@/interfaces/models";
 import ShelfView from "./shelfView";
 import ShelfHeader from "./shelfHeader";
-import { AppSidebar } from "@/components/sidebar/app-sidebar";
+import { AppSidebar } from "@/components/sidebar/appSidebar";
 import {
   SidebarInset,
   SidebarProvider,
