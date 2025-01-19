@@ -4,14 +4,14 @@ import Shelf from "@/components/shelf/shelfRoot";
 
 export default function Home() {
   return (
-    <main className="flex flex-col h-full absolute inset-0">
+    <main className="flex flex-col h-[100dvh] overflow-hidden">
       <Header />
-      <div className="w-full flex px-4 grow relative">
+      <div className="flex-1 w-full flex px-4 relative overflow-hidden">
         <HomeProvider>
-          {/* <Sidebar /> */}
           <Shelf />
         </HomeProvider>
       </div>
     </main>
   );
 }
+
