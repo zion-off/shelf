@@ -14,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="font-switzer h-screen bg-z-background text-z-foreground" >
+      <body className="font-switzer bg-z-background text-z-foreground" >
         <AuthCheck>
           {children}
           <Toaster />

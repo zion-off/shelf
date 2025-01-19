@@ -1,18 +1,17 @@
 import { HomeProvider } from "@/context/homeContext";
 import Header from "@/components/navigation/header";
 import Shelf from "@/components/shelf/shelfRoot";
-import Sidebar from "@/components/sidebar/sidebar";
 
 export default function Home() {
   return (
-    <main className="flex flex-col h-full">
+    <main className="flex flex-col h-[100dvh] overflow-hidden">
       <Header />
-      <div className="w-full flex p-6 grow">
+      <div className="flex-1 w-full flex px-4 relative overflow-hidden">
         <HomeProvider>
-          <Sidebar />
           <Shelf />
         </HomeProvider>
       </div>
     </main>
   );
 }
+
