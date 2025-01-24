@@ -3,8 +3,6 @@
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
@@ -77,12 +75,8 @@ export default function AddItemDialog() {
         />
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] bg-z-background border-none">
-        <DialogHeader>
-          <DialogTitle className="text-z-foreground">
-            Add a new item
-          </DialogTitle>
-          <DialogDescription>Add a new item to your shelf</DialogDescription>
-        </DialogHeader>
+        <DialogTitle className="text-z-foreground pb-2">Add a new item</DialogTitle>
+
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormInput

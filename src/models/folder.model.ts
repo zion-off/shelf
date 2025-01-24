@@ -4,7 +4,7 @@ import { IFolder } from '../interfaces/models/folder.interface';
 const folderSchema = new mongoose.Schema<IFolder>({
   owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   name: { type: String, required: true },
-  public: { type: Boolean, default: false },
+  isPublic: { type: Boolean, default: false },
   created_at: { type: Date, default: Date.now },
   last_modified: { type: Date, default: Date.now }
 });

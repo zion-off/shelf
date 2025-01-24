@@ -5,3 +5,9 @@ export interface FormInputProps<T extends FieldValues> {
   name: Path<T>;
   placeholder: string;
 }
+
+export interface CheckboxInputProps<T extends FieldValues> {
+  formControl: Control<T> | undefined;
+  name: Path<T>;
+  label: string;
+}

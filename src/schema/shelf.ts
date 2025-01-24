@@ -18,4 +18,5 @@ export const addFolderForm = z.object({
     .string()
     .min(1, "Folder name is required")
     .max(60, "Folder name must be less than 60 characters"),
+  isPublic: z.boolean(),
 });

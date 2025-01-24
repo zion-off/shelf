@@ -5,12 +5,13 @@ import { Plus } from "lucide-react";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Form } from "@/components/ui/form";
+import {
+  Form,
+} from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useHomeContext } from "@/context/homeContext";
@@ -19,6 +20,7 @@ import { useForm } from "react-hook-form";
 import { addFolderForm } from "@/schema";
 import { addFolderFormValues } from "@/types/shelf";
 import { FormInput } from "@/components/ui/formInput";
+import { CheckboxInput } from "@/components/ui/formInput";
 
 export default function AddFolderDialog() {
   const { toast } = useToast();
@@ -35,6 +37,7 @@ export default function AddFolderDialog() {
     resolver: zodResolver(addFolderForm),
     defaultValues: {
       name: "",
+      isPublic: false,
     },
   });
 
@@ -71,26 +74,41 @@ export default function AddFolderDialog() {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] bg-z-background border-none">
         <DialogHeader>
-          <DialogTitle className="text-z-foreground">
+          <DialogTitle className="text-z-foreground pb-2">
             Create a new folder
           </DialogTitle>
-          <DialogDescription>Create a new folder in your shelf</DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormInput
               formControl={form.control}
               name="name"
-              placeholder="Name"
+              placeholder="Folder name"
             />
 
-            <Button
-              type="submit"
-              className={`w-full ${saving ? "animate-pulse" : ""}`}
-              disabled={saving}
-            >
-              {saving ? "Saving..." : "Save changes"}
-            </Button>
+            <CheckboxInput
+              name="isPublic"
+              formControl={form.control}
+              label="Public folder"
+            />
+
+            <div className="flex w-full gap-2">
+              <Button
+                variant="secondary"
+                className="basis-1/2"
+                type="reset"
+                onClick={toggleFolderDialogOpen}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                className={`basis-1/2 ${saving ? "animate-pulse" : ""}`}
+                disabled={saving}
+              >
+                {saving ? "Adding..." : "Add"}
+              </Button>
+            </div>
           </form>
         </Form>
       </DialogContent>
