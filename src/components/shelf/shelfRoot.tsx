@@ -1,37 +1,15 @@
 import { auth } from "@/auth";
-import mongo from "@/lib/mongodb";
-import { Config, Item } from "@/models";
 import { IItem } from "@/interfaces/models";
 import ItemsContainer from "./itemsContainer";
 import ShelfHeader from "./shelfHeader";
 import { AppSidebar } from "@/components/sidebar/appSidebar";
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { getItemsInDefaultFolder } from "@/actions/item/getItemsInDefaultFolder";
 
 export default async function Shelf() {
   const session = await auth();
-  const dbID = session?.user?.id;
-  let items: IItem[] = [];
-  await mongo();
-
-  try {
-    const config = await Config.findOne({ user: dbID }).select(
-      "default_folder"
-    );
-    const default_folder = config?.default_folder
-      ? config.default_folder
-      : null;
-    items = await Item.find({
-      owner: dbID,
-      in_folder: default_folder,
-    }).then((docs) => JSON.parse(JSON.stringify(docs)));
-  } catch (error) {
-    console.error("Error fetching items: ", error);
-  }
-
+  const dbID = session?.user?.id as string;
+  let items: IItem[] = await getItemsInDefaultFolder({ dbID });
   return (
     <SidebarProvider
       style={

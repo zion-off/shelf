@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Book } from "lucide-react";
-import { Plus } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -15,7 +14,6 @@ import {
 } from "@/components/ui/sidebar";
 import AddFolderDialog from "../shelf/addFolderDialog";
 
-// This is sample data.
 const data = {
   navMain: [
     {
@@ -83,72 +81,6 @@ const data = {
         },
         {
           title: "Examples",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "API Reference",
-      url: "#",
-      items: [
-        {
-          title: "Components",
-          url: "#",
-        },
-        {
-          title: "File Conventions",
-          url: "#",
-        },
-        {
-          title: "Functions",
-          url: "#",
-        },
-        {
-          title: "next.config.js Options",
-          url: "#",
-        },
-        {
-          title: "CLI",
-          url: "#",
-        },
-        {
-          title: "Edge Runtime",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Architecture",
-      url: "#",
-      items: [
-        {
-          title: "Accessibility",
-          url: "#",
-        },
-        {
-          title: "Fast Refresh",
-          url: "#",
-        },
-        {
-          title: "Next.js Compiler",
-          url: "#",
-        },
-        {
-          title: "Supported Browsers",
-          url: "#",
-        },
-        {
-          title: "Turbopack",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Community",
-      url: "#",
-      items: [
-        {
-          title: "Contribution Guide",
           url: "#",
         },
       ],
