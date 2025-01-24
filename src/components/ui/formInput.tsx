@@ -43,7 +43,7 @@ export const CheckboxInput = <T extends FieldValues>({
       render={({ field }) => (
         <FormItem className="flex flex-row space-x-3 space-y-0 items-center px-1">
           <FormControl>
-            <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+            <Checkbox defaultChecked checked={field.value} onCheckedChange={field.onChange} />
           </FormControl>
           <FormLabel>{label}</FormLabel>
         </FormItem>

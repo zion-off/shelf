@@ -4,7 +4,7 @@ import { auth } from "@/auth";
 import mongoose from "mongoose";
 import mongo from "@/lib/mongodb";
 import { IFolder } from "@/interfaces/models";
-import { Item } from "@/models";
+import { Folder } from "@/models";
 
 interface AddFolder {
   name: string;
@@ -18,7 +18,7 @@ export async function addFolder({
   const session = await auth();
   const owner = new mongoose.Types.ObjectId(session?.user?.id);
   await mongo();
-  const newFolder: IFolder = await new Item({
+  const newFolder: IFolder = await new Folder({
     owner: owner,
     name: name,
     isPublic: isPublic,

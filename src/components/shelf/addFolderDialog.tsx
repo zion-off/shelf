@@ -21,6 +21,7 @@ import { addFolderForm } from "@/schema";
 import { addFolderFormValues } from "@/types/shelf";
 import { FormInput } from "@/components/ui/formInput";
 import { CheckboxInput } from "@/components/ui/formInput";
+import { addFolder } from "@/actions/folder";
 
 export default function AddFolderDialog() {
   const { toast } = useToast();
@@ -37,7 +38,7 @@ export default function AddFolderDialog() {
     resolver: zodResolver(addFolderForm),
     defaultValues: {
       name: "",
-      isPublic: false,
+      isPublic: true,
     },
   });
 
@@ -45,7 +46,7 @@ export default function AddFolderDialog() {
     async (values: addFolderFormValues) => {
       toggleSaving();
       try {
-        // const newItem = await addItem(values);
+        const newItem = await addFolder(values);
         toggleFolderDialogOpen();
         form.reset();
         // addSingleItem(newItem);
