@@ -1,5 +1,5 @@
 import { addItemFormValues } from "@/types/shelf";
-import { Control, FieldValues } from "react-hook-form";
+import { Control } from "react-hook-form";
 
 export interface FormInputProps {
   formControl: Control<addItemFormValues> | undefined;

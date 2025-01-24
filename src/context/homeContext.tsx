@@ -4,8 +4,10 @@ import { IItem } from "@/interfaces/models";
 import { createContext, useContext, useState, ReactNode } from "react";
 
 const HomeContext = createContext<{
-  dialogOpen: boolean;
-  toggleDialogOpen: () => void;
+  itemDialogOpen: boolean;
+  toggleItemDialogOpen: () => void;
+  folderDialogOpen: boolean;
+  toggleFolderDialogOpen: () => void;
   saving: boolean;
   toggleSaving: () => void;
   items: IItem[];
@@ -15,9 +17,15 @@ const HomeContext = createContext<{
 
 export function HomeProvider({ children }: { children: ReactNode }) {
   // Dialog for adding new item
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const toggleDialogOpen = () => {
-    setDialogOpen((prev) => !prev);
+  const [itemDialogOpen, setItemDialogOpen] = useState(false);
+  const toggleItemDialogOpen = () => {
+    setItemDialogOpen((prev) => !prev);
+  };
+
+  // Dialog for adding new folder
+  const [folderDialogOpen, setFolderDialogOpen] = useState(false);
+  const toggleFolderDialogOpen = () => {
+    setFolderDialogOpen((prev) => !prev);
   };
 
   // Loading state while item is being added to database
@@ -32,15 +40,17 @@ export function HomeProvider({ children }: { children: ReactNode }) {
   const updateAllItems = (fetchedItems: IItem[]) => {
     setItems(fetchedItems);
   };
-  
+
   // Add a single item
   const addSingleItem = (newItem: IItem) => {
     setItems((prev) => [...prev, newItem]);
   };
 
   const value = {
-    dialogOpen,
-    toggleDialogOpen,
+    itemDialogOpen,
+    toggleItemDialogOpen,
+    folderDialogOpen,
+    toggleFolderDialogOpen,
     saving,
     toggleSaving,
     items,
@@ -48,9 +58,7 @@ export function HomeProvider({ children }: { children: ReactNode }) {
     addSingleItem,
   };
 
-  return (
-    <HomeContext.Provider value={value}>{children}</HomeContext.Provider>
-  );
+  return <HomeContext.Provider value={value}>{children}</HomeContext.Provider>;
 }
 
 export function useHomeContext() {

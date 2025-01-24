@@ -8,15 +8,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useHomeContext } from "@/context/homeContext";
 import { addItem } from "@/actions/item";
@@ -24,15 +17,20 @@ import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
 import { addItemForm } from "@/schema";
 import { addItemFormValues } from "@/types/shelf";
-import { FormInputProps } from "@/interfaces/items";
 import { useCallback } from "react";
 import { Plus } from "lucide-react";
+import { FormInput } from "@/components/ui/formInput";
 
 export default function AddItemDialog() {
   const { toast } = useToast();
 
-  const { dialogOpen, toggleDialogOpen, saving, toggleSaving, addSingleItem } =
-    useHomeContext();
+  const {
+    itemDialogOpen,
+    toggleItemDialogOpen,
+    saving,
+    toggleSaving,
+    addSingleItem,
+  } = useHomeContext();
 
   const form = useForm<addItemFormValues>({
     resolver: zodResolver(addItemForm),
@@ -49,7 +47,7 @@ export default function AddItemDialog() {
       toggleSaving();
       try {
         const newItem = await addItem(values);
-        toggleDialogOpen();
+        toggleItemDialogOpen();
         form.reset();
         addSingleItem(newItem);
         toast({
@@ -71,7 +69,7 @@ export default function AddItemDialog() {
   );
 
   return (
-    <Dialog open={dialogOpen} onOpenChange={toggleDialogOpen}>
+    <Dialog open={itemDialogOpen} onOpenChange={toggleItemDialogOpen}>
       <DialogTrigger asChild className="w-11 p-2">
         <Plus
           size={"40px"}
@@ -120,20 +118,3 @@ export default function AddItemDialog() {
     </Dialog>
   );
 }
-
-const FormInput = ({ formControl, name, placeholder }: FormInputProps) => {
-  return (
-    <FormField
-      control={formControl}
-      name={name}
-      render={({ field }) => (
-        <FormItem>
-          <FormControl>
-            <Input placeholder={placeholder} {...field} />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
-  );
-};

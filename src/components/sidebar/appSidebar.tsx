@@ -13,6 +13,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
+import AddFolderDialog from "../shelf/addFolderDialog";
 
 // This is sample data.
 const data = {
@@ -172,7 +173,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   </div>
                 </div>
                 <div className="opacity-0 group-hover/item:opacity-100 transition-opacity duration-50 fade-in-50 fade-out-50">
-                  <Plus className="p-1 size-6 transition-colors shadow-sm  hover:bg-neutral-200 stroke-neutral-400 dark:hover:bg-neutral-900 aspect-square rounded-md cursor-pointer" />
+                  <AddFolderDialog />
                 </div>
               </div>
             </SidebarMenuButton>
