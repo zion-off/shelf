@@ -38,7 +38,7 @@ const Item = ({ item }: { item: IItem }) => {
   const { title, author, thumbnail, placeholderCover } = item;
 
   return (
-    <div className="flex flex-col border dark:border-neutral-700 rounded-md overflow-hidden shadow-md">
+    <div className="flex flex-col  rounded-md overflow-hidden shadow-md">
       <div className="w-full h-24">
         {thumbnail ? (
           <Image
