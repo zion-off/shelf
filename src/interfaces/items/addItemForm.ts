@@ -1,8 +1,7 @@
-import { addItemFormValues } from "@/types/shelf";
-import { Control } from "react-hook-form";
+import { Control, FieldValues, Path } from "react-hook-form";
 
-export interface FormInputProps {
-  formControl: Control<addItemFormValues> | undefined;
-  name: "title" | "author" | "notes" | "link";
+export interface FormInputProps<T extends FieldValues> {
+  formControl: Control<T> | undefined;
+  name: Path<T>;
   placeholder: string;
 }

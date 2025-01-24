@@ -12,3 +12,10 @@ export const addItemForm = z.object({
   notes: z.string().optional(),
   link: z.string().url().optional().or(z.literal("")),
 });
+
+export const addFolderForm = z.object({
+  name: z
+    .string()
+    .min(1, "Folder name is required")
+    .max(60, "Folder name must be less than 60 characters"),
+});

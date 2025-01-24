@@ -6,8 +6,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { FormInputProps } from "@/interfaces/items";
+import { FieldValues } from "react-hook-form";
 
-export const FormInput = ({ formControl, name, placeholder }: FormInputProps) => {
+export const FormInput = <T extends FieldValues>({
+  formControl,
+  name,
+  placeholder,
+}: FormInputProps<T>) => {
   return (
     <FormField
       control={formControl}

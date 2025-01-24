@@ -14,11 +14,10 @@ import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useHomeContext } from "@/context/homeContext";
-import { addItem } from "@/actions/item";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
-import { addItemForm } from "@/schema";
-import { addItemFormValues } from "@/types/shelf";
+import { addFolderForm } from "@/schema";
+import { addFolderFormValues } from "@/types/shelf";
 import { FormInput } from "@/components/ui/formInput";
 
 export default function AddFolderDialog() {
@@ -32,33 +31,30 @@ export default function AddFolderDialog() {
     addSingleItem,
   } = useHomeContext();
 
-  const form = useForm<addItemFormValues>({
-    resolver: zodResolver(addItemForm),
+  const form = useForm<addFolderFormValues>({
+    resolver: zodResolver(addFolderForm),
     defaultValues: {
-      title: "",
-      author: "",
-      notes: "",
-      link: "",
+      name: "",
     },
   });
 
   const onSubmit = useCallback(
-    async (values: addItemFormValues) => {
+    async (values: addFolderFormValues) => {
       toggleSaving();
       try {
-        const newItem = await addItem(values);
+        // const newItem = await addItem(values);
         toggleFolderDialogOpen();
         form.reset();
-        addSingleItem(newItem);
+        // addSingleItem(newItem);
         toast({
           title: "Success",
-          description: "Item added successfully",
+          description: "Folder created successfully",
           duration: 3000,
         });
       } catch (error) {
         toast({
           title: "Something went wrong",
-          description: "Couldn't add item. Try again later?",
+          description: "Couldn't create folder. Try again later?",
           duration: 3000,
         });
       } finally {
@@ -76,32 +72,18 @@ export default function AddFolderDialog() {
       <DialogContent className="sm:max-w-[425px] bg-z-background border-none">
         <DialogHeader>
           <DialogTitle className="text-z-foreground">
-            Add a new item
+            Create a new folder
           </DialogTitle>
-          <DialogDescription>Add a new item to your shelf</DialogDescription>
+          <DialogDescription>Create a new folder in your shelf</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormInput
               formControl={form.control}
-              name="title"
-              placeholder="Title"
+              name="name"
+              placeholder="Name"
             />
-            <FormInput
-              formControl={form.control}
-              name="author"
-              placeholder="Author"
-            />
-            <FormInput
-              formControl={form.control}
-              name="link"
-              placeholder="https://..."
-            />
-            <FormInput
-              formControl={form.control}
-              name="notes"
-              placeholder="Notes"
-            />
+
             <Button
               type="submit"
               className={`w-full ${saving ? "animate-pulse" : ""}`}
