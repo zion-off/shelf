@@ -81,7 +81,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                           <Star className="fill-yellow-400 stroke-yellow-400" />
                         ) : (
                           <Star
-                            className="opacity-0 group-hover/fav:opacity-100 transition-opacity duration-50 fade-in-50 fade-out-50 fill-neutral-600 stroke-neutral-600"
+                            className="opacity-0 group-hover/fav:opacity-100 transition-opacity duration-50 fade-in-50 fade-out-50 fill-neutral-300 stroke-neutral-300 dark:fill-neutral-600 dark:stroke-neutral-600"
                             onClick={() => handleFavoriteClick(null)}
                           />
                         )}
@@ -118,7 +118,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                               />
                             ) : (
                               <Star
-                                className="opacity-0 group-hover/fav:opacity-100 transition-opacity duration-50 fade-in-50 fade-out-50 fill-neutral-600 stroke-neutral-600"
+                                className="opacity-0 group-hover/fav:opacity-100 transition-opacity duration-50 fade-in-50 fade-out-50 fill-neutral-300 stroke-neutral-300 dark:fill-neutral-600 dark:stroke-neutral-600"
                                 onClick={() =>
                                   handleFavoriteClick(folder._id.toString())
                                 }
@@ -158,7 +158,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                               />
                             ) : (
                               <Star
-                                className="opacity-0 group-hover/fav:opacity-100 transition-opacity duration-50 fade-in-50 fade-out-50 fill-neutral-600 stroke-neutral-600"
+                                className="opacity-0 group-hover/fav:opacity-100 transition-opacity duration-50 fade-in-50 fade-out-50 fill-neutral-300 stroke-neutral-300 dark:fill-neutral-600 dark:stroke-neutral-600"
                                 onClick={() =>
                                   handleFavoriteClick(folder._id.toString())
                                 }
