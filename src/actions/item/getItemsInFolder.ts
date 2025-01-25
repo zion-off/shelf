@@ -8,7 +8,7 @@ import { auth } from "@/auth";
 export async function getItemsInFolder({
   folderID,
 }: {
-  folderID: string;
+  folderID: string | null;
 }): Promise<IItem[]> {
   const session = await auth();
   const dbID = session?.user?.id;

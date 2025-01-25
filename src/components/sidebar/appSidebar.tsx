@@ -24,11 +24,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { folderState } = useSidebar();
   const { currentFolder, changeOpenFolder, updateAllItems } = useHomeContext();
 
-  const handleFolderClick = async (changeToFolder: IFolder) => {
-    console.log(changeToFolder);
+  const handleFolderClick = async (changeToFolder: IFolder | null) => {
     changeOpenFolder(changeToFolder);
     const items = await getItemsInFolder({
-      folderID: changeToFolder._id.toString(),
+      folderID: changeToFolder ? changeToFolder._id.toString() : null,
     });
     updateAllItems(items);
   };
@@ -59,6 +58,22 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <SidebarGroup>
           <SidebarMenu className="gap-2">
+            <SidebarMenuItem className="cursor-pointer">
+              {folderState?.length ? (
+                <SidebarMenuSub className="ml-0 border-l-0 ">
+                  <SidebarMenuSubItem onClick={() => handleFolderClick(null)}>
+                    <SidebarMenuSubButton
+                      asChild
+                      {...(currentFolder === null
+                        ? { isActive: true }
+                        : {})}
+                    >
+                      <p className="p-2 text-sm ">Ungrouped</p>
+                    </SidebarMenuSubButton>
+                  </SidebarMenuSubItem>
+                </SidebarMenuSub>
+              ) : null}
+            </SidebarMenuItem>
             <SidebarMenuItem>
               <p className="p-2 text-sm cursor-default">Public</p>
               {folderState?.length ? (
@@ -94,9 +109,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                         key={folder.name}
                         onClick={() => handleFolderClick(folder)}
                       >
-                        <SidebarMenuSubButton asChild {...(currentFolder?._id === folder._id
+                        <SidebarMenuSubButton
+                          asChild
+                          {...(currentFolder?._id === folder._id
                             ? { isActive: true }
-                            : {})}>
+                            : {})}
+                        >
                           <p className="cursor-pointer">{folder.name}</p>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>

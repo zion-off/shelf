@@ -14,7 +14,7 @@ const HomeContext = createContext<{
   updateAllItems: (fetchedItems: IItem[]) => void;
   addSingleItem: (newItem: IItem) => void;
   currentFolder: IFolder | null;
-  changeOpenFolder: (changeTo: IFolder) => void;
+  changeOpenFolder: (changeTo: IFolder | null) => void;
 } | null>(null);
 
 export function HomeProvider({ children }: { children: ReactNode }) {
@@ -50,7 +50,7 @@ export function HomeProvider({ children }: { children: ReactNode }) {
 
   // For opening different folders
   const [currentFolder, setCurrentFolder] = useState<IFolder | null>(null);
-  const changeOpenFolder = useCallback((newFolder: IFolder) => {
+  const changeOpenFolder = useCallback((newFolder: IFolder | null) => {
     setCurrentFolder(newFolder);
   }, [currentFolder, setCurrentFolder])
 
