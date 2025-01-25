@@ -19,6 +19,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { IFolder } from "@/interfaces";
+import { useHomeContext } from "@/context/homeContext";
 
 const SIDEBAR_COOKIE_NAME = "sidebar:state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
@@ -37,6 +38,8 @@ type SidebarContext = {
   toggleSidebar: () => void;
   folderState: IFolder[];
   addSingleFolder: (newFolder: IFolder) => void;
+  favoriteFolder: string | null;
+  updateFavoriteFolder: (newFolderID: string | null) => void;
 };
 
 const SidebarContext = React.createContext<SidebarContext | null>(null);
@@ -57,6 +60,7 @@ const SidebarProvider = React.forwardRef<
     open?: boolean;
     onOpenChange?: (open: boolean) => void;
     folders: IFolder[];
+    defaultFolder: string;
   }
 >(
   (
@@ -68,6 +72,7 @@ const SidebarProvider = React.forwardRef<
       style,
       children,
       folders,
+      defaultFolder,
       ...props
     },
     ref
@@ -133,6 +138,23 @@ const SidebarProvider = React.forwardRef<
       [folderState, setFolderState]
     );
 
+    // State for marking default folder
+    const [favoriteFolder, setFavoriteFolder] = React.useState<string | null>(
+      defaultFolder
+    );
+    const updateFavoriteFolder = (newFolderID: string | null) => {
+      setFavoriteFolder(newFolderID);
+    };
+
+    const { changeOpenFolder } = useHomeContext();
+
+    React.useEffect(() => {
+      const firstOpenFolder =
+        folderState.find((folder) => folder._id.toString() === defaultFolder) ||
+        null;
+      changeOpenFolder(firstOpenFolder);
+    }, []);
+
     const contextValue = React.useMemo<SidebarContext>(
       () => ({
         state,
@@ -144,6 +166,8 @@ const SidebarProvider = React.forwardRef<
         toggleSidebar,
         folderState,
         addSingleFolder,
+        favoriteFolder,
+        updateFavoriteFolder,
       }),
       [
         state,
@@ -155,6 +179,8 @@ const SidebarProvider = React.forwardRef<
         toggleSidebar,
         folderState,
         addSingleFolder,
+        favoriteFolder,
+        updateFavoriteFolder,
       ]
     );
 

@@ -1,7 +1,7 @@
 "use server"
 
 import { IItem } from "@/interfaces";
-import models from "@/models";
+import {Item} from "@/models";
 import mongo from "@/lib/mongodb";
 import { auth } from "@/auth";
 
@@ -16,7 +16,7 @@ export async function getItemsInFolder({
   await mongo();
 
   try {
-    items = await models.Item.find({
+    items = await Item.find({
       owner: dbID,
       in_folder: folderID,
     }).then((docs) => JSON.parse(JSON.stringify(docs)));

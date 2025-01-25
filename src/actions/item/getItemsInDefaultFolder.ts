@@ -1,24 +1,19 @@
-"use server"
+"use server";
 
 import { IItem } from "@/interfaces";
-import { Config, Item } from "@/models";
+import { Item } from "@/models";
 import mongo from "@/lib/mongodb";
 
 export async function getItemsInDefaultFolder({
   dbID,
+  default_folder
 }: {
   dbID: string;
+  default_folder: string;
 }): Promise<IItem[]> {
   let items: IItem[] = [];
   await mongo();
-
   try {
-    const config = await Config.findOne({ user: dbID }).select(
-      "default_folder"
-    );
-    const default_folder = config?.default_folder
-      ? config.default_folder
-      : null;
     items = await Item.find({
       owner: dbID,
       in_folder: default_folder,

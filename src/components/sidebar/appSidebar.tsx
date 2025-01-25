@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Book } from "lucide-react";
+import { Book, Star } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -19,9 +19,10 @@ import AddFolderDialog from "../shelf/addFolderDialog";
 import { IFolder } from "@/interfaces";
 import { useHomeContext } from "@/context/homeContext";
 import { getItemsInFolder } from "@/actions/item/getItemsInFolder";
+import { updateDefaultFolder } from "@/actions/user/updateDefaultFolder";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { folderState } = useSidebar();
+  const { folderState, favoriteFolder, updateFavoriteFolder } = useSidebar();
   const { currentFolder, changeOpenFolder, updateAllItems } = useHomeContext();
 
   const handleFolderClick = async (changeToFolder: IFolder | null) => {
@@ -30,6 +31,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       folderID: changeToFolder ? changeToFolder._id.toString() : null,
     });
     updateAllItems(items);
+  };
+
+  const handleFavoriteClick = async (newFolderID: string | null) => {
+    updateFavoriteFolder(newFolderID);
+    await updateDefaultFolder({ folderID: newFolderID });
   };
 
   return (
@@ -60,15 +66,26 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenu className="gap-2">
             <SidebarMenuItem className="cursor-pointer">
               {folderState?.length ? (
-                <SidebarMenuSub className="ml-0 border-l-0 ">
-                  <SidebarMenuSubItem onClick={() => handleFolderClick(null)}>
+                <SidebarMenuSub className="ml-0 border-l-0 px-1.5">
+                  <SidebarMenuSubItem
+                    onClick={() => handleFolderClick(null)}
+                    className="group/fav"
+                  >
                     <SidebarMenuSubButton
                       asChild
-                      {...(currentFolder === null
-                        ? { isActive: true }
-                        : {})}
+                      {...(currentFolder === null ? { isActive: true } : {})}
                     >
-                      <p className="p-2 text-sm ">Ungrouped</p>
+                      <div className="flex justify-between">
+                        <p className="text-sm">Ungrouped</p>
+                        {favoriteFolder === null ? (
+                          <Star className="fill-yellow-400 stroke-yellow-400" />
+                        ) : (
+                          <Star
+                            className="opacity-0 group-hover/fav:opacity-100 transition-opacity duration-50 fade-in-50 fade-out-50 fill-neutral-600 stroke-neutral-600"
+                            onClick={() => handleFavoriteClick(null)}
+                          />
+                        )}
+                      </div>
                     </SidebarMenuSubButton>
                   </SidebarMenuSubItem>
                 </SidebarMenuSub>
@@ -84,6 +101,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                       <SidebarMenuSubItem
                         key={folder.name}
                         onClick={() => handleFolderClick(folder)}
+                        className="group/fav"
                       >
                         <SidebarMenuSubButton
                           asChild
@@ -91,7 +109,22 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                             ? { isActive: true }
                             : {})}
                         >
-                          <p className="cursor-pointer">{folder.name}</p>
+                          <div className="flex justify-between cursor-pointer">
+                            <p>{folder.name}</p>
+                            {folder._id.toString() === favoriteFolder ? (
+                              <Star
+                                className="fill-yellow-400 stroke-yellow-400"
+                                onClick={() => handleFavoriteClick(null)}
+                              />
+                            ) : (
+                              <Star
+                                className="opacity-0 group-hover/fav:opacity-100 transition-opacity duration-50 fade-in-50 fade-out-50 fill-neutral-600 stroke-neutral-600"
+                                onClick={() =>
+                                  handleFavoriteClick(folder._id.toString())
+                                }
+                              />
+                            )}
+                          </div>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                     ))}
@@ -108,6 +141,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                       <SidebarMenuSubItem
                         key={folder.name}
                         onClick={() => handleFolderClick(folder)}
+                        className="group/fav"
                       >
                         <SidebarMenuSubButton
                           asChild
@@ -115,7 +149,22 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                             ? { isActive: true }
                             : {})}
                         >
-                          <p className="cursor-pointer">{folder.name}</p>
+                          <div className="flex justify-between cursor-pointer">
+                            <p>{folder.name}</p>
+                            {folder._id.toString() === favoriteFolder ? (
+                              <Star
+                                className="fill-yellow-400 stroke-yellow-400"
+                                onClick={() => handleFavoriteClick(null)}
+                              />
+                            ) : (
+                              <Star
+                                className="opacity-0 group-hover/fav:opacity-100 transition-opacity duration-50 fade-in-50 fade-out-50 fill-neutral-600 stroke-neutral-600"
+                                onClick={() =>
+                                  handleFavoriteClick(folder._id.toString())
+                                }
+                              />
+                            )}
+                          </div>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                     ))}
