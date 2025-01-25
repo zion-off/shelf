@@ -1,3 +1,5 @@
+"use server"
+
 import { IFolder } from "@/interfaces";
 import { Folder } from "@/models";
 import mongo from "@/lib/mongodb";

@@ -1,3 +1,5 @@
+"use server"
+
 import mongo from "@/lib/mongodb";
 import mongoose from "mongoose";
 

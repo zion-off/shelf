@@ -1,3 +1,5 @@
+"use server"
+
 import { IItem } from "@/interfaces";
 import { Config, Item } from "@/models";
 import mongo from "@/lib/mongodb";

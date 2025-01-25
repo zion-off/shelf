@@ -1,3 +1,5 @@
+"use server"
+
 import mongoose from "mongoose";
 import mongo from "@/lib/mongodb";
 import User from "@/models/user.model";

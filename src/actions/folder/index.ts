@@ -1,2 +1,2 @@
 export * from "./addFolder";
-// export * from "./getAllFolders"
+export * from "./getAllFolders"
