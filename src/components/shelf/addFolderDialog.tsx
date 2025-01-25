@@ -9,12 +9,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Form,
-} from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useHomeContext } from "@/context/homeContext";
+import { useSidebar } from "@/components/ui/sidebar";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
 import { addFolderForm } from "@/schema";
@@ -26,13 +25,10 @@ import { addFolder } from "@/actions/folder";
 export default function AddFolderDialog() {
   const { toast } = useToast();
 
-  const {
-    folderDialogOpen,
-    toggleFolderDialogOpen,
-    saving,
-    toggleSaving,
-    addSingleItem,
-  } = useHomeContext();
+  const { folderDialogOpen, toggleFolderDialogOpen, saving, toggleSaving } =
+    useHomeContext();
+
+  const { addSingleFolder } = useSidebar();
 
   const form = useForm<addFolderFormValues>({
     resolver: zodResolver(addFolderForm),
@@ -49,7 +45,7 @@ export default function AddFolderDialog() {
         const newItem = await addFolder(values);
         toggleFolderDialogOpen();
         form.reset();
-        // addSingleItem(newItem);
+        addSingleFolder(newItem);
         toast({
           title: "Success",
           description: "Folder created successfully",

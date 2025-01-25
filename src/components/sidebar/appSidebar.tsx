@@ -18,7 +18,7 @@ import {
 import AddFolderDialog from "../shelf/addFolderDialog";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { folders } = useSidebar();
+  const { folderState } = useSidebar();
 
   return (
     <Sidebar variant="floating" {...props}>
@@ -52,9 +52,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   Public
                 </a>
               </SidebarMenuButton>
-              {folders?.length ? (
+              {folderState?.length ? (
                 <SidebarMenuSub className="ml-0 border-l-0 px-1.5">
-                  {folders.map((folder) => (
+                  {folderState.map((folder) => (
                     <SidebarMenuSubItem key={folder.name}>
                       <SidebarMenuSubButton asChild>
                         <a href="/">{folder.name}</a>
