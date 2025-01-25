@@ -82,7 +82,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                         ) : (
                           <Star
                             className="opacity-0 group-hover/fav:opacity-100 transition-opacity duration-50 fade-in-50 fade-out-50 fill-neutral-300 stroke-neutral-300 dark:fill-neutral-600 dark:stroke-neutral-600"
-                            onClick={() => handleFavoriteClick(null)}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleFavoriteClick(null);
+                            }}
                           />
                         )}
                       </div>
@@ -119,9 +122,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                             ) : (
                               <Star
                                 className="opacity-0 group-hover/fav:opacity-100 transition-opacity duration-50 fade-in-50 fade-out-50 fill-neutral-300 stroke-neutral-300 dark:fill-neutral-600 dark:stroke-neutral-600"
-                                onClick={() =>
-                                  handleFavoriteClick(folder._id.toString())
-                                }
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleFavoriteClick(folder._id.toString());
+                                }}
                               />
                             )}
                           </div>
@@ -159,9 +163,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                             ) : (
                               <Star
                                 className="opacity-0 group-hover/fav:opacity-100 transition-opacity duration-50 fade-in-50 fade-out-50 fill-neutral-300 stroke-neutral-300 dark:fill-neutral-600 dark:stroke-neutral-600"
-                                onClick={() =>
-                                  handleFavoriteClick(folder._id.toString())
-                                }
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleFavoriteClick(folder._id.toString());
+                                }}
                               />
                             )}
                           </div>
