@@ -10,7 +10,7 @@ import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useHomeContext } from "@/context/homeContext";
-import { addItem } from "@/actions/item";
+import { addItem } from "@/actions/item/addItem";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
 import { addItemForm } from "@/schema";

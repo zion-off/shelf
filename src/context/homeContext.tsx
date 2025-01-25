@@ -1,7 +1,7 @@
 "use client";
 
-import { IItem } from "@/interfaces/models";
-import { createContext, useContext, useState, ReactNode } from "react";
+import { IItem, IFolder } from "@/interfaces/models";
+import { createContext, useContext, useState, ReactNode, useCallback } from "react";
 
 const HomeContext = createContext<{
   itemDialogOpen: boolean;
@@ -13,6 +13,8 @@ const HomeContext = createContext<{
   items: IItem[];
   updateAllItems: (fetchedItems: IItem[]) => void;
   addSingleItem: (newItem: IItem) => void;
+  currentFolder: IFolder | null;
+  changeOpenFolder: (changeTo: IFolder) => void;
 } | null>(null);
 
 export function HomeProvider({ children }: { children: ReactNode }) {
@@ -46,6 +48,12 @@ export function HomeProvider({ children }: { children: ReactNode }) {
     setItems((prev) => [...prev, newItem]);
   };
 
+  // For opening different folders
+  const [currentFolder, setCurrentFolder] = useState<IFolder | null>(null);
+  const changeOpenFolder = useCallback((newFolder: IFolder) => {
+    setCurrentFolder(newFolder);
+  }, [currentFolder, setCurrentFolder])
+
   const value = {
     itemDialogOpen,
     toggleItemDialogOpen,
@@ -56,6 +64,8 @@ export function HomeProvider({ children }: { children: ReactNode }) {
     items,
     updateAllItems,
     addSingleItem,
+    currentFolder,
+    changeOpenFolder
   };
 
   return <HomeContext.Provider value={value}>{children}</HomeContext.Provider>;

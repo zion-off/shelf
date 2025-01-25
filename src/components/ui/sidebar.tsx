@@ -121,6 +121,7 @@ const SidebarProvider = React.forwardRef<
     // This makes it easier to style the sidebar with Tailwind classes.
     const state = open ? "expanded" : "collapsed";
 
+    // State for holding all folders
     const [folderState, setFolderState] = React.useState<IFolder[]>(
       folders || []
     );

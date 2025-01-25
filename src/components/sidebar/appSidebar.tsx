@@ -16,9 +16,22 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import AddFolderDialog from "../shelf/addFolderDialog";
+import { IFolder } from "@/interfaces";
+import { useHomeContext } from "@/context/homeContext";
+import { getItemsInFolder } from "@/actions/item/getItemsInFolder";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { folderState } = useSidebar();
+  const { currentFolder, changeOpenFolder, updateAllItems } = useHomeContext();
+
+  const handleFolderClick = async (changeToFolder: IFolder) => {
+    console.log(changeToFolder);
+    changeOpenFolder(changeToFolder);
+    const items = await getItemsInFolder({
+      folderID: changeToFolder._id.toString(),
+    });
+    updateAllItems(items);
+  };
 
   return (
     <Sidebar variant="floating" {...props}>
@@ -47,20 +60,47 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarGroup>
           <SidebarMenu className="gap-2">
             <SidebarMenuItem>
-              <SidebarMenuButton asChild>
-                <a href={"/"} className="font-medium">
-                  Public
-                </a>
-              </SidebarMenuButton>
+              <p className="p-2 text-sm cursor-default">Public</p>
               {folderState?.length ? (
                 <SidebarMenuSub className="ml-0 border-l-0 px-1.5">
-                  {folderState.map((folder) => (
-                    <SidebarMenuSubItem key={folder.name}>
-                      <SidebarMenuSubButton asChild>
-                        <a href="/">{folder.name}</a>
-                      </SidebarMenuSubButton>
-                    </SidebarMenuSubItem>
-                  ))}
+                  {folderState
+                    .filter((folder) => folder.isPublic === true)
+                    .map((folder) => (
+                      <SidebarMenuSubItem
+                        key={folder.name}
+                        onClick={() => handleFolderClick(folder)}
+                      >
+                        <SidebarMenuSubButton
+                          asChild
+                          {...(currentFolder?._id === folder._id
+                            ? { isActive: true }
+                            : {})}
+                        >
+                          <p className="cursor-pointer">{folder.name}</p>
+                        </SidebarMenuSubButton>
+                      </SidebarMenuSubItem>
+                    ))}
+                </SidebarMenuSub>
+              ) : null}
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <p className="p-2 text-sm cursor-default">Private</p>
+              {folderState?.length ? (
+                <SidebarMenuSub className="ml-0 border-l-0 px-1.5">
+                  {folderState
+                    .filter((folder) => folder.isPublic === false)
+                    .map((folder) => (
+                      <SidebarMenuSubItem
+                        key={folder.name}
+                        onClick={() => handleFolderClick(folder)}
+                      >
+                        <SidebarMenuSubButton asChild {...(currentFolder?._id === folder._id
+                            ? { isActive: true }
+                            : {})}>
+                          <p className="cursor-pointer">{folder.name}</p>
+                        </SidebarMenuSubButton>
+                      </SidebarMenuSubItem>
+                    ))}
                 </SidebarMenuSub>
               ) : null}
             </SidebarMenuItem>

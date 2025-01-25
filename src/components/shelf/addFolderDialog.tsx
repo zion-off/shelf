@@ -20,7 +20,7 @@ import { addFolderForm } from "@/schema";
 import { addFolderFormValues } from "@/types/shelf";
 import { FormInput } from "@/components/ui/formInput";
 import { CheckboxInput } from "@/components/ui/formInput";
-import { addFolder } from "@/actions/folder";
+import { addFolder } from "@/actions/folder/addFolder";
 
 export default function AddFolderDialog() {
   const { toast } = useToast();
