@@ -21,6 +21,7 @@ import { FormInput } from "@/components/ui/formInput";
 
 export default function AddItemDialog() {
   const { toast } = useToast();
+  const { currentFolder } = useHomeContext();
 
   const {
     itemDialogOpen,
@@ -44,7 +45,7 @@ export default function AddItemDialog() {
     async (values: addItemFormValues) => {
       toggleSaving();
       try {
-        const newItem = await addItem(values);
+        const newItem = await addItem(values, currentFolder);
         toggleItemDialogOpen();
         form.reset();
         addSingleItem(newItem);
