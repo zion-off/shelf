@@ -19,6 +19,7 @@ export default {
   				secondary: 'var(--z-foreground-secondary)'
   			},
   			'z-component': 'var(--z-component)',
+			'z-component-border': 'var(--z-component-border)',
   			button: 'hsl(var(--z-button))',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',

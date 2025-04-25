@@ -1,16 +1,11 @@
-"use client";
+'use client';
 
-import { useEffect } from "react";
-import { useHomeContext } from "@/context/homeContext";
-import { IItem } from "@/interfaces/models";
-import Image from "next/image";
-import { noise } from "@/utils";
+import { useEffect } from 'react';
+import { useHomeContext } from '@/context/homeContext';
+import { Item } from '@/components/item/itemBase';
+import { IItem } from '@/interfaces/models';
 
-export default function ItemsContainer({
-  fetchedItems,
-}: {
-  fetchedItems: IItem[];
-}) {
+export default function ItemsContainer({ fetchedItems }: { fetchedItems: IItem[] }) {
   const { items, updateAllItems: updateItems } = useHomeContext();
 
   useEffect(() => {
@@ -33,33 +28,3 @@ export default function ItemsContainer({
     </div>
   );
 }
-
-const Item = ({ item }: { item: IItem }) => {
-  const { title, author, thumbnail, placeholderCover } = item;
-
-  return (
-    <div className="flex flex-col  rounded-md overflow-hidden shadow-md">
-      <div className="w-full h-24">
-        {thumbnail ? (
-          <Image
-            src={thumbnail || "/placeholder.svg"}
-            alt={title}
-            width={400}
-            height={300}
-            className="w-full h-full object-cover"
-          />
-        ) : (
-          <div
-            style={{ ...noise }}
-            className={`bg-[#${placeholderCover}] w-full h-full bg-noise`}
-          />
-        )}
-      </div>
-      <div className="grow flex flex-col p-2 text-z-background bg-z-background-secondary text-xs">
-        <h3 className="text-z-foreground">{title}</h3>
-        <p className="text-z-foreground-secondary">{author}</p>
-      </div>
-    </div>
-  );
-};
-

@@ -1,26 +1,18 @@
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-  FormLabel,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { FormInputProps, CheckboxInputProps } from "@/interfaces/items";
-import { FieldValues } from "react-hook-form";
-import { Checkbox } from "@/components/ui/checbox";
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { FieldValues } from 'react-hook-form';
+import { Checkbox } from '@/components/ui/checbox';
+import { FormInputProps, CheckboxInputProps, TextareaInputProps } from '@/interfaces/items';
+import { FormControl, FormField, FormItem, FormMessage, FormLabel } from '@/components/ui/form';
 
-export const FormInput = <T extends FieldValues>({
-  formControl,
-  name,
-  placeholder,
-}: FormInputProps<T>) => {
+export const FormInput = <T extends FieldValues>({ formControl, name, placeholder, label }: FormInputProps<T>) => {
   return (
     <FormField
       control={formControl}
       name={name}
       render={({ field }) => (
         <FormItem>
+          {label && <FormLabel>{label}</FormLabel>}
           <FormControl>
             <Input placeholder={placeholder} {...field} />
           </FormControl>
@@ -31,11 +23,32 @@ export const FormInput = <T extends FieldValues>({
   );
 };
 
-export const CheckboxInput = <T extends FieldValues>({
+export const FormTextareaInput = <T extends FieldValues>({
   formControl,
   name,
+  placeholder,
+  rows = 4,
   label,
-}: CheckboxInputProps<T>) => {
+  ...props
+}: TextareaInputProps<T>) => {
+  return (
+    <FormField
+      control={formControl}
+      name={name}
+      render={({ field }) => (
+        <FormItem>
+          {label && <FormLabel>{label}</FormLabel>}
+          <FormControl>
+            <Textarea placeholder={placeholder} rows={rows} {...field} {...props} />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+  );
+};
+
+export const CheckboxInput = <T extends FieldValues>({ formControl, name, label }: CheckboxInputProps<T>) => {
   return (
     <FormField
       control={formControl}
