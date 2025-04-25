@@ -1,7 +1,9 @@
-"use client";
+'use client';
 
-import { IItem, IFolder } from "@/interfaces/models";
-import { createContext, useContext, useState, ReactNode, useCallback } from "react";
+import { Types } from 'mongoose';
+import { IItem, IFolder } from '@/interfaces/models';
+import { editItemFormValues } from '@/types/shelf';
+import { createContext, useContext, useState, ReactNode, useCallback } from 'react';
 
 const HomeContext = createContext<{
   itemDialogOpen: boolean;
@@ -15,6 +17,14 @@ const HomeContext = createContext<{
   addSingleItem: (newItem: IItem) => void;
   currentFolder: IFolder | null;
   changeOpenFolder: (changeTo: IFolder | null) => void;
+  drawerOpen: boolean;
+  handleDrawerOpenChange: (open: boolean) => void;
+  isEditing: boolean;
+  handleEditingChange: (value: boolean) => void;
+  selectedItem: IItem | null;
+  handleSelectedItemChange: (item: IItem | null) => void;
+  updateSelectedItem: (updatedItem: editItemFormValues) => void;
+  deleteSelectedItem: () => void;
 } | null>(null);
 
 export function HomeProvider({ children }: { children: ReactNode }) {
@@ -50,9 +60,55 @@ export function HomeProvider({ children }: { children: ReactNode }) {
 
   // For opening different folders
   const [currentFolder, setCurrentFolder] = useState<IFolder | null>(null);
-  const changeOpenFolder = useCallback((newFolder: IFolder | null) => {
-    setCurrentFolder(newFolder);
-  }, [currentFolder, setCurrentFolder])
+  const changeOpenFolder = useCallback(
+    (newFolder: IFolder | null) => {
+      setCurrentFolder(newFolder);
+    },
+    [currentFolder, setCurrentFolder]
+  );
+
+  // Drawer open state
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const handleDrawerOpenChange = (open: boolean) => {
+    setDrawerOpen(open);
+  };
+
+  // Editing state in the drawer
+  const [isEditing, setIsEditing] = useState(false);
+  const handleEditingChange = (value: boolean) => {
+    setIsEditing(value);
+  };
+
+  // Item open in the drawer
+  const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
+  const handleSelectedItemChange = (item: IItem | null) => {
+    setSelectedItem(item);
+  };
+
+  const updateSelectedItem = useCallback(
+    (updatedItem: editItemFormValues) => {
+      setItems((prev) =>
+        prev.map((item) => {
+          if (item._id === selectedItem?._id) {
+            item.title = updatedItem.title;
+            item.author = updatedItem.author;
+            item.notes = updatedItem.notes;
+            item.link = updatedItem.link;
+            item.read = updatedItem.read;
+            item.last_modified = new Date();
+            return item;
+          }
+          return item;
+        })
+      );
+    },
+    [selectedItem]
+  );
+
+  const deleteSelectedItem = useCallback(() => {
+    setItems((prev) => prev.filter((item) => item._id !== selectedItem?._id));
+    setSelectedItem(null);
+  }, [selectedItem]);
 
   const value = {
     itemDialogOpen,
@@ -65,7 +121,15 @@ export function HomeProvider({ children }: { children: ReactNode }) {
     updateAllItems,
     addSingleItem,
     currentFolder,
-    changeOpenFolder
+    changeOpenFolder,
+    drawerOpen,
+    handleDrawerOpenChange,
+    isEditing,
+    handleEditingChange,
+    selectedItem,
+    handleSelectedItemChange,
+    updateSelectedItem,
+    deleteSelectedItem
   };
 
   return <HomeContext.Provider value={value}>{children}</HomeContext.Provider>;
@@ -74,7 +138,7 @@ export function HomeProvider({ children }: { children: ReactNode }) {
 export function useHomeContext() {
   const context = useContext(HomeContext);
   if (!context) {
-    throw new Error("Shelf header context unavailable");
+    throw new Error('Shelf header context unavailable');
   }
   return context;
 }

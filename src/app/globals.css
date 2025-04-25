@@ -28,6 +28,7 @@
   --z-foreground-primary: #161413;
   --z-foreground-secondary: #2f292b;
   --z-component: #635045;
+  --z-component-border: #e5e5e5;
 
   --background: 0 0% 100%;
   --foreground: 0 0% 3.9%;
@@ -71,6 +72,7 @@
     --z-foreground-primary: #fffcf7;
     --z-foreground-secondary: #e1e6db;
     --z-component: #c2b4a6;
+    --z-component-border: #262626;
 
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
