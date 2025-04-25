@@ -1,21 +1,20 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import Link from 'next/link';
 import { useHomeContext } from '@/context/homeContext';
-import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
+import { ToastAction } from '@/components/ui/toast';
 import { DrawerDescription, DrawerHeader, DrawerTitle } from '@/components/ui/drawer';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { deleteItem } from '@/actions/item/deleteItem';
 
 export const ItemViewState = () => {
   const { toast } = useToast();
   const { handleEditingChange, selectedItem: item, deleteSelectedItem, handleDrawerOpenChange } = useHomeContext();
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const handleDelete = useCallback(async () => {
     if (!item) return;
-
     try {
       const deletedItem = await deleteItem({ _id: item._id });
       if (!deletedItem) {
@@ -39,10 +38,8 @@ export const ItemViewState = () => {
         description: 'Please try again later.',
         duration: 3000
       });
-    } finally {
-      handleEditingChange(false);
     }
-  }, [item, handleEditingChange, toast, deleteSelectedItem]);
+  }, [item, toast, deleteSelectedItem]);
 
   if (!item) {
     return null;
@@ -60,19 +57,28 @@ export const ItemViewState = () => {
               <span className="px-1" onClick={() => handleEditingChange(true)}>
                 📝
               </span>
-              <Popover modal={true}>
-                <span className="px-1">
-                  <PopoverTrigger>🗑️</PopoverTrigger>
-                </span>
-                <PopoverContent className="m-2 text-sm">
-                  <div className="flex justify-between items-center">
-                    <span>Delete this item?</span>
-                    <Button size="sm" variant="destructive" className="py-2 w-20" onClick={handleDelete}>
-                      Yes
-                    </Button>
-                  </div>
-                </PopoverContent>
-              </Popover>
+              <span
+                className="px-1"
+                onClick={() => {
+                  toast({
+                    description: 'Are you sure?',
+                    action: (
+                      <ToastAction
+                        altText="Delete"
+                        className="border-z-component-border"
+                        onClick={() => {
+                          handleDelete();
+                        }}
+                      >
+                        Delete
+                      </ToastAction>
+                    ),
+                    duration: 3000
+                  });
+                }}
+              >
+                🗑️
+              </span>
             </div>
           </div>
         </DrawerTitle>
@@ -86,18 +92,16 @@ export const ItemViewState = () => {
           </p>
         </div>
 
-        <div>
-          {link && (
-            <>
-              <label className="text-z-foreground">Link</label>
-              <div>
-                <Link href={link} target="_blank" className="text-muted-foreground hover:underline">
-                  {link}
-                </Link>
-              </div>
-            </>
-          )}
-        </div>
+        {link && (
+          <div>
+            <label className="text-z-foreground">Link</label>
+            <div>
+              <Link href={link} target="_blank" className="text-muted-foreground hover:underline">
+                {link}
+              </Link>
+            </div>
+          </div>
+        )}
 
         <div>
           <label className="text-z-foreground">Created at</label>
