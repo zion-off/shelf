@@ -8,11 +8,11 @@ import {
   ContextMenuSeparator,
   ContextMenuTrigger
 } from '@/components/ui/context-menu';
-import { SidebarMenuSubButton, SidebarMenuSubItem, useSidebar } from '@/components/ui/sidebar';
+import { useSidebar } from '@/components/ui/sidebar';
 import { getItemsInFolder } from '@/actions/item';
 import { updateDefaultFolder } from '@/actions/user/updateDefaultFolder';
 import { useHomeContext } from '@/context/homeContext';
-import { FavoriteStar } from '@/components/sidebar/favoriteStar';
+import { FolderItemContents } from './folderItemContents';
 import { IFolder } from '@/interfaces';
 
 interface FolderItemProps {
@@ -52,17 +52,25 @@ export function FolderItem({ folder }: FolderItemProps) {
     return (!favoriteFolder && !folder?._id) || favoriteFolder === folder?._id?.toString();
   }, [favoriteFolder, folder?._id]);
 
+  const content = useMemo(
+    () => ({
+      folder,
+      isActive,
+      isFavorite,
+      onClick: handleFolderClick,
+      onFavoriteClick: handleFavoriteClick
+    }),
+    [folder, isActive, isFavorite, handleFolderClick, handleFavoriteClick]
+  );
+
+  if (!folder) {
+    return <FolderItemContents {...content} />;
+  }
+
   return (
     <ContextMenu>
-      <ContextMenuTrigger asChild>
-        <SidebarMenuSubItem onClick={handleFolderClick} className="group/fav">
-          <SidebarMenuSubButton asChild {...(isActive ? { isActive: true } : {})}>
-            <div className="flex justify-between cursor-pointer">
-              <p>{folder?.name ?? 'Ungrouped'}</p>
-              <FavoriteStar isFavorite={isFavorite} onClick={handleFavoriteClick} />
-            </div>
-          </SidebarMenuSubButton>
-        </SidebarMenuSubItem>
+      <ContextMenuTrigger>
+        <FolderItemContents {...content} />
       </ContextMenuTrigger>
       <ContextMenuContent className="w-64">
         <ContextMenuItem inset>Rename</ContextMenuItem>
