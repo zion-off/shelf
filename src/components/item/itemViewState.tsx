@@ -11,7 +11,6 @@ import { deleteItem } from '@/actions/item/deleteItem';
 export const ItemViewState = () => {
   const { toast } = useToast();
   const { handleEditingChange, selectedItem: item, deleteSelectedItem, handleDrawerOpenChange } = useHomeContext();
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const handleDelete = useCallback(async () => {
     if (!item) return;
