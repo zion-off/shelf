@@ -11,9 +11,9 @@ import { getDefaultFolder } from '@/actions/folder/getDefaultFolder';
 export default async function Shelf() {
   const session = await auth();
   const dbID = session?.user?.id as string;
-  let defaultFolder = await getDefaultFolder({ dbID });
-  let items: IItem[] = await getItemsInDefaultFolder({ dbID: dbID, default_folder: defaultFolder });
-  let folders: IFolder[] = await getAllFolders({ dbID });
+  const defaultFolder = await getDefaultFolder({ dbID });
+  const items: IItem[] = await getItemsInDefaultFolder({ dbID: dbID, default_folder: defaultFolder });
+  const folders: IFolder[] = await getAllFolders({ dbID });
   return (
     <SidebarProvider
       defaultFolder={defaultFolder}

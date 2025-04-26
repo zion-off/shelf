@@ -54,12 +54,12 @@ export function RenameFolderDialog({ folder, trigger }: RenameFolderDialogProps)
       } catch (error) {
         toast({
           title: 'Something went wrong',
-          description: "Couldn't rename folder. Try again later?",
+          description: `${error}`,
           duration: 3000
         });
       }
     },
-    [folder, renameFolderLocally]
+    [folder, renameFolderLocally, toast]
   );
 
   return (

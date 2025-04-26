@@ -1,6 +1,5 @@
 'use client';
 
-import { Types } from 'mongoose';
 import { IItem, IFolder } from '@/interfaces/models';
 import { editItemFormValues } from '@/types/shelf';
 import { createContext, useContext, useState, ReactNode, useCallback } from 'react';
@@ -66,7 +65,7 @@ export function HomeProvider({ children }: { children: ReactNode }) {
     (newFolder: IFolder | null) => {
       setCurrentFolder(newFolder);
     },
-    [currentFolder, setCurrentFolder]
+    [setCurrentFolder]
   );
 
   // Drawer open state
@@ -111,11 +110,6 @@ export function HomeProvider({ children }: { children: ReactNode }) {
     setItems((prev) => prev.filter((item) => item._id !== selectedItem?._id));
     setSelectedItem(null);
   }, [selectedItem]);
-
-  const [renameFolderDialogOpen, setRenameFolderDialogOpen] = useState(false);
-  const toggleRenameFolderDialogOpen = () => {
-    setRenameFolderDialogOpen((prev) => !prev);
-  };
 
   const [deleteFolderDialogOpen, setDeleteFolderDialogOpen] = useState(false);
   const toggleDeleteFolderDialogOpen = () => {

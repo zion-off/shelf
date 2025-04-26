@@ -31,7 +31,7 @@ export function FolderItem({ folder }: FolderItemProps) {
       folderID: folder ? folder._id.toString() : null
     });
     updateAllItems(items);
-  }, [changeOpenFolder, updateAllItems]);
+  }, [changeOpenFolder, updateAllItems, folder]);
 
   const handleFavoriteClick = useCallback(
     async (e: React.MouseEvent) => {

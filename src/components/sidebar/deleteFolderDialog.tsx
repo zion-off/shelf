@@ -48,11 +48,11 @@ export function DeleteFolderDialog({ folder, trigger }: DeleteFolderDialogProps)
     } catch (error) {
       toast({
         title: 'Something went wrong',
-        description: "Couldn't delete folder. Try again later?",
+        description: `${error}`,
         duration: 3000
       });
     }
-  }, [folder, favoriteFolder, currentFolder, changeOpenFolder, updateFavoriteFolder, deleteFolderLocally]);
+  }, [folder, favoriteFolder, currentFolder, changeOpenFolder, updateFavoriteFolder, deleteFolderLocally, toast]);
 
   return (
     <Dialog>

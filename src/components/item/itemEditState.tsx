@@ -53,8 +53,8 @@ export const ItemEditState = () => {
         }
       } catch (error) {
         toast({
-          title: 'Something went wrong',
-          description: "Couldn't update item. Try again later?",
+          title: "Something went wrong",
+          description: `${error}`,
           duration: 3000
         });
       } finally {
@@ -62,7 +62,7 @@ export const ItemEditState = () => {
         form.reset();
       }
     },
-    [item, handleEditingChange, toast]
+    [item, handleEditingChange, toast, form, updateSelectedItem]
   );
 
   if (!item) {

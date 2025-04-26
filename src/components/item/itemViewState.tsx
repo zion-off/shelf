@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import Link from 'next/link';
 import { useHomeContext } from '@/context/homeContext';
 import { useToast } from '@/hooks/use-toast';
@@ -34,11 +34,11 @@ export const ItemViewState = () => {
     } catch (error) {
       toast({
         title: 'Something went wrong',
-        description: 'Please try again later.',
+        description: `${error}`,
         duration: 3000
       });
     }
-  }, [item, toast, deleteSelectedItem]);
+  }, [item, toast, deleteSelectedItem, handleDrawerOpenChange]);
 
   if (!item) {
     return null;
