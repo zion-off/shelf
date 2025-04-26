@@ -53,7 +53,7 @@ export default function AddItemDialog() {
         toggleSaving();
       }
     },
-    [form]
+    [form, currentFolder, toggleItemDialogOpen, addSingleItem, toast, toggleSaving]
   );
 
   return (
