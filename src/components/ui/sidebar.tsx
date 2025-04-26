@@ -57,7 +57,7 @@ const SidebarProvider = React.forwardRef<
     open?: boolean;
     onOpenChange?: (open: boolean) => void;
     folders: IFolder[];
-    defaultFolder: string;
+    defaultFolder: string | null;
   }
 >(
   (
