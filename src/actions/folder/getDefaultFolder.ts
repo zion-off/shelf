@@ -1,7 +1,6 @@
 "use server";
 
-import { IItem } from "@/interfaces";
-import { Config, Item } from "@/models";
+import { Config } from "@/models";
 import mongo from "@/lib/mongodb";
 
 export async function getDefaultFolder({

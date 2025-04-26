@@ -3,6 +3,7 @@
 import { useCallback, useMemo } from 'react';
 import { FavoriteStar } from '@/components/sidebar/favoriteStar';
 import { RenameFolderDialog } from '@/components/sidebar/renameFolderDialog';
+import { DeleteFolderDialog } from '@/components/sidebar/deleteFolderDialog';
 import { SidebarMenuSubItem, SidebarMenuSubButton, useSidebar } from '@/components/ui/sidebar';
 import { getItemsInFolder } from '@/actions/item';
 import { updateDefaultFolder } from '@/actions/user/updateDefaultFolder';
@@ -57,7 +58,7 @@ export function FolderItem({ folder }: FolderItemProps) {
     <SidebarMenuSubItem onClick={handleFolderClick} className="group/fav">
       <SidebarMenuSubButton asChild {...(isActive ? { isActive: true } : {})}>
         <div className="flex justify-between cursor-pointer">
-          <p>{folder?.name ?? 'Ungrouped'}</p>
+          {folder?.name ? <p className="pl-2">{folder.name}</p> : <p>Ungrouped</p>}
           <div className="flex items-center gap-1 text-xs">
             {folder ? (
               <DropdownMenu>
@@ -69,7 +70,10 @@ export function FolderItem({ folder }: FolderItemProps) {
                     folder={folder}
                     trigger={<DropdownMenuItem onSelect={(e) => e.preventDefault()}>Rename</DropdownMenuItem>}
                   />
-                  <DropdownMenuItem>Delete</DropdownMenuItem>
+                  <DeleteFolderDialog
+                    folder={folder}
+                    trigger={<DropdownMenuItem onSelect={(e) => e.preventDefault()}>Delete</DropdownMenuItem>}
+                  />
                   <DropdownMenuItem>Make {folder.isPublic ? 'private' : 'public'}</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

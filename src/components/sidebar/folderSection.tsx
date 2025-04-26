@@ -13,9 +13,9 @@ export function FolderSection({ title, filter }: FolderSectionProps) {
   const { folderState } = useSidebar();
   return (
     <SidebarMenuItem>
-      <p className="p-2 text-sm cursor-default">{title}</p>
+      <p className="p-2 px-3.5 text-sm cursor-default">{title}</p>
       {(folderState ?? []).length ? (
-        <SidebarMenuSub className="ml-0 border-l-0 px-1.5">
+        <SidebarMenuSub className="ml-0 border-l-0 pl-4 px-1.5">
           {(folderState ?? []).filter(filter).map((folder) => (
             <FolderItem key={folder.name} folder={folder} />
           ))}
