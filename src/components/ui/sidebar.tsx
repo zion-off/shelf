@@ -125,14 +125,14 @@ const SidebarProvider = React.forwardRef<
       (newFolder: IFolder) => {
         setFolderState((prev) => [...prev, newFolder]);
       },
-      [folderState, setFolderState]
+      [setFolderState]
     );
 
     // State for marking default folder
     const [favoriteFolder, setFavoriteFolder] = React.useState<string | null>(defaultFolder);
-    const updateFavoriteFolder = (newFolderID: string | null) => {
+    const updateFavoriteFolder = React.useCallback((newFolderID: string | null) => {
       setFavoriteFolder(newFolderID);
-    };
+    }, []);
 
     const renameFolderLocally = React.useCallback((folder: IFolder, newName: string) => {
       setFolderState((prev: IFolder[]) =>
@@ -154,6 +154,7 @@ const SidebarProvider = React.forwardRef<
     React.useEffect(() => {
       const firstOpenFolder = folderState.find((folder) => folder._id.toString() === defaultFolder) || null;
       changeOpenFolder(firstOpenFolder);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const contextValue = React.useMemo<SidebarContext>(

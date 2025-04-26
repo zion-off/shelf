@@ -46,7 +46,7 @@ export default function AddItemDialog() {
       } catch (error) {
         toast({
           title: 'Something went wrong',
-          description: "Couldn't add item. Try again later?",
+          description: `${error}`,
           duration: 3000
         });
       } finally {

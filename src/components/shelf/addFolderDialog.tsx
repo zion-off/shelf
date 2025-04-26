@@ -54,14 +54,14 @@ export default function AddFolderDialog() {
       } catch (error) {
         toast({
           title: "Something went wrong",
-          description: "Couldn't create folder. Try again later?",
+          description: `${error}`,
           duration: 3000,
         });
       } finally {
         toggleSaving();
       }
     },
-    [form]
+    [form, addSingleFolder, toast, toggleFolderDialogOpen, toggleSaving]
   );
 
   return (

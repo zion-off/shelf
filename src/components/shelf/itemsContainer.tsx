@@ -10,6 +10,7 @@ export default function ItemsContainer({ fetchedItems }: { fetchedItems: IItem[]
 
   useEffect(() => {
     updateItems(fetchedItems);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
