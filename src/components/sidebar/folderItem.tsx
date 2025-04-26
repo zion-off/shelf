@@ -1,19 +1,20 @@
 'use client';
 
 import { useCallback, useMemo } from 'react';
-import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuSeparator,
-  ContextMenuTrigger
-} from '@/components/ui/context-menu';
-import { useSidebar } from '@/components/ui/sidebar';
+import { FavoriteStar } from '@/components/sidebar/favoriteStar';
+import { RenameFolderDialog } from '@/components/sidebar/renameFolderDialog';
+import { SidebarMenuSubItem, SidebarMenuSubButton, useSidebar } from '@/components/ui/sidebar';
 import { getItemsInFolder } from '@/actions/item';
 import { updateDefaultFolder } from '@/actions/user/updateDefaultFolder';
 import { useHomeContext } from '@/context/homeContext';
-import { FolderItemContents } from './folderItemContents';
 import { IFolder } from '@/interfaces';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu';
+import { SettingsIcon } from './settingsIcon';
 
 interface FolderItemProps {
   folder: IFolder | null;
@@ -52,33 +53,31 @@ export function FolderItem({ folder }: FolderItemProps) {
     return (!favoriteFolder && !folder?._id) || favoriteFolder === folder?._id?.toString();
   }, [favoriteFolder, folder?._id]);
 
-  const content = useMemo(
-    () => ({
-      folder,
-      isActive,
-      isFavorite,
-      onClick: handleFolderClick,
-      onFavoriteClick: handleFavoriteClick
-    }),
-    [folder, isActive, isFavorite, handleFolderClick, handleFavoriteClick]
-  );
-
-  if (!folder) {
-    return <FolderItemContents {...content} />;
-  }
-
   return (
-    <ContextMenu>
-      <ContextMenuTrigger>
-        <FolderItemContents {...content} />
-      </ContextMenuTrigger>
-      <ContextMenuContent className="w-64">
-        <ContextMenuItem inset>Rename</ContextMenuItem>
-        <ContextMenuSeparator />
-        <ContextMenuItem inset>Delete</ContextMenuItem>
-        <ContextMenuSeparator />
-        <ContextMenuItem inset>Toggle visibility</ContextMenuItem>
-      </ContextMenuContent>
-    </ContextMenu>
+    <SidebarMenuSubItem onClick={handleFolderClick} className="group/fav">
+      <SidebarMenuSubButton asChild {...(isActive ? { isActive: true } : {})}>
+        <div className="flex justify-between cursor-pointer">
+          <p>{folder?.name ?? 'Ungrouped'}</p>
+          <div className="flex items-center gap-1 text-xs">
+            {folder ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <SettingsIcon />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <RenameFolderDialog
+                    folder={folder}
+                    trigger={<DropdownMenuItem onSelect={(e) => e.preventDefault()}>Rename</DropdownMenuItem>}
+                  />
+                  <DropdownMenuItem>Delete</DropdownMenuItem>
+                  <DropdownMenuItem>Make {folder.isPublic ? 'private' : 'public'}</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : null}
+            <FavoriteStar isFavorite={isFavorite} onClick={handleFavoriteClick} />
+          </div>
+        </div>
+      </SidebarMenuSubButton>
+    </SidebarMenuSubItem>
   );
 }

@@ -25,6 +25,8 @@ const HomeContext = createContext<{
   handleSelectedItemChange: (item: IItem | null) => void;
   updateSelectedItem: (updatedItem: editItemFormValues) => void;
   deleteSelectedItem: () => void;
+  deleteFolderDialogOpen: boolean;
+  toggleDeleteFolderDialogOpen: () => void;
 } | null>(null);
 
 export function HomeProvider({ children }: { children: ReactNode }) {
@@ -110,6 +112,16 @@ export function HomeProvider({ children }: { children: ReactNode }) {
     setSelectedItem(null);
   }, [selectedItem]);
 
+  const [renameFolderDialogOpen, setRenameFolderDialogOpen] = useState(false);
+  const toggleRenameFolderDialogOpen = () => {
+    setRenameFolderDialogOpen((prev) => !prev);
+  };
+
+  const [deleteFolderDialogOpen, setDeleteFolderDialogOpen] = useState(false);
+  const toggleDeleteFolderDialogOpen = () => {
+    setDeleteFolderDialogOpen((prev) => !prev);
+  };
+
   const value = {
     itemDialogOpen,
     toggleItemDialogOpen,
@@ -129,7 +141,9 @@ export function HomeProvider({ children }: { children: ReactNode }) {
     selectedItem,
     handleSelectedItemChange,
     updateSelectedItem,
-    deleteSelectedItem
+    deleteSelectedItem,
+    deleteFolderDialogOpen,
+    toggleDeleteFolderDialogOpen
   };
 
   return <HomeContext.Provider value={value}>{children}</HomeContext.Provider>;
