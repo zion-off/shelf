@@ -21,6 +21,13 @@ export const addFolderForm = z.object({
   isPublic: z.boolean(),
 });
 
+export const renameFolderForm = z.object({
+  name: z
+    .string()
+    .min(1, "Folder name is required")
+    .max(60, "Folder name must be less than 60 characters")
+})
+
 export const editItemForm = z.object({
   title: z
     .string()
