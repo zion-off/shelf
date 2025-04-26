@@ -64,7 +64,7 @@ export const ItemViewState = () => {
                     action: (
                       <ToastAction
                         altText="Delete"
-                        className="border-z-component-border"
+                        className="border-z-component-border bg-z-destructive hover:bg-z-destructive-hover text-white"
                         onClick={() => {
                           handleDelete();
                         }}

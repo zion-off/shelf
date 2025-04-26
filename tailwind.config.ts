@@ -20,6 +20,8 @@ export default {
   			},
   			'z-component': 'var(--z-component)',
 			'z-component-border': 'var(--z-component-border)',
+			'z-destructive': 'hsl(var(--z-destructive))',
+			'z-destructive-hover': 'hsl(var(--z-destructive-hover))',
   			button: 'hsl(var(--z-button))',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
