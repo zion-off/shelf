@@ -17,6 +17,8 @@ import {
 export default function Page() {
   return (
     <SidebarProvider
+    defaultFolder={null}
+      folders={[]}
       style={
         {
           "--sidebar-width": "19rem",
