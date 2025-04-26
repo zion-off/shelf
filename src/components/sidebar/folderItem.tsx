@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import {
   ContextMenu,
   ContextMenuContent,
@@ -42,22 +42,24 @@ export function FolderItem({ folder }: FolderItemProps) {
     [folder, updateFavoriteFolder]
   );
 
+  const isActive = useMemo(() => {
+    if (!currentFolder && !folder?._id) return true;
+    if (currentFolder?._id && folder?._id === currentFolder._id) return true;
+    return false;
+  }, [currentFolder, folder?._id]);
+
+  const isFavorite = useMemo(() => {
+    return (!favoriteFolder && !folder?._id) || favoriteFolder === folder?._id?.toString();
+  }, [favoriteFolder, folder?._id]);
+
   return (
     <ContextMenu>
       <ContextMenuTrigger asChild>
         <SidebarMenuSubItem onClick={handleFolderClick} className="group/fav">
-          <SidebarMenuSubButton
-            asChild
-            {...((!currentFolder && !folder?._id) || (currentFolder?._id && folder?._id === currentFolder._id)
-              ? { isActive: true }
-              : {})}
-          >
+          <SidebarMenuSubButton asChild {...(isActive ? { isActive: true } : {})}>
             <div className="flex justify-between cursor-pointer">
               <p>{folder?.name ?? 'Ungrouped'}</p>
-              <FavoriteStar
-                isFavorite={(!favoriteFolder && !folder?._id) || favoriteFolder === folder?._id?.toString()}
-                onClick={handleFavoriteClick}
-              />
+              <FavoriteStar isFavorite={isFavorite} onClick={handleFavoriteClick} />
             </div>
           </SidebarMenuSubButton>
         </SidebarMenuSubItem>
