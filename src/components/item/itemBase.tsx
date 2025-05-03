@@ -31,18 +31,26 @@ export const Item = ({ item }: { item: IItem }) => {
           <div className="w-full h-24">
             {thumbnail ? (
               <Image
-                src={thumbnail || '/placeholder.svg'}
+                src={thumbnail}
                 alt={title}
                 width={400}
                 height={300}
                 className="w-full h-full object-cover"
+                placeholder="blur"
+                blurDataURL={`data:image/svg+xml;base64,${Buffer.from(
+                  `
+    <svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">
+      <rect width="100%" height="100%" fill="#${placeholderCover}"/>
+    </svg>
+  `
+                ).toString('base64')}`}
               />
             ) : (
               <div style={{ ...noise }} className={`bg-[#${placeholderCover}] w-full h-full bg-noise`} />
             )}
           </div>
           <div className="grow flex flex-col p-2 text-z-background bg-z-background-secondary text-xs">
-            <h3 className="text-z-foreground">{title}</h3>
+            <h3 className="text-z-foreground truncate">{title}</h3>
             <p className="text-z-foreground-secondary">{author}</p>
           </div>
         </div>

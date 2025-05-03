@@ -11,6 +11,7 @@ export const addItemForm = z.object({
     .max(120, "Author must be less than 120 characters"),
   notes: z.string().optional(),
   link: z.string().url().optional().or(z.literal("")),
+  thumbnail: z.string().url().optional(),
 });
 
 export const addFolderForm = z.object({

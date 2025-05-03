@@ -23,6 +23,7 @@
     "@radix-ui/react-tooltip": "^1.1.6",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "link-preview-js": "^3.0.14",
     "lucide-react": "^0.469.0",
     "mongoose": "^8.9.3",
     "next": "^14.0.0",
