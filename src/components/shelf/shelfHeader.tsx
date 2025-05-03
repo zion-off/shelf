@@ -1,4 +1,3 @@
-import { Input } from '@/components/ui/input';
 import AddItemDialog from '@/components/shelf/addItemDialog';
 import SearchBar from '@/components/search/searchBar';
 import { Separator } from '@/components/ui/separator';

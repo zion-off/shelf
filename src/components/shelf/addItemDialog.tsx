@@ -102,7 +102,7 @@ export default function AddItemDialog() {
         toggleSaving();
       }
     },
-    [form, currentFolder, toggleItemDialogOpen, addSingleItem, toast, toggleSaving]
+    [form, currentFolder, toggleItemDialogOpen, addSingleItem, toast, toggleSaving, thumbnail]
   );
 
   const handleOpenChange = useCallback(
