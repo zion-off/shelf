@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, ChangeEvent } from 'react';
+import { getLinkMetadata } from '@/actions/item/getLinkMetadata';
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
@@ -23,7 +24,8 @@ export default function AddItemDialog() {
     title: '',
     author: '',
     notes: '',
-    link: ''
+    link: '',
+    thumbnail: ''
   });
 
   const form = useForm<addItemFormValues>({
@@ -31,12 +33,44 @@ export default function AddItemDialog() {
     defaultValues: formValues
   });
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormValues((prev) => ({
       ...prev,
       [name]: value
     }));
+
+    if (name === 'link' && value) {
+      try {
+        const url = new URL(value);
+        if (url.protocol === 'http:' || url.protocol === 'https:') {
+          const metadata = await getLinkMetadata(url.href);
+          if (metadata) {
+            const { title, author, thumbnail } = metadata;
+            const updates = {
+              title: title || formValues.title,
+              author: author || formValues.author
+            };
+
+            setFormValues((prev) => ({
+              ...prev,
+              ...updates,
+              thumbnail: thumbnail || ''
+            }));
+
+            if (title) form.setValue('title', title);
+            if (author) form.setValue('author', author);
+            if (thumbnail) form.setValue('thumbnail', thumbnail);
+
+            // Optionally trigger validation for updated fields
+            if (title) form.trigger('title');
+            if (author) form.trigger('author');
+          }
+        }
+      } catch {
+        // Invalid URL, do nothing
+      }
+    }
 
     form.trigger(name as keyof addItemFormValues);
   };
@@ -48,6 +82,13 @@ export default function AddItemDialog() {
         const newItem = await addItem(values, currentFolder);
         toggleItemDialogOpen();
         form.reset();
+        setFormValues({
+          title: '',
+          author: '',
+          notes: '',
+          link: '',
+          thumbnail: ''
+        });
         addSingleItem(newItem);
         toast({
           title: 'Success',
@@ -67,8 +108,25 @@ export default function AddItemDialog() {
     [form, currentFolder, toggleItemDialogOpen, addSingleItem, toast, toggleSaving]
   );
 
+  const handleOpenChange = useCallback(
+    (open: boolean) => {
+      if (!open) {
+        form.reset();
+        setFormValues({
+          title: '',
+          author: '',
+          notes: '',
+          link: '',
+          thumbnail: ''
+        });
+      }
+      toggleItemDialogOpen();
+    },
+    [form, toggleItemDialogOpen]
+  );
+
   return (
-    <Dialog open={itemDialogOpen} onOpenChange={toggleItemDialogOpen}>
+    <Dialog open={itemDialogOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild className="w-11 p-2">
         <Plus
           size={'40px'}
