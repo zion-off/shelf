@@ -7,6 +7,9 @@ import { motion } from 'motion/react';
 import { noise } from '@/utils';
 import { Input } from '@/components/ui/input';
 import { searchItems } from '@/actions/search/searchItems';
+import { getItemsInFolder } from '@/actions/item';
+import { useHomeContext } from '@/context/homeContext';
+import { useSidebar } from '@/components/ui/sidebar';
 import { IItem } from '@/interfaces';
 
 export default function SearchBar() {
@@ -15,6 +18,8 @@ export default function SearchBar() {
   const [portalElement, setPortalElement] = useState<HTMLElement | null>(null);
   const [searchResults, setSearchResults] = useState<IItem[]>([]);
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>(searchTerm);
+  const { handleDrawerOpenChange, handleSelectedItemChange, updateAllItems } = useHomeContext();
+  const { openFolderByID } = useSidebar();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -121,7 +126,23 @@ export default function SearchBar() {
               >
                 {searchResults.length > 0 ? (
                   searchResults.map((article) => (
-                    <motion.li key={article._id.toString()} variants={listItem} className="last:pb-20">
+                    <motion.li
+                      key={article._id.toString()}
+                      variants={listItem}
+                      className="last:pb-20"
+                      onClick={async () => {
+                        setSearchTerm('');
+                        setSearchResults([]);
+                        openFolderByID(article.in_folder);
+                        handleSelectedItemChange(article);
+                        setSearching(false);
+                        handleDrawerOpenChange(true);
+                        const items = await getItemsInFolder({
+                          folderID: article.in_folder ? article.in_folder.toString() : null
+                        });
+                        updateAllItems(items);
+                      }}
+                    >
                       <SearchItem item={article} />
                     </motion.li>
                   ))

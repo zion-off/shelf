@@ -71,8 +71,12 @@ export function HomeProvider({ children }: { children: ReactNode }) {
   // Drawer open state
   const [drawerOpen, setDrawerOpen] = useState(false);
   const handleDrawerOpenChange = (open: boolean) => {
-    setDrawerOpen(open);
-  };
+    if (open && selectedItem) {
+      setDrawerOpen(open)
+    } else {
+      setDrawerOpen(open)
+    }
+  }
 
   // Editing state in the drawer
   const [isEditing, setIsEditing] = useState(false);
@@ -83,8 +87,16 @@ export function HomeProvider({ children }: { children: ReactNode }) {
   // Item open in the drawer
   const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
   const handleSelectedItemChange = (item: IItem | null) => {
-    setSelectedItem(item);
-  };
+    if (item && selectedItem && item._id !== selectedItem._id) {
+      setDrawerOpen(false)
+      setTimeout(() => {
+        setSelectedItem(item)
+        setDrawerOpen(true)
+      }, 100)
+    } else {
+      setSelectedItem(item)
+    }
+  }
 
   const updateSelectedItem = useCallback(
     (updatedItem: editItemFormValues) => {

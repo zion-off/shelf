@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { VariantProps, cva } from 'class-variance-authority';
 import { PanelLeft } from 'lucide-react';
-
+import { Types } from 'mongoose';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -15,6 +15,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { IFolder } from '@/interfaces';
 import { useHomeContext } from '@/context/homeContext';
+import { ObjectId } from 'mongoose';
 
 const SIDEBAR_COOKIE_NAME = 'sidebar:state';
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
@@ -37,6 +38,7 @@ type SidebarContext = {
   updateFavoriteFolder: (newFolderID: string | null) => void;
   renameFolderLocally: (folder: IFolder, newName: string) => void;
   deleteFolderLocally: (folder: IFolder) => void;
+  openFolderByID: (folderID: Types.ObjectId | null) => void;
 };
 
 const SidebarContext = React.createContext<SidebarContext | null>(null);
@@ -151,6 +153,14 @@ const SidebarProvider = React.forwardRef<
 
     const { changeOpenFolder } = useHomeContext();
 
+    const openFolderByID = React.useCallback(
+      (folderID: Types.ObjectId | null) => {
+        const folder = folderState.find((folder) => folder._id === folderID);
+        changeOpenFolder(folder || null);
+      },
+      [folderState, changeOpenFolder]
+    );
+
     React.useEffect(() => {
       const firstOpenFolder = folderState.find((folder) => folder._id.toString() === defaultFolder) || null;
       changeOpenFolder(firstOpenFolder);
@@ -171,7 +181,8 @@ const SidebarProvider = React.forwardRef<
         favoriteFolder,
         updateFavoriteFolder,
         renameFolderLocally,
-        deleteFolderLocally
+        deleteFolderLocally,
+        openFolderByID
       }),
       [
         state,
@@ -186,7 +197,8 @@ const SidebarProvider = React.forwardRef<
         favoriteFolder,
         updateFavoriteFolder,
         renameFolderLocally,
-        deleteFolderLocally
+        deleteFolderLocally,
+        openFolderByID
       ]
     );
 
