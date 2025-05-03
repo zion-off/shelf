@@ -20,12 +20,12 @@ export default function AddItemDialog() {
   const { toast } = useToast();
   const { currentFolder } = useHomeContext();
   const { itemDialogOpen, toggleItemDialogOpen, saving, toggleSaving, addSingleItem } = useHomeContext();
+  const [thumbnail, setThumbnail] = useState<string>('');
   const [formValues, setFormValues] = useState({
     title: '',
     author: '',
     notes: '',
-    link: '',
-    thumbnail: ''
+    link: ''
   });
 
   const form = useForm<addItemFormValues>({
@@ -54,15 +54,12 @@ export default function AddItemDialog() {
 
             setFormValues((prev) => ({
               ...prev,
-              ...updates,
-              thumbnail: thumbnail || ''
+              ...updates
             }));
 
             if (title) form.setValue('title', title);
             if (author) form.setValue('author', author);
-            if (thumbnail) form.setValue('thumbnail', thumbnail);
-
-            // Optionally trigger validation for updated fields
+            if (thumbnail) setThumbnail(thumbnail);
             if (title) form.trigger('title');
             if (author) form.trigger('author');
           }
@@ -77,17 +74,17 @@ export default function AddItemDialog() {
 
   const onSubmit = useCallback(
     async (values: addItemFormValues) => {
+      console.log('Form submitted with values:', values);
       toggleSaving();
       try {
-        const newItem = await addItem(values, currentFolder);
+        const newItem = await addItem({ ...values, thumbnail }, currentFolder);
         toggleItemDialogOpen();
         form.reset();
         setFormValues({
           title: '',
           author: '',
           notes: '',
-          link: '',
-          thumbnail: ''
+          link: ''
         });
         addSingleItem(newItem);
         toast({
@@ -116,9 +113,9 @@ export default function AddItemDialog() {
           title: '',
           author: '',
           notes: '',
-          link: '',
-          thumbnail: ''
+          link: ''
         });
+        setThumbnail('');
       }
       toggleItemDialogOpen();
     },
@@ -127,11 +124,11 @@ export default function AddItemDialog() {
 
   return (
     <Dialog open={itemDialogOpen} onOpenChange={handleOpenChange}>
-      <DialogTrigger asChild className='aspect-square min-w-10 max-w-10'>
-          <Plus
-            size={'40px'}
-            className="p-2 transition-colors shadow-sm stroke-[1.5px] bg-neutral-100 stroke-neutral-400 border border-input md:hover:border-z-component dark:bg-neutral-900 aspect-square rounded-md cursor-pointer"
-          />
+      <DialogTrigger asChild className="aspect-square min-w-10 max-w-10">
+        <Plus
+          size={'40px'}
+          className="p-2 transition-colors shadow-sm stroke-[1.5px] bg-neutral-100 stroke-neutral-400 border border-input md:hover:border-z-component dark:bg-neutral-900 aspect-square rounded-md cursor-pointer"
+        />
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] bg-z-background border-none">
         <DialogTitle className="text-z-foreground pb-2">Add a new item</DialogTitle>
@@ -166,7 +163,12 @@ export default function AddItemDialog() {
               value={formValues.notes}
               onChange={handleInputChange}
             />
-            <Button type="submit" className={`w-full ${saving ? 'animate-pulse' : ''}`} disabled={saving}>
+            <Button
+              type="submit"
+              className={`w-full ${saving ? 'animate-pulse' : ''}`}
+              disabled={saving}
+              onClick={() => console.log('Button clicked')}
+            >
               {saving ? 'Saving...' : 'Save changes'}
             </Button>
           </form>

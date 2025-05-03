@@ -25,8 +25,8 @@ export default async function Shelf() {
         } as React.CSSProperties
       }
     >
-      <AppSidebar className="absolute inset-0 h-full" />
-      <SidebarInset className="max-h-full flex flex-col ">
+      <AppSidebar className="absolute inset-0 h-full pt-1" />
+      <SidebarInset className="max-h-full flex flex-col pt-1">
         <ShelfHeader />
         <ItemsContainer fetchedItems={items} />
       </SidebarInset>

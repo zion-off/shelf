@@ -4,22 +4,9 @@ import { auth } from '@/auth';
 import mongoose from 'mongoose';
 import mongo from '@/lib/mongodb';
 import { IFolder, IItem } from '@/interfaces/models';
+import { AddItem, ItemData } from '@/interfaces/items/AddItem';
 import { Item } from '@/models';
 import { getRandomHex } from '@/utils';
-
-interface AddItem {
-  title: string;
-  author: string;
-  link?: string;
-  notes?: string;
-  thumbnail?: string;
-}
-
-interface ItemData extends AddItem {
-  owner: mongoose.Types.ObjectId;
-  placeholderCover: string;
-  in_folder: mongoose.Types.ObjectId | null;
-}
 
 export async function addItem(
   { title, author, link, notes, thumbnail }: AddItem,
