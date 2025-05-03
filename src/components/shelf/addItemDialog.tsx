@@ -127,11 +127,11 @@ export default function AddItemDialog() {
 
   return (
     <Dialog open={itemDialogOpen} onOpenChange={handleOpenChange}>
-      <DialogTrigger asChild className="w-11 p-2">
-        <Plus
-          size={'40px'}
-          className="transition-colors shadow-sm stroke-[1.5px] bg-neutral-100 stroke-neutral-400 border border-input md:hover:border-z-component dark:bg-neutral-900 aspect-square rounded-md cursor-pointer"
-        />
+      <DialogTrigger asChild className='aspect-square min-w-10 max-w-10'>
+          <Plus
+            size={'40px'}
+            className="p-2 transition-colors shadow-sm stroke-[1.5px] bg-neutral-100 stroke-neutral-400 border border-input md:hover:border-z-component dark:bg-neutral-900 aspect-square rounded-md cursor-pointer"
+          />
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] bg-z-background border-none">
         <DialogTitle className="text-z-foreground pb-2">Add a new item</DialogTitle>
