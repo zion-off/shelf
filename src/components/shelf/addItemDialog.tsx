@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, ChangeEvent } from 'react';
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
@@ -17,18 +18,28 @@ import { FormInput } from '@/components/ui/formInput';
 export default function AddItemDialog() {
   const { toast } = useToast();
   const { currentFolder } = useHomeContext();
-
   const { itemDialogOpen, toggleItemDialogOpen, saving, toggleSaving, addSingleItem } = useHomeContext();
+  const [formValues, setFormValues] = useState({
+    title: '',
+    author: '',
+    notes: '',
+    link: ''
+  });
 
   const form = useForm<addItemFormValues>({
     resolver: zodResolver(addItemForm),
-    defaultValues: {
-      title: '',
-      author: '',
-      notes: '',
-      link: ''
-    }
+    defaultValues: formValues
   });
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormValues((prev) => ({
+      ...prev,
+      [name]: value
+    }));
+
+    form.trigger(name as keyof addItemFormValues);
+  };
 
   const onSubmit = useCallback(
     async (values: addItemFormValues) => {
@@ -69,10 +80,34 @@ export default function AddItemDialog() {
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormInput formControl={form.control} name="title" placeholder="Title" />
-            <FormInput formControl={form.control} name="author" placeholder="Author" />
-            <FormInput formControl={form.control} name="link" placeholder="https://..." />
-            <FormInput formControl={form.control} name="notes" placeholder="Notes" />
+            <FormInput
+              formControl={form.control}
+              name="title"
+              placeholder="Title"
+              value={formValues.title}
+              onChange={handleInputChange}
+            />
+            <FormInput
+              formControl={form.control}
+              name="author"
+              placeholder="Author"
+              value={formValues.author}
+              onChange={handleInputChange}
+            />
+            <FormInput
+              formControl={form.control}
+              name="link"
+              placeholder="https://..."
+              value={formValues.link}
+              onChange={handleInputChange}
+            />
+            <FormInput
+              formControl={form.control}
+              name="notes"
+              placeholder="Notes"
+              value={formValues.notes}
+              onChange={handleInputChange}
+            />
             <Button type="submit" className={`w-full ${saving ? 'animate-pulse' : ''}`} disabled={saving}>
               {saving ? 'Saving...' : 'Save changes'}
             </Button>
