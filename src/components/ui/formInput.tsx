@@ -5,7 +5,14 @@ import { Checkbox } from '@/components/ui/checbox';
 import { FormInputProps, CheckboxInputProps, TextareaInputProps } from '@/interfaces/items';
 import { FormControl, FormField, FormItem, FormMessage, FormLabel } from '@/components/ui/form';
 
-export const FormInput = <T extends FieldValues>({ formControl, name, placeholder, label }: FormInputProps<T>) => {
+export const FormInput = <T extends FieldValues>({
+  formControl,
+  name,
+  placeholder,
+  label,
+  value,
+  onChange
+}: FormInputProps<T>) => {
   return (
     <FormField
       control={formControl}
@@ -14,7 +21,15 @@ export const FormInput = <T extends FieldValues>({ formControl, name, placeholde
         <FormItem>
           {label && <FormLabel>{label}</FormLabel>}
           <FormControl>
-            <Input placeholder={placeholder} {...field} />
+            <Input
+              placeholder={placeholder}
+              {...field}
+              value={value !== undefined ? value : field.value}
+              onChange={(e) => {
+                field.onChange(e);
+                if (onChange) onChange(e);
+              }}
+            />
           </FormControl>
           <FormMessage />
         </FormItem>

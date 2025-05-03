@@ -1,10 +1,13 @@
+import { ChangeEvent } from 'react';
 import { Control, FieldValues, Path } from 'react-hook-form';
 
 export interface FormInputProps<T extends FieldValues> {
-  formControl: Control<T> | undefined;
+  formControl: Control<T>;
   name: Path<T>;
-  placeholder: string;
+  placeholder?: string;
   label?: string;
+  value?: string;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 export interface CheckboxInputProps<T extends FieldValues> {
