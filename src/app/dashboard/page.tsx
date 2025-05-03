@@ -21,7 +21,7 @@ export default function Page() {
       folders={[]}
       style={
         {
-          "--sidebar-width": "19rem",
+          "--sidebar-width": "19rem"
         } as React.CSSProperties
       }
     >

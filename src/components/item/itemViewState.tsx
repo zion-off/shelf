@@ -51,7 +51,7 @@ export const ItemViewState = () => {
       <DrawerHeader>
         <DrawerTitle>
           <div className="flex justify-between">
-            {title}
+            <p className='w-10/12'>{title}</p>
             <div className="cursor-pointer">
               <span className="px-1" onClick={() => handleEditingChange(true)}>
                 📝

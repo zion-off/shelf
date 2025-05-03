@@ -23,12 +23,12 @@ async function mongo() {
   if (!cached.promise) {
     const opts = { bufferCommands: false };
     cached.promise = await mongoose.connect(MONGODB_URI, opts);
-    if (process.env.NODE_ENV === "development") {
-      cached.promise.connection.db.admin().command({
-        setParameter: 1,
-        maxTransactionLockRequestTimeoutMillis: 3000,
-      });
-    }
+    // if (process.env.NODE_ENV === "development") {
+    //   cached.promise.connection.db.admin().command({
+    //     setParameter: 1,
+    //     maxTransactionLockRequestTimeoutMillis: 3000,
+    //   });
+    // }
   }
 
   try {
