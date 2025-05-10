@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { IItem } from '@/interfaces/models';
+import type { IItem } from '@/interfaces/models';
 import { ItemViewState } from '@/components/item/itemViewState';
 import { ItemEditState } from '@/components/item/itemEditState';
 import { useHomeContext } from '@/context/homeContext';
@@ -9,20 +9,25 @@ import { Drawer, DrawerTrigger, DrawerContent } from '@/components/ui/drawer';
 import { noise } from '@/utils';
 
 export const Item = ({ item }: { item: IItem }) => {
-  const { drawerOpen, handleDrawerOpenChange, handleSelectedItemChange, isEditing, handleEditingChange } =
+  const { drawerOpen, handleDrawerOpenChange, handleSelectedItemChange, isEditing, handleEditingChange, selectedItem } =
     useHomeContext();
+
   const { title, author, thumbnail, placeholderCover } = item;
+  const isThisItemSelected = selectedItem?._id === item._id;
+  const isThisDrawerOpen = isThisItemSelected && drawerOpen;
 
   return (
     <Drawer
-      open={drawerOpen}
+      open={isThisDrawerOpen}
       onOpenChange={(open) => {
         handleDrawerOpenChange(open);
         if (open) {
           handleSelectedItemChange(item);
           handleEditingChange(false);
         } else {
-          handleSelectedItemChange(null);
+          if (isThisItemSelected) {
+            handleSelectedItemChange(null);
+          }
         }
       }}
     >
@@ -31,7 +36,7 @@ export const Item = ({ item }: { item: IItem }) => {
           <div className="w-full h-24">
             {thumbnail ? (
               <Image
-                src={thumbnail}
+                src={thumbnail || '/placeholder.svg'}
                 alt={title}
                 width={400}
                 height={300}
