@@ -122,5 +122,5 @@ export const ItemEditState = () => {
   );
 };
 
-const fieldListStyle = `flex flex-col gap-8`;
+const fieldListStyle = `flex flex-col gap-8 pb-24`;
 const fieldGroupStyle = `flex flex-col gap-4`;

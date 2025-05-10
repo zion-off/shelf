@@ -2,7 +2,7 @@
 
 import { IItem, IFolder } from '@/interfaces/models';
 import { editItemFormValues } from '@/types/shelf';
-import { createContext, useContext, useState, ReactNode, useCallback } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
 
 const HomeContext = createContext<{
   itemDialogOpen: boolean;
@@ -26,6 +26,7 @@ const HomeContext = createContext<{
   deleteSelectedItem: () => void;
   deleteFolderDialogOpen: boolean;
   toggleDeleteFolderDialogOpen: () => void;
+  drawerDirection: 'right' | 'bottom';
 } | null>(null);
 
 export function HomeProvider({ children }: { children: ReactNode }) {
@@ -72,11 +73,11 @@ export function HomeProvider({ children }: { children: ReactNode }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const handleDrawerOpenChange = (open: boolean) => {
     if (open && selectedItem) {
-      setDrawerOpen(open)
+      setDrawerOpen(open);
     } else {
-      setDrawerOpen(open)
+      setDrawerOpen(open);
     }
-  }
+  };
 
   // Editing state in the drawer
   const [isEditing, setIsEditing] = useState(false);
@@ -88,15 +89,15 @@ export function HomeProvider({ children }: { children: ReactNode }) {
   const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
   const handleSelectedItemChange = (item: IItem | null) => {
     if (item && selectedItem && item._id !== selectedItem._id) {
-      setDrawerOpen(false)
+      setDrawerOpen(false);
       setTimeout(() => {
-        setSelectedItem(item)
-        setDrawerOpen(true)
-      }, 100)
+        setSelectedItem(item);
+        setDrawerOpen(true);
+      }, 100);
     } else {
-      setSelectedItem(item)
+      setSelectedItem(item);
     }
-  }
+  };
 
   const updateSelectedItem = useCallback(
     (updatedItem: editItemFormValues) => {
@@ -128,6 +129,17 @@ export function HomeProvider({ children }: { children: ReactNode }) {
     setDeleteFolderDialogOpen((prev) => !prev);
   };
 
+  const [drawerDirection, setDrawerDirection] = useState<'right' | 'bottom'>('right');
+
+  useEffect(() => {
+    const handleResize = () => {
+      setDrawerDirection(window.innerWidth < 768 ? 'bottom' : 'right');
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const value = {
     itemDialogOpen,
     toggleItemDialogOpen,
@@ -149,7 +161,8 @@ export function HomeProvider({ children }: { children: ReactNode }) {
     updateSelectedItem,
     deleteSelectedItem,
     deleteFolderDialogOpen,
-    toggleDeleteFolderDialogOpen
+    toggleDeleteFolderDialogOpen,
+    drawerDirection
   };
 
   return <HomeContext.Provider value={value}>{children}</HomeContext.Provider>;

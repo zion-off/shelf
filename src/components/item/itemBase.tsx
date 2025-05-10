@@ -9,8 +9,15 @@ import { Drawer, DrawerTrigger, DrawerContent } from '@/components/ui/drawer';
 import { noise } from '@/utils';
 
 export const Item = ({ item }: { item: IItem }) => {
-  const { drawerOpen, handleDrawerOpenChange, handleSelectedItemChange, isEditing, handleEditingChange, selectedItem } =
-    useHomeContext();
+  const {
+    drawerOpen,
+    drawerDirection,
+    handleDrawerOpenChange,
+    handleSelectedItemChange,
+    isEditing,
+    handleEditingChange,
+    selectedItem
+  } = useHomeContext();
 
   const { title, author, thumbnail, placeholderCover } = item;
   const isThisItemSelected = selectedItem?._id === item._id;
@@ -18,6 +25,7 @@ export const Item = ({ item }: { item: IItem }) => {
 
   return (
     <Drawer
+      direction={drawerDirection}
       open={isThisDrawerOpen}
       onOpenChange={(open) => {
         handleDrawerOpenChange(open);

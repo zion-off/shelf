@@ -49,36 +49,34 @@ export const ItemViewState = () => {
   return (
     <>
       <DrawerHeader>
-        <DrawerTitle>
-          <div className="flex justify-between">
-            <p className='w-10/12'>{title}</p>
-            <div className="cursor-pointer">
-              <span className="px-1" onClick={() => handleEditingChange(true)}>
-                📝
-              </span>
-              <span
-                className="px-1"
-                onClick={() => {
-                  toast({
-                    description: 'Are you sure?',
-                    action: (
-                      <ToastAction
-                        altText="Delete"
-                        className="border-z-component-border bg-z-destructive hover:bg-z-destructive-hover text-white"
-                        onClick={() => {
-                          handleDelete();
-                        }}
-                      >
-                        Delete
-                      </ToastAction>
-                    ),
-                    duration: 3000
-                  });
-                }}
-              >
-                🗑️
-              </span>
-            </div>
+        <DrawerTitle className="flex justify-between">
+          <p className="md:w-10/12">{title}</p>
+          <div className="cursor-pointer">
+            <span className="px-1" onClick={() => handleEditingChange(true)}>
+              📝
+            </span>
+            <span
+              className="px-1"
+              onClick={() => {
+                toast({
+                  description: 'Are you sure?',
+                  action: (
+                    <ToastAction
+                      altText="Delete"
+                      className="border-z-component-border bg-z-destructive hover:bg-z-destructive-hover text-white"
+                      onClick={() => {
+                        handleDelete();
+                      }}
+                    >
+                      Delete
+                    </ToastAction>
+                  ),
+                  duration: 3000
+                });
+              }}
+            >
+              🗑️
+            </span>
           </div>
         </DrawerTitle>
         <DrawerDescription>{author}</DrawerDescription>
@@ -86,7 +84,7 @@ export const ItemViewState = () => {
       <div className={fieldListStyle}>
         <div>
           <label className="text-z-foreground">Notes</label>
-          <p className={`${notes ? `text-z-foreground-secondary` : `text-muted-foreground`}`}>
+          <p className={`${notes ? `text-z-foreground-secondary md:truncate` : `text-muted-foreground`}`}>
             {notes || 'No thoughts recoreded for this item.'}
           </p>
         </div>
@@ -137,4 +135,4 @@ export const ItemViewState = () => {
   );
 };
 
-const fieldListStyle = `flex flex-col gap-8`;
+const fieldListStyle = `flex flex-col gap-8 pb-24`;
