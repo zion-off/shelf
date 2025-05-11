@@ -95,7 +95,7 @@ export const ItemEditState = () => {
 
   return (
     <>
-      <DrawerHeader>
+      <DrawerHeader className='py-0 md:pt-10 mb-5 md:mb-10'>
         <div className="cursor-pointer text-sm font-normal">
           <span className="pr-4 text-green-500" onClick={form.handleSubmit(onSubmit)}>
             Save
@@ -123,6 +123,7 @@ export const ItemEditState = () => {
               label="Link"
               placeholder="https://example.com"
               className="resize-none"
+              rows={window.innerWidth < 768 ? 1 : 2}
             />
           </div>
 
@@ -156,5 +157,5 @@ export const ItemEditState = () => {
   );
 };
 
-const fieldListStyle = `flex flex-col gap-8 pb-10 md:pb-24`;
-const fieldGroupStyle = `flex flex-col gap-4`;
+const fieldListStyle = `flex flex-col gap-2 pb-8 md:gap-8 md:pb-24`;
+const fieldGroupStyle = `flex flex-col md:gap-4`;
