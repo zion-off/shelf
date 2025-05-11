@@ -8,7 +8,7 @@ export default function Hero() {
         <h1 className="font-gambarino text-5xl text-center">
           A place for everything
           <br className="hidden md:visible" />{" "}
-          that isn't a book.
+          that isn&apos;t a book.
         </h1>
       </div>
     </main>
