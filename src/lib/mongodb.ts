@@ -21,7 +21,7 @@ async function mongo() {
   if (cached.conn) return cached.conn;
 
   if (!cached.promise) {
-    const opts = { bufferCommands: false };
+    const opts = { bufferCommands: true };
     cached.promise = await mongoose.connect(MONGODB_URI, opts);
     // if (process.env.NODE_ENV === "development") {
     //   cached.promise.connection.db.admin().command({
