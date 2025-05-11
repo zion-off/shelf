@@ -1,5 +1,4 @@
 import { ChangeEvent } from 'react';
-import { Types } from 'mongoose';
 import { Control, FieldValues, Path } from 'react-hook-form';
 
 export interface FormInputProps<T extends FieldValues> {

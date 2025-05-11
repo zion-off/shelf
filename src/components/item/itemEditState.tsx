@@ -86,7 +86,7 @@ export const ItemEditState = () => {
         form.reset();
       }
     },
-    [item, handleEditingChange, toast, form, updateSelectedItem]
+    [item, handleEditingChange, toast, form, updateSelectedItem, deleteSelectedItem]
   );
 
   if (!item) {
