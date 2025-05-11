@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { auth } from '@/auth';
 import { IItem, IFolder } from '@/interfaces/models';
 import ItemsContainer from '@/components/shelf/itemsContainer';
