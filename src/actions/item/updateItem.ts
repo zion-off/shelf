@@ -1,6 +1,5 @@
 'use server';
 
-import { Types } from 'mongoose';
 import { auth } from '@/auth';
 import mongoose from 'mongoose';
 import mongo from '@/lib/mongodb';
