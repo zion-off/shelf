@@ -6,9 +6,9 @@ export default function Hero() {
       <Header />
       <div className="grow flex flex-col justify-center">
         <h1 className="font-gambarino text-5xl text-center">
-          Lorem ipsum odor amet,
+          A place for everything
           <br className="hidden md:visible" />{" "}
-          consectetuer adipiscing elit.
+          that isn't a book.
         </h1>
       </div>
     </main>

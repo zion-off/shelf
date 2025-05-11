@@ -4,7 +4,7 @@ import "./globals.css";
 import AuthCheck from "@/auth/authCheck";
 
 export const metadata: Metadata = {
-  title: "Title",
+  title: "shelf",
 };
 
 export default function RootLayout({
