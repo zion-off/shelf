@@ -1,4 +1,5 @@
 import { ChangeEvent } from 'react';
+import { Types } from 'mongoose';
 import { Control, FieldValues, Path } from 'react-hook-form';
 
 export interface FormInputProps<T extends FieldValues> {
@@ -23,4 +24,12 @@ export interface TextareaInputProps<T extends FieldValues> {
   rows?: number;
   label?: string;
   className?: string;
+}
+
+export interface DropdownInputProps<T extends FieldValues> {
+  formControl: Control<T>;
+  name: Path<T>;
+  label?: string;
+  placeholder?: string;
+  options: { label: string; value: string | null }[];
 }

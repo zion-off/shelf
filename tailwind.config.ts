@@ -11,15 +11,15 @@ export default {
   	extend: {
   		colors: {
   			'z-background': {
-  				DEFAULT: 'var(--z-background-primary)',
-  				secondary: 'var(--z-background-secondary)'
+  				DEFAULT: 'hsl(var(--z-background-primary))',
+  				secondary: 'hsl(var(--z-background-secondary))'
   			},
   			'z-foreground': {
   				DEFAULT: 'var(--z-foreground-primary)',
   				secondary: 'var(--z-foreground-secondary)'
   			},
   			'z-component': 'var(--z-component)',
-			'z-component-border': 'var(--z-component-border)',
+			'z-component-border': 'hsl(var(--z-component-border))',
 			'z-destructive': 'hsl(var(--z-destructive))',
 			'z-destructive-hover': 'hsl(var(--z-destructive-hover))',
   			button: 'hsl(var(--z-button))',
