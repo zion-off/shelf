@@ -1,10 +1,14 @@
-import NextAuth, { User as GoogleUser } from "next-auth";
-import Google from "next-auth/providers/google";
-import { createNewUser } from "@/actions/user";
-import { User } from "@/models";
-import mongo from "@/lib/mongodb";
+import NextAuth, { User as GoogleUser } from 'next-auth';
+import Google from 'next-auth/providers/google';
+import { createNewUser } from '@/actions/user';
+import { User } from '@/models';
+import mongo from '@/lib/mongodb';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  pages: {
+    signIn: `/`,
+    signOut: `/`
+  },
   providers: [Google],
   callbacks: {
     async signIn({ user }: { user: GoogleUser }) {
@@ -19,7 +23,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (user) {
         await mongo();
         const email = user.email;
-        const dbUser = await User.findOne({ email }).select("_id");
+        const dbUser = await User.findOne({ email }).select('_id');
         token.id = dbUser._id;
       }
       return token;
@@ -27,6 +31,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     session({ session, token }) {
       session.user.id = token.id as string;
       return session;
-    },
-  },
+    }
+  }
 });
