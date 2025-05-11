@@ -99,7 +99,7 @@ export const FormDropdownInput = <T extends FieldValues>({
       name={name}
       render={({ field }) => (
         <FormItem className="flex w-full items-center space-y-0 justify-between">
-          {label && <FormLabel >{label}</FormLabel>}
+          {label && <FormLabel>{label}</FormLabel>}
           <FormControl>
             <DropdownMenu>
               <DropdownMenuTrigger className="transition-all fade-in-10 fade-out-10 flex items-center justify-between px-3 py-2 border border-z-background rounded-md text-sm hover:border-z-component-border">
