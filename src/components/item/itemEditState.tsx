@@ -8,14 +8,33 @@ import { useToast } from '@/hooks/use-toast';
 import { editItemFormValues } from '@/types/shelf';
 import { editItemForm } from '@/schema';
 import { useHomeContext } from '@/context/homeContext';
+import { useSidebar } from '@/components/ui/sidebar';
 import { DrawerHeader } from '@/components/ui/drawer';
 import { Form } from '@/components/ui/form';
-import { FormInput, FormTextareaInput, CheckboxInput } from '@/components/ui/formInput';
+import { FormInput, FormTextareaInput, CheckboxInput, FormDropdownInput } from '@/components/ui/formInput';
 import { updateItem } from '@/actions/item/updateItem';
+
+interface EditFolderOptions {
+  label: string;
+  value: string | null;
+}
 
 export const ItemEditState = () => {
   const { toast } = useToast();
-  const { selectedItem: item, handleEditingChange, updateSelectedItem } = useHomeContext();
+  const { selectedItem: item, handleEditingChange, updateSelectedItem, deleteSelectedItem } = useHomeContext();
+  const { folderState } = useSidebar();
+
+  const options: EditFolderOptions[] = folderState.map((folder) => {
+    return {
+      label: folder.name,
+      value: folder._id ? folder._id.toString() : null
+    };
+  });
+
+  options.push({
+    label: 'Ungrouped',
+    value: null
+  });
 
   const form = useForm<editItemFormValues>({
     resolver: zodResolver(editItemForm),
@@ -24,7 +43,8 @@ export const ItemEditState = () => {
       author: item?.author,
       notes: item?.notes || '',
       link: item?.link || '',
-      read: item?.read || false
+      read: item?.read || false,
+      in_folder: item?.in_folder ? new Types.ObjectId(item.in_folder).toString() : null
     }
   });
 
@@ -34,8 +54,9 @@ export const ItemEditState = () => {
 
       try {
         const updatedItem = await updateItem({
-          _id: new Types.ObjectId(item._id),
-          ...values
+          _id: item._id.toString(),
+          ...values,
+          in_folder: values.in_folder ?? null
         });
         if (!updatedItem) {
           toast({
@@ -45,6 +66,9 @@ export const ItemEditState = () => {
           });
         } else {
           updateSelectedItem(values);
+          if (item.in_folder !== values.in_folder) {
+            deleteSelectedItem();
+          }
           toast({
             title: 'Success',
             description: `Updated ${JSON.parse(updatedItem).title} successfully`,
@@ -53,7 +77,7 @@ export const ItemEditState = () => {
         }
       } catch (error) {
         toast({
-          title: "Something went wrong",
+          title: 'Something went wrong',
           description: `${error}`,
           duration: 3000
         });
@@ -113,6 +137,16 @@ export const ItemEditState = () => {
             />
           </div>
 
+          <div className={fieldGroupStyle}>
+            <FormDropdownInput
+              formControl={form.control}
+              name="in_folder"
+              label="In folder"
+              placeholder="Select"
+              options={options}
+            />
+          </div>
+
           <div className="flex items-center space-x-2">
             <CheckboxInput formControl={form.control} name="read" label="Finished reading" />
           </div>
@@ -122,5 +156,5 @@ export const ItemEditState = () => {
   );
 };
 
-const fieldListStyle = `flex flex-col gap-8 pb-24`;
+const fieldListStyle = `flex flex-col gap-8 pb-10 md:pb-24`;
 const fieldGroupStyle = `flex flex-col gap-4`;

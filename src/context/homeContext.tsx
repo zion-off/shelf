@@ -1,5 +1,6 @@
 'use client';
 
+import { Types } from 'mongoose';
 import { IItem, IFolder } from '@/interfaces/models';
 import { editItemFormValues } from '@/types/shelf';
 import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
@@ -109,6 +110,7 @@ export function HomeProvider({ children }: { children: ReactNode }) {
             item.notes = updatedItem.notes;
             item.link = updatedItem.link;
             item.read = updatedItem.read;
+            item.in_folder = updatedItem.in_folder ? new Types.ObjectId(updatedItem.in_folder) : null;
             item.last_modified = new Date();
             return item;
           }
