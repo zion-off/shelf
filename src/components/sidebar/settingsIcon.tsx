@@ -9,9 +9,9 @@ export const SettingsIcon = forwardRef(function SettingsIcon(
     <span
       {...props}
       ref={ref}
-      className="opacity-0 group-hover/fav:opacity-100 transition-colors duration-50 fade-in-50 fade-out-50 hover:bg-neutral-200 dark:hover:bg-neutral-900 aspect-square rounded-md cursor-pointer"
+      className="md:opacity-0 group-hover/fav:opacity-100 transition-colors duration-50 fade-in-50 fade-out-50 hover:bg-neutral-200 dark:hover:bg-neutral-900 aspect-square rounded-md cursor-pointer"
     >
-      <Bolt className="opacity-0 group-hover/fav:opacity-100 transition-colors duration-50 fade-in-50 fade-out-50 stroke-neutral-300 dark:stroke-neutral-600 hover:bg-neutral-200 dark:hover:bg-neutral-900 aspect-square rounded-md cursor-pointer p-[3px] duration-50" />
+      <Bolt className="md:opacity-0 group-hover/fav:opacity-100 transition-colors duration-50 fade-in-50 fade-out-50 stroke-neutral-300 dark:stroke-neutral-600 hover:bg-neutral-200 dark:hover:bg-neutral-900 aspect-square rounded-md cursor-pointer p-[3px] duration-50" />
     </span>
   );
 });
