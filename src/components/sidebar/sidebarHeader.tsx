@@ -17,7 +17,7 @@ export function AppSidebarHeader() {
                   <span className="font-semibold">Folders</span>
                 </div>
               </div>
-              <div className="opacity-0 group-hover/item:opacity-100 transition-opacity duration-50 fade-in-50 fade-out-50">
+              <div className="md:opacity-0 group-hover/item:opacity-100 transition-opacity duration-50 fade-in-50 fade-out-50">
                 <AddFolderDialog />
               </div>
             </div>
