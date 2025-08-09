@@ -1,0 +1,89 @@
+services:
+  mongo1:
+    image: mongo:8.0
+    container_name: mongo1
+    command: mongod --replSet rs --bind_ip_all
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data/27017:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mongo2:
+    image: mongo:8.0
+    container_name: mongo2
+    command: mongod --replSet rs --bind_ip_all
+    ports:
+      - "27018:27017"
+    volumes:
+      - ./data/27018:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mongo3:
+    image: mongo:8.0
+    container_name: mongo3
+    command: mongod --replSet rs --bind_ip_all
+    ports:
+      - "27019:27017"
+    volumes:
+      - ./data/27019:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mongo-init-replica:
+    image: mongo:8.0
+    depends_on:
+      mongo1:
+        condition: service_healthy
+      mongo2:
+        condition: service_healthy
+      mongo3:
+        condition: service_healthy
+    entrypoint: >
+      bash -c "
+        echo 'Waiting for MongoDB instances to be ready...';
+        sleep 10;
+        echo 'Initializing replica set...';
+        mongosh --host mongo1:27017 --eval '
+          try {
+            rs.initiate({
+              _id: \"rs\",
+              members: [
+                { _id: 0, host: \"mongo1:27017\" },
+                { _id: 1, host: \"mongo2:27017\" },
+                { _id: 2, host: \"mongo3:27017\" }
+              ]
+            });
+            print(\"Replica set initiated successfully\");
+          } catch (e) {
+            print(\"Error initiating replica set: \" + e);
+            exit(1);
+          }
+        ';
+        echo 'Replica set initialization completed.';
+      "
+
+  app:
+    build: .
+    depends_on:
+      - mongo1
+      - mongo2
+      - mongo3
+    env_file:
+      - .env.local
+    ports:
+      - 7435:3000
+    volumes:
+      - .:/app
+    command: npm run dev
