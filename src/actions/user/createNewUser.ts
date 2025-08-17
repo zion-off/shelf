@@ -27,6 +27,7 @@ export async function createNewUser(user: GoogleUser): Promise<boolean> {
     if (!configsCollectionExists) await createNewCollection('configs');
 
     const newUser: IUser = await new User({
+      id: user.id,
       name: user.name,
       email: user.email,
       username: user.email.split('@')[0]
