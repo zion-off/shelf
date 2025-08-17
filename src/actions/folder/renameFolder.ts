@@ -4,7 +4,7 @@ import { Types } from 'mongoose';
 import { auth } from '@/auth';
 import mongoose from 'mongoose';
 import mongo from '@/lib/mongodb';
-import { Folder } from '@/models';
+import Folder from '@/models/folder.model';
 import { IFolder } from '@/interfaces/models';
 
 interface RenameFolder {

@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 import mongo from '@/lib/mongodb';
 import { IFolder, IItem } from '@/interfaces/models';
 import { AddItem, ItemData } from '@/interfaces/items/AddItem';
-import { Item } from '@/models';
+import Item from '@/models/item.model';
 import { getRandomHex } from '@/utils';
 
 export async function addItem(

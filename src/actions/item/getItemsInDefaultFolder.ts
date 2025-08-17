@@ -1,8 +1,8 @@
 "use server";
 
-import { IItem } from "@/interfaces";
-import { Item } from "@/models";
 import mongo from "@/lib/mongodb";
+import Item from "@/models/item.model";
+import { IItem } from "@/interfaces/models";
 
 export async function getItemsInDefaultFolder({
   dbID,

@@ -1,7 +1,7 @@
 "use server"
 
 import { IItem } from "@/interfaces";
-import {Item} from "@/models";
+import Item from "@/models/item.model";
 import mongo from "@/lib/mongodb";
 import { auth } from "@/auth";
 

@@ -1,7 +1,7 @@
 "use server"
 
 import { IFolder } from "@/interfaces";
-import { Folder } from "@/models";
+import Folder from "@/models/folder.model";
 import mongo from "@/lib/mongodb";
 
 export async function getAllFolders({ dbID }: { dbID: string }) {
