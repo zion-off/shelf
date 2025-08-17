@@ -3,7 +3,9 @@
 import { auth } from '@/auth';
 import mongoose from 'mongoose';
 import mongo from '@/lib/mongodb';
-import { Folder, Item, Config } from '@/models';
+import Folder from '@/models/folder.model';
+import Item from '@/models/item.model';
+import Config from '@/models/config.model';
 
 export async function deleteFolder({
   folderID,

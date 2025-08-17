@@ -4,7 +4,7 @@ import { Types } from 'mongoose';
 import { auth } from '@/auth';
 import mongoose from 'mongoose';
 import mongo from '@/lib/mongodb';
-import { Item } from '@/models';
+import Item from '@/models/item.model';
 import { IItem } from '@/interfaces/models';
 
 interface DeleteItem {

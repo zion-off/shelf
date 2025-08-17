@@ -3,7 +3,7 @@
 import { auth } from "@/auth";
 import mongoose from "mongoose";
 import mongo from "@/lib/mongodb";
-import { Config } from "@/models";
+import Config from "@/models/config.model";
 
 interface IUpdateDefaultFolder {
   folderID: string | null;

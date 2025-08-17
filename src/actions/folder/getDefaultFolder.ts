@@ -1,6 +1,6 @@
 "use server";
 
-import { Config } from "@/models";
+import Config from "@/models/config.model";
 import mongo from "@/lib/mongodb";
 
 export async function getDefaultFolder({

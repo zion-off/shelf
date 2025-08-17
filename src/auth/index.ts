@@ -1,8 +1,42 @@
 import NextAuth, { User as GoogleUser } from 'next-auth';
 import Google from 'next-auth/providers/google';
-import { createNewUser } from '@/actions/user';
-import { User } from '@/models';
 import mongo from '@/lib/mongodb';
+import mongoose from 'mongoose';
+import User from '@/models/user.model';
+import Config from '@/models/config.model';
+import { IUser } from '@/interfaces/models';
+
+async function createNewUser(user: GoogleUser): Promise<boolean> {
+  if (!user.email) {
+    throw new Error('Unable to retrieve email');
+  }
+
+  await mongo();
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
+  try {
+    const newUser: IUser = await new User({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      username: user.email.split('@')[0]
+    }).save({ session });
+
+    await new Config({
+      user: newUser._id,
+      default_folder: null
+    }).save({ session });
+
+    await session.commitTransaction();
+    return true;
+  } catch (error) {
+    await session.abortTransaction();
+    throw error;
+  } finally {
+    session.endSession();
+  }
+}
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {

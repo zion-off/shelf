@@ -4,7 +4,7 @@ import { auth } from "@/auth";
 import mongoose from "mongoose";
 import mongo from "@/lib/mongodb";
 import { IFolder } from "@/interfaces/models";
-import { Folder } from "@/models";
+import Folder from "@/models/folder.model";
 
 interface AddFolder {
   name: string;
