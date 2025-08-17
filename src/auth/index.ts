@@ -13,7 +13,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     async signIn({ user }: { user: GoogleUser }) {
       await mongo();
-      const existingUser = await User.findOne({ email: user.email });
+      const existingUser = await User.findOne({ id: user.id });
       if (!existingUser) {
         return await createNewUser(user);
       }
