@@ -7,6 +7,7 @@ import { IFolder, IItem } from '@/interfaces/models';
 import { AddItem, ItemData } from '@/interfaces/items/AddItem';
 import Item from '@/models/item.model';
 import { getRandomHex } from '@/utils';
+import { revalidateTag } from 'next/cache';
 
 export async function addItem(
   { title, author, link, notes, thumbnail }: AddItem,
@@ -30,5 +31,9 @@ export async function addItem(
 
   const newItem: IItem = await new Item(itemData);
 
-  return await newItem.save().then((item) => JSON.parse(JSON.stringify(item)));
+  const savedItem = await newItem.save().then((item) => JSON.parse(JSON.stringify(item)));
+
+  revalidateTag(`user-${session?.user?.id}-folder-${folderID?._id?.toString() || null}`);
+
+  return savedItem;
 }
