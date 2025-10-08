@@ -49,9 +49,8 @@ export const ItemViewState = () => {
   return (
     <>
       <DrawerHeader>
-        <DrawerTitle className="flex justify-between">
-          <p className="md:w-10/12">{title}</p>
-          <div className="cursor-pointer">
+        <DrawerTitle className="flex flex-col gap-5">
+          <div className="cursor-pointer flex gap-1 w-full justify-end">
             <span className="px-1" onClick={() => handleEditingChange(true)}>
               📝
             </span>
@@ -78,6 +77,7 @@ export const ItemViewState = () => {
               🗑️
             </span>
           </div>
+          <p className="break-words">{title}</p>
         </DrawerTitle>
         <DrawerDescription>{author}</DrawerDescription>
       </DrawerHeader>
@@ -90,7 +90,7 @@ export const ItemViewState = () => {
         </div>
 
         {link && (
-          <div>
+          <div className="max-w-full break-words">
             <label className="text-z-foreground">Link</label>
             <div>
               <Link href={link} target="_blank" className="text-muted-foreground hover:underline">

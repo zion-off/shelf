@@ -62,13 +62,13 @@ const DrawerContent = React.forwardRef<
       <DrawerOverlay />
       <DrawerPrimitive.Content ref={ref} className={cn(drawerContentVariants({ direction, className }))} {...props}>
         <div className="flex flex-col md:flex-row h-full">
-          <div className="px-4 hidden md:flex h-full items-center">
+          <div className="px-4 hidden md:flex h-full items-center cursor-grab">
             <div className="h-[100px] w-2 rounded-full bg-muted" />
           </div>
           <div className="md:hidden py-4 flex h-full justify-center">
             <div className="h-2 w-[100px] rounded-full bg-muted" />
           </div>
-          <div className="flex flex-col h-full w-full md:pt-10 px-12">{children}</div>
+          <div className="flex flex-col h-full w-full md:pt-10 px-12 min-w-0">{children}</div>
         </div>
       </DrawerPrimitive.Content>
     </DrawerPortal>
