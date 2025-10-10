@@ -1,10 +1,14 @@
 import { auth, signIn, signOut } from '@/auth';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import Link from 'next/link';
+import { headers } from 'next/headers';
 
 export default async function Header() {
   const session = await auth();
   const user = session?.user;
   const name = user?.name;
+  const headersList = headers();
+  const pathname = headersList.get('x-pathname') || '/';
 
   // what a visitor sees
   if (!user) {
@@ -35,16 +39,21 @@ export default async function Header() {
         <Popover>
           <PopoverTrigger className="font-switzer flex items-center gap-2 underline-fade ">{name}</PopoverTrigger>
           <PopoverContent>
-            <form
-              action={async () => {
-                'use server';
-                await signOut({ redirectTo: '/' });
-              }}
-            >
-              <button type="submit" className="w-fit text-left">
-                Sign out
-              </button>
-            </form>
+            <div className="flex flex-col gap-1">
+              <form
+                action={async () => {
+                  'use server';
+                  await signOut({ redirectTo: '/' });
+                }}
+              >
+                <button type="submit" className="w-fit text-left">
+                  Sign out
+                </button>
+              </form>
+              {pathname !== '/settings' && (
+                <Link href="/settings" className="w-fit text-left">Settings</Link>
+              )}
+            </div>
           </PopoverContent>
         </Popover>
       </div>
