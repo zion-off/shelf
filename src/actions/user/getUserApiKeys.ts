@@ -21,15 +21,13 @@ export async function getUserApiKeys(): Promise<{ success: boolean; apiKeys?: Ap
 
     await mongo();
 
-    // Get all active API keys for the user
     const apiKeys = await ApiKey.find({ user: session.user.id, isActive: true })
       .select('_id name createdAt lastUsedAt isActive')
-      .sort({ createdAt: -1 })
-      .lean();
+      .sort({ createdAt: -1 });
 
     return {
       success: true,
-      apiKeys: apiKeys.map(key => ({
+      apiKeys: apiKeys.map((key) => ({
         _id: key._id.toString(),
         name: key.name,
         createdAt: key.createdAt,
