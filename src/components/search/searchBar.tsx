@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import { motion } from 'motion/react';
@@ -160,7 +160,7 @@ export default function SearchBar() {
   );
 }
 
-function SearchItem({ item }: { item: IItem }) {
+const SearchItem = memo(function SearchItem({ item }: { item: IItem }) {
   const { title, author, placeholderCover, thumbnail } = item;
   const cover = thumbnail ? (
     <Image
@@ -191,4 +191,4 @@ function SearchItem({ item }: { item: IItem }) {
       </div>
     </div>
   );
-}
+});
