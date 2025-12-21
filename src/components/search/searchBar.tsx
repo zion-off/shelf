@@ -18,7 +18,7 @@ export default function SearchBar() {
   const [portalElement, setPortalElement] = useState<HTMLElement | null>(null);
   const [searchResults, setSearchResults] = useState<IItem[]>([]);
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>(searchTerm);
-  const { handleDrawerOpenChange, handleSelectedItemChange, updateAllItems } = useHomeContext();
+  const { handleDrawerOpenChange, handleSelectedItemChange, updateAllItems, setLoadingItems } = useHomeContext();
   const { openFolderByID } = useSidebar();
 
   useEffect(() => {
@@ -136,6 +136,7 @@ export default function SearchBar() {
                         handleSelectedItemChange(article);
                         setSearching(false);
                         handleDrawerOpenChange(true);
+                        setLoadingItems(true);
                         const items = await getItemsInFolder({
                           folderID: article.in_folder ? article.in_folder.toString() : null
                         });
