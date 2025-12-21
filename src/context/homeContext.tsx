@@ -13,6 +13,8 @@ const HomeContext = createContext<{
   saving: boolean;
   toggleSaving: () => void;
   items: IItem[];
+  loadingItems: boolean;
+  setLoadingItems: (loading: boolean) => void;
   updateAllItems: (fetchedItems: IItem[]) => void;
   addSingleItem: (newItem: IItem) => void;
   currentFolder: IFolder | null;
@@ -51,9 +53,12 @@ export function HomeProvider({ children }: { children: ReactNode }) {
 
   // Items in view
   const [items, setItems] = useState<IItem[]>([]);
+  // Loading state for items
+  const [loadingItems, setLoadingItems] = useState(true);
   // Set all items
   const updateAllItems = (fetchedItems: IItem[]) => {
     setItems(fetchedItems);
+    setLoadingItems(false);
   };
 
   // Add a single item
@@ -150,6 +155,8 @@ export function HomeProvider({ children }: { children: ReactNode }) {
     saving,
     toggleSaving,
     items,
+    loadingItems,
+    setLoadingItems,
     updateAllItems,
     addSingleItem,
     currentFolder,

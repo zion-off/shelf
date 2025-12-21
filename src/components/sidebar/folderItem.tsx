@@ -22,16 +22,17 @@ interface FolderItemProps {
 }
 
 export function FolderItem({ folder }: FolderItemProps) {
-  const { currentFolder, changeOpenFolder, updateAllItems } = useHomeContext();
+  const { currentFolder, changeOpenFolder, updateAllItems, setLoadingItems } = useHomeContext();
   const { updateFavoriteFolder, favoriteFolder } = useSidebar();
 
   const handleFolderClick = useCallback(async () => {
     changeOpenFolder(folder);
+    setLoadingItems(true);
     const items = await getItemsInFolder({
       folderID: folder ? folder._id.toString() : null
     });
     updateAllItems(items);
-  }, [changeOpenFolder, updateAllItems, folder]);
+  }, [changeOpenFolder, updateAllItems, setLoadingItems, folder]);
 
   const handleFavoriteClick = useCallback(
     async (e: React.MouseEvent) => {
