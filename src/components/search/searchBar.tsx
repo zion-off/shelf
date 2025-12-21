@@ -33,7 +33,6 @@ export default function SearchBar() {
     if (debouncedSearchTerm.length > 2) {
       searchItems(debouncedSearchTerm).then((res) => {
         const items = JSON.parse(res);
-        console.log('search results', items);
         setSearchResults(items);
       });
     } else {
