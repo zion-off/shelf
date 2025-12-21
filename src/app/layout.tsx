@@ -5,6 +5,11 @@ import AuthCheck from "@/auth/authCheck";
 
 export const metadata: Metadata = {
   title: "shelf",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Shelf",
+  },
 };
 
 export default function RootLayout({
