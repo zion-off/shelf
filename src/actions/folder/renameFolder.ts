@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 import mongo from '@/lib/mongodb';
 import Folder from '@/models/folder.model';
 import { IFolder } from '@/interfaces/models';
+import { revalidateTag } from 'next/cache';
 
 interface RenameFolder {
   _id: Types.ObjectId;
@@ -24,6 +25,10 @@ export async function renameFolder({ _id, name }: RenameFolder): Promise<string 
       last_modified: new Date()
     }
   );
+
+  if (updatedFolder) {
+    revalidateTag(`user-${session?.user?.id}-folders`);
+  }
 
   return updatedFolder ? updatedFolder.name : null;
 }

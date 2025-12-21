@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import mongo from "@/lib/mongodb";
 import { IFolder } from "@/interfaces/models";
 import Folder from "@/models/folder.model";
+import { revalidateTag } from "next/cache";
 
 interface AddFolder {
   name: string;
@@ -24,7 +25,11 @@ export async function addFolder({
     isPublic: isPublic,
   });
 
-  return await newFolder
+  const savedFolder = await newFolder
     .save()
     .then((folder) => JSON.parse(JSON.stringify(folder)));
+
+  revalidateTag(`user-${session?.user?.id}-folders`);
+
+  return savedFolder;
 }

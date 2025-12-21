@@ -6,6 +6,7 @@ import mongo from '@/lib/mongodb';
 import Folder from '@/models/folder.model';
 import Item from '@/models/item.model';
 import Config from '@/models/config.model';
+import { revalidateTag } from 'next/cache';
 
 export async function deleteFolder({
   folderID,
@@ -38,6 +39,14 @@ export async function deleteFolder({
 
     await mongoSession.commitTransaction();
     mongoSession.endSession();
+
+    if (result.deletedCount > 0) {
+      revalidateTag(`user-${userID}-folders`);
+      revalidateTag(`user-${userID}-folder-${folderID}`);
+      if (defaultFolderID === folderID) {
+        revalidateTag(`user-${userID}-default-folder`);
+      }
+    }
 
     return result.deletedCount > 0;
   } catch (error) {

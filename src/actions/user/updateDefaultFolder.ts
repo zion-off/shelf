@@ -4,6 +4,7 @@ import { auth } from "@/auth";
 import mongoose from "mongoose";
 import mongo from "@/lib/mongodb";
 import Config from "@/models/config.model";
+import { revalidateTag } from "next/cache";
 
 interface IUpdateDefaultFolder {
   folderID: string | null;
@@ -16,4 +17,5 @@ export async function updateDefaultFolder({
   const owner = new mongoose.Types.ObjectId(session?.user?.id);
   await mongo();
   await Config.findOneAndUpdate({ user: owner }, { default_folder: folderID });
+  revalidateTag(`user-${session?.user?.id}-default-folder`);
 }
