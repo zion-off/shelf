@@ -1,18 +1,11 @@
 'use client';
 
-import { useEffect } from 'react';
 import { useHomeContext } from '@/context/homeContext';
 import { Item } from '@/components/item/itemBase';
-import { IItem } from '@/interfaces/models';
 import { Spinner } from '@/components/ui/spinner';
 
-export default function ItemsContainer({ fetchedItems }: { fetchedItems: IItem[] }) {
-  const { items, loadingItems, updateAllItems: updateItems } = useHomeContext();
-
-  useEffect(() => {
-    updateItems(fetchedItems);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+export default function ItemsContainer() {
+  const { items, loadingItems } = useHomeContext();
 
   return (
     <div className="flex-1 min-h-0 w-full flex flex-col pt-4">

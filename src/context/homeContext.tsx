@@ -32,7 +32,12 @@ const HomeContext = createContext<{
   drawerDirection: 'right' | 'bottom';
 } | null>(null);
 
-export function HomeProvider({ children }: { children: ReactNode }) {
+interface HomeProviderProps {
+  children: ReactNode;
+  initialItems?: IItem[];
+}
+
+export function HomeProvider({ children, initialItems = [] }: HomeProviderProps) {
   // Dialog for adding new item
   const [itemDialogOpen, setItemDialogOpen] = useState(false);
   const toggleItemDialogOpen = () => {
@@ -52,9 +57,9 @@ export function HomeProvider({ children }: { children: ReactNode }) {
   };
 
   // Items in view
-  const [items, setItems] = useState<IItem[]>([]);
-  // Loading state for items
-  const [loadingItems, setLoadingItems] = useState(true);
+  const [items, setItems] = useState<IItem[]>(initialItems);
+  // Loading state for items (false when we have initial items from server)
+  const [loadingItems, setLoadingItems] = useState(false);
   // Set all items
   const updateAllItems = (fetchedItems: IItem[]) => {
     setItems(fetchedItems);
