@@ -1,5 +1,6 @@
 'use client';
 
+import { memo } from 'react';
 import Image from 'next/image';
 import type { IItem } from '@/interfaces/models';
 import { ItemViewState } from '@/components/item/itemViewState';
@@ -8,7 +9,7 @@ import { useHomeContext } from '@/context/homeContext';
 import { Drawer, DrawerTrigger, DrawerContent } from '@/components/ui/drawer';
 import { noise } from '@/utils';
 
-export const Item = ({ item }: { item: IItem }) => {
+export const Item = memo(function Item({ item }: { item: IItem }) {
   const {
     drawerOpen,
     drawerDirection,
@@ -71,4 +72,4 @@ export const Item = ({ item }: { item: IItem }) => {
       <DrawerContent className="bg-z-background">{isEditing ? <ItemEditState /> : <ItemViewState />}</DrawerContent>
     </Drawer>
   );
-};
+});
