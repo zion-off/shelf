@@ -1,13 +1,12 @@
 'use client';
 
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { FavoriteStar } from '@/components/sidebar/favoriteStar';
 import { RenameFolderDialog } from '@/components/sidebar/renameFolderDialog';
 import { DeleteFolderDialog } from '@/components/sidebar/deleteFolderDialog';
-import { SidebarMenuSubItem, SidebarMenuSubButton, useSidebar } from '@/components/ui/sidebar';
-import { getItemsInFolder } from '@/actions/item';
+import { SidebarMenuSubItem, SidebarMenuSubButton } from '@/components/ui/sidebar';
 import { updateDefaultFolder } from '@/actions/user/updateDefaultFolder';
-import { useHomeContext } from '@/context/homeContext';
+import { useFolderContext } from '@/context/folderContext';
 import { IFolder } from '@/interfaces';
 import {
   DropdownMenu,
@@ -22,41 +21,27 @@ interface FolderItemProps {
 }
 
 export function FolderItem({ folder }: FolderItemProps) {
-  const { currentFolder, changeOpenFolder, updateAllItems, setLoadingItems } = useHomeContext();
-  const { updateFavoriteFolder, favoriteFolder } = useSidebar();
+  const { currentFolderId, favoriteId, handleFolderClick, handleFavoriteChange } = useFolderContext();
 
-  const handleFolderClick = useCallback(async () => {
-    changeOpenFolder(folder);
-    setLoadingItems(true);
-    const items = await getItemsInFolder({
-      folderID: folder ? folder._id.toString() : null
-    });
-    updateAllItems(items);
-  }, [changeOpenFolder, updateAllItems, setLoadingItems, folder]);
+  const folderId = folder?._id.toString() ?? null;
+  const isActive = currentFolderId === folderId;
+  const isFavorite = favoriteId === folderId;
 
-  const handleFavoriteClick = useCallback(
+  const onClick = useCallback(() => {
+    handleFolderClick(folder);
+  }, [handleFolderClick, folder]);
+
+  const onFavoriteClick = useCallback(
     async (e: React.MouseEvent) => {
       e.stopPropagation();
-      updateFavoriteFolder(folder ? folder._id.toString() : null);
-      await updateDefaultFolder({
-        folderID: folder ? folder._id.toString() : null
-      });
+      handleFavoriteChange(folderId);
+      await updateDefaultFolder({ folderID: folderId });
     },
-    [folder, updateFavoriteFolder]
+    [folderId, handleFavoriteChange]
   );
 
-  const isActive = useMemo(() => {
-    if (!currentFolder && !folder?._id) return true;
-    if (currentFolder?._id && folder?._id === currentFolder._id) return true;
-    return false;
-  }, [currentFolder, folder?._id]);
-
-  const isFavorite = useMemo(() => {
-    return (!favoriteFolder && !folder?._id) || favoriteFolder === folder?._id?.toString();
-  }, [favoriteFolder, folder?._id]);
-
   return (
-    <SidebarMenuSubItem onClick={handleFolderClick} className="group/fav">
+    <SidebarMenuSubItem onClick={onClick} className="group/fav">
       <SidebarMenuSubButton asChild {...(isActive ? { isActive: true } : {})}>
         <div className="flex justify-between cursor-pointer">
           {folder?.name ? <p className="pl-2">{folder.name}</p> : <p>Ungrouped</p>}
@@ -73,13 +58,14 @@ export function FolderItem({ folder }: FolderItemProps) {
                   />
                   <DeleteFolderDialog
                     folder={folder}
+                    favoriteId={favoriteId}
                     trigger={<DropdownMenuItem onSelect={(e) => e.preventDefault()}>Delete</DropdownMenuItem>}
                   />
                   <DropdownMenuItem>Make {folder.isPublic ? 'private' : 'public'}</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : null}
-            <FavoriteStar isFavorite={isFavorite} onClick={handleFavoriteClick} />
+            <FavoriteStar isFavorite={isFavorite} onClick={onFavoriteClick} />
           </div>
         </div>
       </SidebarMenuSubButton>

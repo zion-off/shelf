@@ -14,7 +14,7 @@ const HomeContext = createContext<{
   toggleSaving: () => void;
   items: IItem[];
   loadingItems: boolean;
-  setLoadingItems: (loading: boolean) => void;
+  setLoadingItems: React.Dispatch<React.SetStateAction<boolean>>;
   updateAllItems: (fetchedItems: IItem[]) => void;
   addSingleItem: (newItem: IItem) => void;
   currentFolder: IFolder | null;
@@ -58,18 +58,18 @@ export function HomeProvider({ children, initialItems = [] }: HomeProviderProps)
 
   // Items in view
   const [items, setItems] = useState<IItem[]>(initialItems);
-  // Loading state for items (false when we have initial items from server)
-  const [loadingItems, setLoadingItems] = useState(false);
+  // Loading state for items (true when no initial items provided)
+  const [loadingItems, setLoadingItems] = useState(initialItems.length === 0);
   // Set all items
-  const updateAllItems = (fetchedItems: IItem[]) => {
+  const updateAllItems = useCallback((fetchedItems: IItem[]) => {
     setItems(fetchedItems);
     setLoadingItems(false);
-  };
+  }, []);
 
   // Add a single item
-  const addSingleItem = (newItem: IItem) => {
+  const addSingleItem = useCallback((newItem: IItem) => {
     setItems((prev) => [...prev, newItem]);
-  };
+  }, []);
 
   // For opening different folders
   const [currentFolder, setCurrentFolder] = useState<IFolder | null>(null);

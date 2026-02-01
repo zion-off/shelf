@@ -39,6 +39,7 @@ type SidebarContext = {
   renameFolderLocally: (folder: IFolder, newName: string) => void;
   deleteFolderLocally: (folder: IFolder) => void;
   openFolderByID: (folderID: Types.ObjectId | null) => void;
+  hydrateFolders: (folders: IFolder[], defaultFolder: string | null) => void;
 };
 
 const SidebarContext = React.createContext<SidebarContext | null>(null);
@@ -58,8 +59,8 @@ const SidebarProvider = React.forwardRef<
     defaultOpen?: boolean;
     open?: boolean;
     onOpenChange?: (open: boolean) => void;
-    folders: IFolder[];
-    defaultFolder: string | null;
+    folders?: IFolder[];
+    defaultFolder?: string | null;
   }
 >(
   (
@@ -70,8 +71,8 @@ const SidebarProvider = React.forwardRef<
       className,
       style,
       children,
-      folders,
-      defaultFolder,
+      folders = [],
+      defaultFolder = null,
       ...props
     },
     ref
@@ -151,6 +152,14 @@ const SidebarProvider = React.forwardRef<
       setFolderState((prev) => prev.filter((f) => f._id !== folder._id));
     }, []);
 
+    const hydrateFolders = React.useCallback(
+      (folders: IFolder[], defaultFolderID: string | null) => {
+        setFolderState(folders);
+        setFavoriteFolder(defaultFolderID);
+      },
+      []
+    );
+
     const { changeOpenFolder } = useHomeContext();
 
     const openFolderByID = React.useCallback(
@@ -161,9 +170,12 @@ const SidebarProvider = React.forwardRef<
       [folderState, changeOpenFolder]
     );
 
+    // Only set initial folder when we have folders from props (not hydration)
     React.useEffect(() => {
-      const firstOpenFolder = folderState.find((folder) => folder._id.toString() === defaultFolder) || null;
-      changeOpenFolder(firstOpenFolder);
+      if (folders.length > 0) {
+        const firstOpenFolder = folderState.find((folder) => folder._id.toString() === defaultFolder) || null;
+        changeOpenFolder(firstOpenFolder);
+      }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -182,7 +194,8 @@ const SidebarProvider = React.forwardRef<
         updateFavoriteFolder,
         renameFolderLocally,
         deleteFolderLocally,
-        openFolderByID
+        openFolderByID,
+        hydrateFolders
       }),
       [
         state,
@@ -198,7 +211,8 @@ const SidebarProvider = React.forwardRef<
         updateFavoriteFolder,
         renameFolderLocally,
         deleteFolderLocally,
-        openFolderByID
+        openFolderByID,
+        hydrateFolders
       ]
     );
 

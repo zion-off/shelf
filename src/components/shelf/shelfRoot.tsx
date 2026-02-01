@@ -1,29 +1,17 @@
-import { auth } from '@/auth';
-import { IItem } from '@/interfaces/models';
-import ItemsContainer from '@/components/shelf/itemsContainer';
+import { Suspense } from 'react';
 import ShelfHeader from '@/components/shelf/shelfHeader';
 import { AppSidebar } from '@/components/sidebar/appSidebar';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { HomeProvider } from '@/context/homeContext';
-import { getItemsInFolder } from '@/actions/item/getItemsInFolder';
-import { getAllFolders } from '@/actions/folder/getAllFolders';
-import { getDefaultFolder } from '@/actions/folder/getDefaultFolder';
+import FolderListAsync from './FolderListAsync';
+import ItemsAsync from './ItemsAsync';
+import { FolderListSkeleton } from '@/components/skeletons/FolderListSkeleton';
+import { ItemGridSkeleton } from '@/components/skeletons/ItemGridSkeleton';
 
-export default async function Shelf() {
-  const session = await auth();
-  const dbID = session?.user?.id as string;
-
-  const [defaultFolder, folders] = await Promise.all([
-    getDefaultFolder({ dbID }),
-    getAllFolders({ dbID })
-  ]);
-
-  const items: IItem[] = await getItemsInFolder({ folderID: defaultFolder });
+export default function Shelf() {
   return (
-    <HomeProvider initialItems={items}>
+    <HomeProvider>
       <SidebarProvider
-        defaultFolder={defaultFolder}
-        folders={folders}
         style={
           {
             '--sidebar-width': '19rem',
@@ -31,10 +19,16 @@ export default async function Shelf() {
           } as React.CSSProperties
         }
       >
-        <AppSidebar className="absolute inset-0 h-full pt-1" />
+        <AppSidebar className="absolute inset-0 h-full pt-1">
+          <Suspense fallback={<FolderListSkeleton />}>
+            <FolderListAsync />
+          </Suspense>
+        </AppSidebar>
         <SidebarInset className="max-h-full flex flex-col pt-1">
           <ShelfHeader />
-          <ItemsContainer />
+          <Suspense fallback={<ItemGridSkeleton />}>
+            <ItemsAsync />
+          </Suspense>
         </SidebarInset>
       </SidebarProvider>
     </HomeProvider>

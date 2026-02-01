@@ -1,8 +1,8 @@
 'use client';
 
 import { useCallback, ReactNode } from 'react';
+import { useRouter } from 'next/navigation';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { useSidebar } from '@/components/ui/sidebar';
 import { useToast } from '@/hooks/use-toast';
 import { Form } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
@@ -21,7 +21,7 @@ interface RenameFolderDialogProps {
 
 export function RenameFolderDialog({ folder, trigger }: RenameFolderDialogProps) {
   const { toast } = useToast();
-  const { renameFolderLocally } = useSidebar();
+  const router = useRouter();
 
   const form = useForm<renameFolderFormValues>({
     resolver: zodResolver(renameFolderForm),
@@ -43,7 +43,7 @@ export function RenameFolderDialog({ folder, trigger }: RenameFolderDialogProps)
             description: `Renamed ${oldName} to ${value.name}`,
             duration: 3000
           });
-          renameFolderLocally(folder, value.name);
+          router.refresh();
         } else {
           toast({
             title: 'Something went wrong',
@@ -59,7 +59,7 @@ export function RenameFolderDialog({ folder, trigger }: RenameFolderDialogProps)
         });
       }
     },
-    [folder, renameFolderLocally, toast]
+    [folder, router, toast]
   );
 
   return (

@@ -1,29 +1,28 @@
 'use client';
 
 import { useCallback, ReactNode } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { IFolder } from '@/interfaces';
 import { useToast } from '@/hooks/use-toast';
-import { useHomeContext } from '@/context/homeContext';
-import { useSidebar } from '@/components/ui/sidebar';
 import { deleteFolder } from '@/actions/folder/deleteFolder';
 
 interface DeleteFolderDialogProps {
   folder: IFolder;
   trigger: ReactNode;
+  favoriteId: string | null;
 }
 
-export function DeleteFolderDialog({ folder, trigger }: DeleteFolderDialogProps) {
+export function DeleteFolderDialog({ folder, trigger, favoriteId }: DeleteFolderDialogProps) {
   const { toast } = useToast();
-  const { currentFolder, changeOpenFolder } = useHomeContext();
-  const { favoriteFolder, updateFavoriteFolder, deleteFolderLocally } = useSidebar();
+  const router = useRouter();
 
   const onDelete = useCallback(async () => {
     try {
       const deletedFolder = await deleteFolder({
         folderID: folder._id.toString(),
-        defaultFolderID: favoriteFolder
+        defaultFolderID: favoriteId
       });
       if (!deletedFolder) {
         toast({
@@ -33,18 +32,12 @@ export function DeleteFolderDialog({ folder, trigger }: DeleteFolderDialogProps)
         });
         return;
       }
-      if (currentFolder?._id === folder._id) {
-        changeOpenFolder(null);
-      }
-      if (favoriteFolder === folder._id.toString()) {
-        updateFavoriteFolder(null);
-      }
-      deleteFolderLocally(folder);
       toast({
         title: 'Success',
         description: `Deleted ${folder.name}`,
         duration: 3000
       });
+      router.refresh();
     } catch (error) {
       toast({
         title: 'Something went wrong',
@@ -52,7 +45,7 @@ export function DeleteFolderDialog({ folder, trigger }: DeleteFolderDialogProps)
         duration: 3000
       });
     }
-  }, [folder, favoriteFolder, currentFolder, changeOpenFolder, updateFavoriteFolder, deleteFolderLocally, toast]);
+  }, [folder, favoriteId, router, toast]);
 
   return (
     <Dialog>
