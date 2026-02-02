@@ -24,10 +24,9 @@ interface EditFolderOptions {
 
 interface ItemEditContentProps {
   item: IItem;
-  folderId: string;
 }
 
-export function ItemEditContent({ item, folderId }: ItemEditContentProps) {
+export function ItemEditContent({ item }: ItemEditContentProps) {
   const { toast } = useToast();
   const router = useRouter();
   const { handleEditingChange, updateItemInList, deleteItemFromList } = useHomeContext();

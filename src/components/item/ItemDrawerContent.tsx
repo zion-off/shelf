@@ -50,7 +50,7 @@ export function ItemDrawerContent({ item, folderId, readOnly = false }: ItemDraw
   }, [item, toast, deleteItemFromList, router, folderId]);
 
   if (isEditing) {
-    return <ItemEditContent item={item} folderId={folderId} />;
+    return <ItemEditContent item={item} />;
   }
 
   const { title, author, notes, link, read, created_at, last_modified } = item;
