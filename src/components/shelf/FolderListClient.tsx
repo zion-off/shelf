@@ -1,8 +1,8 @@
 'use client';
 
+import { useEffect } from 'react';
 import { IFolder } from '@/interfaces';
-import { SidebarMenuItem, SidebarMenuSub } from '@/components/ui/sidebar';
-import { FolderProvider } from '@/context/folderContext';
+import { SidebarMenuItem, SidebarMenuSub, useSidebar } from '@/components/ui/sidebar';
 import { FolderSection } from '@/components/sidebar/folderSection';
 import { FolderItem } from '@/components/sidebar/folderItem';
 
@@ -12,11 +12,17 @@ interface FolderListClientProps {
 }
 
 export function FolderListClient({ folders, defaultFolder }: FolderListClientProps) {
+  const { hydrateFolders } = useSidebar();
   const publicFolders = folders.filter((f) => f.isPublic);
   const privateFolders = folders.filter((f) => !f.isPublic);
 
+  // Hydrate the sidebar with folders on mount
+  useEffect(() => {
+    hydrateFolders(folders, defaultFolder);
+  }, [folders, defaultFolder, hydrateFolders]);
+
   return (
-    <FolderProvider defaultFolder={defaultFolder}>
+    <>
       <FolderSection title="Public" folders={publicFolders} />
       <FolderSection title="Private" folders={privateFolders} />
       <SidebarMenuItem className="cursor-pointer">
@@ -24,6 +30,6 @@ export function FolderListClient({ folders, defaultFolder }: FolderListClientPro
           <FolderItem folder={null} />
         </SidebarMenuSub>
       </SidebarMenuItem>
-    </FolderProvider>
+    </>
   );
 }

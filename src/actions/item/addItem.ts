@@ -3,7 +3,7 @@
 import { auth } from '@/auth';
 import mongoose from 'mongoose';
 import mongo from '@/lib/mongodb';
-import { IFolder, IItem } from '@/interfaces/models';
+import { IItem } from '@/interfaces/models';
 import { AddItem, ItemData } from '@/interfaces/items/AddItem';
 import Item from '@/models/item.model';
 import { getRandomHex } from '@/utils';
@@ -11,7 +11,7 @@ import { revalidateTag } from 'next/cache';
 
 export async function addItem(
   { title, author, link, notes, thumbnail }: AddItem,
-  folderID: IFolder | null
+  folderId: string | null
 ): Promise<IItem> {
   const session = await auth();
   const owner = new mongoose.Types.ObjectId(session?.user?.id);
@@ -22,7 +22,7 @@ export async function addItem(
     title: title,
     author: author,
     placeholderCover: getRandomHex(),
-    in_folder: folderID?._id || null
+    in_folder: folderId ? new mongoose.Types.ObjectId(folderId) : null
   };
 
   if (link) itemData.link = link;
@@ -33,7 +33,7 @@ export async function addItem(
 
   const savedItem = await newItem.save().then((item) => JSON.parse(JSON.stringify(item)));
 
-  revalidateTag(`user-${session?.user?.id}-folder-${folderID?._id?.toString() || null}`);
+  revalidateTag(`user-${session?.user?.id}-folder-${folderId || null}`);
 
   return savedItem;
 }

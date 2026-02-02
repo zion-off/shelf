@@ -1,9 +1,9 @@
 import { auth } from '@/auth';
 import { getAllFolders } from '@/actions/folder/getAllFolders';
 import { getDefaultFolder } from '@/actions/folder/getDefaultFolder';
-import { FolderListClient } from './FolderListClient';
+import { FolderListClient } from '@/components/shelf/FolderListClient';
 
-export default async function FolderListAsync() {
+export async function FolderListServer() {
   const session = await auth();
   const dbID = session?.user?.id as string;
 

@@ -1,14 +1,17 @@
-import Header from "@/components/navigation/header";
-import Shelf from "@/components/shelf/shelfRoot";
+import { redirect } from 'next/navigation';
+import { auth } from '@/auth';
+import { getDefaultFolder } from '@/actions/folder/getDefaultFolder';
+import { folderIdToSlug } from '@/lib/folderUtils';
 
-export default function Home() {
-  return (
-    <main className="flex flex-col h-[100dvh] overflow-hidden">
-      <Header />
-      <div className="flex-1 w-full flex px-4 relative overflow-hidden">
-        <Shelf />
-      </div>
-    </main>
-  );
+export default async function Home() {
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    // If not authenticated, redirect will be handled by AuthCheck in layout
+    return null;
+  }
+
+  const defaultFolder = await getDefaultFolder({ dbID: session.user.id });
+  redirect(`/folder/${folderIdToSlug(defaultFolder)}`);
 }
 
