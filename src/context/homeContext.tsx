@@ -1,35 +1,32 @@
 'use client';
 
 import { Types } from 'mongoose';
-import { IItem, IFolder } from '@/interfaces/models';
+import { IItem } from '@/interfaces/models';
 import { editItemFormValues } from '@/types/shelf';
-import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
+import { createContext, useContext, useState, ReactNode, useCallback } from 'react';
 
 const HomeContext = createContext<{
+  // Dialog states
   itemDialogOpen: boolean;
   toggleItemDialogOpen: () => void;
   folderDialogOpen: boolean;
   toggleFolderDialogOpen: () => void;
-  saving: boolean;
-  toggleSaving: () => void;
-  items: IItem[];
-  loadingItems: boolean;
-  setLoadingItems: (loading: boolean) => void;
-  updateAllItems: (fetchedItems: IItem[]) => void;
-  addSingleItem: (newItem: IItem) => void;
-  currentFolder: IFolder | null;
-  changeOpenFolder: (changeTo: IFolder | null) => void;
-  drawerOpen: boolean;
-  handleDrawerOpenChange: (open: boolean) => void;
-  isEditing: boolean;
-  handleEditingChange: (value: boolean) => void;
-  selectedItem: IItem | null;
-  handleSelectedItemChange: (item: IItem | null) => void;
-  updateSelectedItem: (updatedItem: editItemFormValues) => void;
-  deleteSelectedItem: () => void;
   deleteFolderDialogOpen: boolean;
   toggleDeleteFolderDialogOpen: () => void;
-  drawerDirection: 'right' | 'bottom';
+  // Loading states
+  saving: boolean;
+  toggleSaving: () => void;
+  // Items in current folder
+  items: IItem[];
+  loadingItems: boolean;
+  setLoadingItems: React.Dispatch<React.SetStateAction<boolean>>;
+  updateAllItems: (fetchedItems: IItem[]) => void;
+  addSingleItem: (newItem: IItem) => void;
+  deleteItemFromList: (itemId: string) => void;
+  updateItemInList: (itemId: string, updatedItem: editItemFormValues) => void;
+  // Editing state for item drawer
+  isEditing: boolean;
+  handleEditingChange: (value: boolean) => void;
 } | null>(null);
 
 interface HomeProviderProps {
@@ -50,45 +47,52 @@ export function HomeProvider({ children, initialItems = [] }: HomeProviderProps)
     setFolderDialogOpen((prev) => !prev);
   };
 
+  // Dialog for deleting folder
+  const [deleteFolderDialogOpen, setDeleteFolderDialogOpen] = useState(false);
+  const toggleDeleteFolderDialogOpen = () => {
+    setDeleteFolderDialogOpen((prev) => !prev);
+  };
+
   // Loading state while item is being added to database
   const [saving, setSaving] = useState(false);
   const toggleSaving = () => {
     setSaving((prev) => !prev);
   };
 
-  // Items in view
+  // Items in current folder
   const [items, setItems] = useState<IItem[]>(initialItems);
-  // Loading state for items (false when we have initial items from server)
-  const [loadingItems, setLoadingItems] = useState(false);
-  // Set all items
-  const updateAllItems = (fetchedItems: IItem[]) => {
+  const [loadingItems, setLoadingItems] = useState(initialItems.length === 0);
+
+  const updateAllItems = useCallback((fetchedItems: IItem[]) => {
     setItems(fetchedItems);
     setLoadingItems(false);
-  };
+  }, []);
 
-  // Add a single item
-  const addSingleItem = (newItem: IItem) => {
+  const addSingleItem = useCallback((newItem: IItem) => {
     setItems((prev) => [...prev, newItem]);
-  };
+  }, []);
 
-  // For opening different folders
-  const [currentFolder, setCurrentFolder] = useState<IFolder | null>(null);
-  const changeOpenFolder = useCallback(
-    (newFolder: IFolder | null) => {
-      setCurrentFolder(newFolder);
-    },
-    [setCurrentFolder]
-  );
+  const deleteItemFromList = useCallback((itemId: string) => {
+    setItems((prev) => prev.filter((item) => item._id.toString() !== itemId));
+  }, []);
 
-  // Drawer open state
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const handleDrawerOpenChange = (open: boolean) => {
-    if (open && selectedItem) {
-      setDrawerOpen(open);
-    } else {
-      setDrawerOpen(open);
-    }
-  };
+  const updateItemInList = useCallback((itemId: string, updatedItem: editItemFormValues) => {
+    setItems((prev) =>
+      prev.map((item) => {
+        if (item._id.toString() === itemId) {
+          // Mutate the item in place and return it (maintains IItem type)
+          item.title = updatedItem.title;
+          item.author = updatedItem.author;
+          item.notes = updatedItem.notes;
+          item.link = updatedItem.link;
+          item.read = updatedItem.read;
+          item.in_folder = updatedItem.in_folder ? new Types.ObjectId(updatedItem.in_folder) : null;
+          item.last_modified = new Date();
+        }
+        return item;
+      })
+    );
+  }, []);
 
   // Editing state in the drawer
   const [isEditing, setIsEditing] = useState(false);
@@ -96,67 +100,13 @@ export function HomeProvider({ children, initialItems = [] }: HomeProviderProps)
     setIsEditing(value);
   };
 
-  // Item open in the drawer
-  const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
-  const handleSelectedItemChange = (item: IItem | null) => {
-    if (item && selectedItem && item._id !== selectedItem._id) {
-      setDrawerOpen(false);
-      setTimeout(() => {
-        setSelectedItem(item);
-        setDrawerOpen(true);
-      }, 100);
-    } else {
-      setSelectedItem(item);
-    }
-  };
-
-  const updateSelectedItem = useCallback(
-    (updatedItem: editItemFormValues) => {
-      setItems((prev) =>
-        prev.map((item) => {
-          if (item._id === selectedItem?._id) {
-            item.title = updatedItem.title;
-            item.author = updatedItem.author;
-            item.notes = updatedItem.notes;
-            item.link = updatedItem.link;
-            item.read = updatedItem.read;
-            item.in_folder = updatedItem.in_folder ? new Types.ObjectId(updatedItem.in_folder) : null;
-            item.last_modified = new Date();
-            return item;
-          }
-          return item;
-        })
-      );
-    },
-    [selectedItem]
-  );
-
-  const deleteSelectedItem = useCallback(() => {
-    setItems((prev) => prev.filter((item) => item._id !== selectedItem?._id));
-    setSelectedItem(null);
-  }, [selectedItem]);
-
-  const [deleteFolderDialogOpen, setDeleteFolderDialogOpen] = useState(false);
-  const toggleDeleteFolderDialogOpen = () => {
-    setDeleteFolderDialogOpen((prev) => !prev);
-  };
-
-  const [drawerDirection, setDrawerDirection] = useState<'right' | 'bottom'>('right');
-
-  useEffect(() => {
-    const handleResize = () => {
-      setDrawerDirection(window.innerWidth < 768 ? 'bottom' : 'right');
-    };
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
   const value = {
     itemDialogOpen,
     toggleItemDialogOpen,
     folderDialogOpen,
     toggleFolderDialogOpen,
+    deleteFolderDialogOpen,
+    toggleDeleteFolderDialogOpen,
     saving,
     toggleSaving,
     items,
@@ -164,19 +114,10 @@ export function HomeProvider({ children, initialItems = [] }: HomeProviderProps)
     setLoadingItems,
     updateAllItems,
     addSingleItem,
-    currentFolder,
-    changeOpenFolder,
-    drawerOpen,
-    handleDrawerOpenChange,
+    deleteItemFromList,
+    updateItemInList,
     isEditing,
-    handleEditingChange,
-    selectedItem,
-    handleSelectedItemChange,
-    updateSelectedItem,
-    deleteSelectedItem,
-    deleteFolderDialogOpen,
-    toggleDeleteFolderDialogOpen,
-    drawerDirection
+    handleEditingChange
   };
 
   return <HomeContext.Provider value={value}>{children}</HomeContext.Provider>;

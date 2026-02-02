@@ -4,7 +4,6 @@ import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { VariantProps, cva } from 'class-variance-authority';
 import { PanelLeft } from 'lucide-react';
-import { Types } from 'mongoose';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -14,8 +13,6 @@ import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { IFolder } from '@/interfaces';
-import { useHomeContext } from '@/context/homeContext';
-import { ObjectId } from 'mongoose';
 
 const SIDEBAR_COOKIE_NAME = 'sidebar:state';
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
@@ -38,7 +35,7 @@ type SidebarContext = {
   updateFavoriteFolder: (newFolderID: string | null) => void;
   renameFolderLocally: (folder: IFolder, newName: string) => void;
   deleteFolderLocally: (folder: IFolder) => void;
-  openFolderByID: (folderID: Types.ObjectId | null) => void;
+  hydrateFolders: (folders: IFolder[], defaultFolder: string | null) => void;
 };
 
 const SidebarContext = React.createContext<SidebarContext | null>(null);
@@ -58,8 +55,8 @@ const SidebarProvider = React.forwardRef<
     defaultOpen?: boolean;
     open?: boolean;
     onOpenChange?: (open: boolean) => void;
-    folders: IFolder[];
-    defaultFolder: string | null;
+    folders?: IFolder[];
+    defaultFolder?: string | null;
   }
 >(
   (
@@ -70,8 +67,8 @@ const SidebarProvider = React.forwardRef<
       className,
       style,
       children,
-      folders,
-      defaultFolder,
+      folders = [],
+      defaultFolder = null,
       ...props
     },
     ref
@@ -151,21 +148,13 @@ const SidebarProvider = React.forwardRef<
       setFolderState((prev) => prev.filter((f) => f._id !== folder._id));
     }, []);
 
-    const { changeOpenFolder } = useHomeContext();
-
-    const openFolderByID = React.useCallback(
-      (folderID: Types.ObjectId | null) => {
-        const folder = folderState.find((folder) => folder._id === folderID);
-        changeOpenFolder(folder || null);
+    const hydrateFolders = React.useCallback(
+      (folders: IFolder[], defaultFolderID: string | null) => {
+        setFolderState(folders);
+        setFavoriteFolder(defaultFolderID);
       },
-      [folderState, changeOpenFolder]
+      []
     );
-
-    React.useEffect(() => {
-      const firstOpenFolder = folderState.find((folder) => folder._id.toString() === defaultFolder) || null;
-      changeOpenFolder(firstOpenFolder);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     const contextValue = React.useMemo<SidebarContext>(
       () => ({
@@ -182,7 +171,7 @@ const SidebarProvider = React.forwardRef<
         updateFavoriteFolder,
         renameFolderLocally,
         deleteFolderLocally,
-        openFolderByID
+        hydrateFolders
       }),
       [
         state,
@@ -198,7 +187,7 @@ const SidebarProvider = React.forwardRef<
         updateFavoriteFolder,
         renameFolderLocally,
         deleteFolderLocally,
-        openFolderByID
+        hydrateFolders
       ]
     );
 

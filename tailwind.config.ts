@@ -22,6 +22,8 @@ export default {
 			'z-component-border': 'hsl(var(--z-component-border))',
 			'z-destructive': 'hsl(var(--z-destructive))',
 			'z-destructive-hover': 'hsl(var(--z-destructive-hover))',
+			'z-destructive-warm': 'hsl(var(--z-destructive-warm))',
+			'z-destructive-warm-hover': 'hsl(var(--z-destructive-warm-hover))',
   			button: 'hsl(var(--z-button))',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',

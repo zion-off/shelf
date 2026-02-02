@@ -1,13 +1,13 @@
 'use client';
 
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import { FavoriteStar } from '@/components/sidebar/favoriteStar';
 import { RenameFolderDialog } from '@/components/sidebar/renameFolderDialog';
 import { DeleteFolderDialog } from '@/components/sidebar/deleteFolderDialog';
 import { SidebarMenuSubItem, SidebarMenuSubButton, useSidebar } from '@/components/ui/sidebar';
-import { getItemsInFolder } from '@/actions/item';
 import { updateDefaultFolder } from '@/actions/user/updateDefaultFolder';
-import { useHomeContext } from '@/context/homeContext';
 import { IFolder } from '@/interfaces';
 import {
   DropdownMenu,
@@ -16,51 +16,47 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { SettingsIcon } from './settingsIcon';
+import { folderIdToSlug, slugToFolderId } from '@/lib/folderUtils';
 
 interface FolderItemProps {
   folder: IFolder | null;
 }
 
 export function FolderItem({ folder }: FolderItemProps) {
-  const { currentFolder, changeOpenFolder, updateAllItems, setLoadingItems } = useHomeContext();
-  const { updateFavoriteFolder, favoriteFolder } = useSidebar();
+  const params = useParams();
+  const { favoriteFolder, updateFavoriteFolder, setOpenMobile, isMobile } = useSidebar();
 
-  const handleFolderClick = useCallback(async () => {
-    changeOpenFolder(folder);
-    setLoadingItems(true);
-    const items = await getItemsInFolder({
-      folderID: folder ? folder._id.toString() : null
-    });
-    updateAllItems(items);
-  }, [changeOpenFolder, updateAllItems, setLoadingItems, folder]);
+  const folderId = folder?._id.toString() ?? null;
+  const currentFolderSlug = params.folderId as string | undefined;
+  const currentFolderId = currentFolderSlug ? slugToFolderId(currentFolderSlug) : null;
+  const isActive = currentFolderId === folderId;
+  const isFavorite = favoriteFolder === folderId;
 
-  const handleFavoriteClick = useCallback(
+  const folderSlug = folderIdToSlug(folderId);
+
+  const onFavoriteClick = useCallback(
     async (e: React.MouseEvent) => {
       e.stopPropagation();
-      updateFavoriteFolder(folder ? folder._id.toString() : null);
-      await updateDefaultFolder({
-        folderID: folder ? folder._id.toString() : null
-      });
+      e.preventDefault();
+      updateFavoriteFolder(folderId);
+      await updateDefaultFolder({ folderID: folderId });
     },
-    [folder, updateFavoriteFolder]
+    [folderId, updateFavoriteFolder]
   );
 
-  const isActive = useMemo(() => {
-    if (!currentFolder && !folder?._id) return true;
-    if (currentFolder?._id && folder?._id === currentFolder._id) return true;
-    return false;
-  }, [currentFolder, folder?._id]);
-
-  const isFavorite = useMemo(() => {
-    return (!favoriteFolder && !folder?._id) || favoriteFolder === folder?._id?.toString();
-  }, [favoriteFolder, folder?._id]);
+  const handleClick = () => {
+    // Close mobile sidebar when clicking a folder
+    if (isMobile) {
+      setOpenMobile(false);
+    }
+  };
 
   return (
-    <SidebarMenuSubItem onClick={handleFolderClick} className="group/fav">
+    <SidebarMenuSubItem className="group/fav">
       <SidebarMenuSubButton asChild {...(isActive ? { isActive: true } : {})}>
-        <div className="flex justify-between cursor-pointer">
+        <Link href={`/folder/${folderSlug}`} onClick={handleClick} className="flex justify-between cursor-pointer">
           {folder?.name ? <p className="pl-2">{folder.name}</p> : <p>Ungrouped</p>}
-          <div className="flex items-center gap-1 text-xs">
+          <div className="flex items-center gap-1 text-xs" onClick={(e) => e.stopPropagation()}>
             {folder ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -73,15 +69,16 @@ export function FolderItem({ folder }: FolderItemProps) {
                   />
                   <DeleteFolderDialog
                     folder={folder}
+                    favoriteId={favoriteFolder}
                     trigger={<DropdownMenuItem onSelect={(e) => e.preventDefault()}>Delete</DropdownMenuItem>}
                   />
                   <DropdownMenuItem>Make {folder.isPublic ? 'private' : 'public'}</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : null}
-            <FavoriteStar isFavorite={isFavorite} onClick={handleFavoriteClick} />
+            <FavoriteStar isFavorite={isFavorite} onClick={onFavoriteClick} />
           </div>
-        </div>
+        </Link>
       </SidebarMenuSubButton>
     </SidebarMenuSubItem>
   );

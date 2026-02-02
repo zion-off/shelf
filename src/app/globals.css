@@ -31,6 +31,8 @@
   --z-component-border: 0 0 90%;
   --z-destructive: 0 84% 60%;
   --z-destructive-hover: 0 72% 51%;
+  --z-destructive-warm: 8 70% 45%;
+  --z-destructive-warm-hover: 8 70% 38%;
 
   --background: 0 0% 100%;
   --foreground: 0 0% 3.9%;
@@ -77,6 +79,8 @@
     --z-component-border: 0 0 15%;
     --z-destructive: 0 72% 51%;
     --z-destructive-hover: 0 74% 42%;
+    --z-destructive-warm: 8 65% 42%;
+    --z-destructive-warm-hover: 8 65% 35%;
 
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;

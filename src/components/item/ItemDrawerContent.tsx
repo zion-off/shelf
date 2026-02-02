@@ -2,18 +2,27 @@
 
 import { useCallback } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { IItem } from '@/interfaces/models';
 import { useHomeContext } from '@/context/homeContext';
 import { useToast } from '@/hooks/use-toast';
 import { ToastAction } from '@/components/ui/toast';
 import { DrawerDescription, DrawerHeader, DrawerTitle } from '@/components/ui/drawer';
 import { deleteItem } from '@/actions/item/deleteItem';
+import { ItemEditContent } from './ItemEditContent';
 
-export const ItemViewState = () => {
+interface ItemDrawerContentProps {
+  item: IItem;
+  folderId: string;
+  readOnly?: boolean;
+}
+
+export function ItemDrawerContent({ item, folderId, readOnly = false }: ItemDrawerContentProps) {
   const { toast } = useToast();
-  const { handleEditingChange, selectedItem: item, deleteSelectedItem, handleDrawerOpenChange } = useHomeContext();
+  const router = useRouter();
+  const { isEditing, handleEditingChange, deleteItemFromList } = useHomeContext();
 
   const handleDelete = useCallback(async () => {
-    if (!item) return;
     try {
       const deletedItem = await deleteItem({ _id: item._id });
       if (!deletedItem) {
@@ -28,8 +37,8 @@ export const ItemViewState = () => {
           description: `Deleted ${JSON.parse(deletedItem).title} successfully`,
           duration: 3000
         });
-        deleteSelectedItem();
-        handleDrawerOpenChange(false);
+        deleteItemFromList(item._id.toString());
+        router.push(`/folder/${folderId}`, { scroll: false });
       }
     } catch (error) {
       toast({
@@ -38,10 +47,10 @@ export const ItemViewState = () => {
         duration: 3000
       });
     }
-  }, [item, toast, deleteSelectedItem, handleDrawerOpenChange]);
+  }, [item, toast, deleteItemFromList, router, folderId]);
 
-  if (!item) {
-    return null;
+  if (isEditing) {
+    return <ItemEditContent item={item} folderId={folderId} />;
   }
 
   const { title, author, notes, link, read, created_at, last_modified } = item;
@@ -50,42 +59,44 @@ export const ItemViewState = () => {
     <>
       <DrawerHeader>
         <DrawerTitle className="flex flex-col gap-5">
-          <div className="cursor-pointer flex gap-1 w-full justify-end">
-            <span className="px-1" onClick={() => handleEditingChange(true)}>
-              📝
-            </span>
-            <span
-              className="px-1"
-              onClick={() => {
-                toast({
-                  description: 'Are you sure?',
-                  action: (
-                    <ToastAction
-                      altText="Delete"
-                      className="border-z-component-border bg-z-destructive hover:bg-z-destructive-hover text-white"
-                      onClick={() => {
-                        handleDelete();
-                      }}
-                    >
-                      Delete
-                    </ToastAction>
-                  ),
-                  duration: 3000
-                });
-              }}
-            >
-              🗑️
-            </span>
-          </div>
+          {!readOnly && (
+            <div className="cursor-pointer flex gap-1 w-full justify-end">
+              <span className="px-1" onClick={() => handleEditingChange(true)}>
+                📝
+              </span>
+              <span
+                className="px-1"
+                onClick={() => {
+                  toast({
+                    description: 'Are you sure?',
+                    action: (
+                      <ToastAction
+                        altText="Delete"
+                        className="border-z-component-border bg-z-destructive hover:bg-z-destructive-hover text-white"
+                        onClick={() => {
+                          handleDelete();
+                        }}
+                      >
+                        Delete
+                      </ToastAction>
+                    ),
+                    duration: 3000
+                  });
+                }}
+              >
+                🗑️
+              </span>
+            </div>
+          )}
           <p className="break-words">{title}</p>
         </DrawerTitle>
         <DrawerDescription>{author}</DrawerDescription>
       </DrawerHeader>
-      <div className={fieldListStyle}>
+      <div className="flex flex-col gap-8 pb-24">
         <div>
           <label className="text-z-foreground">Notes</label>
           <p className={`${notes ? `text-z-foreground-secondary md:truncate` : `text-muted-foreground`}`}>
-            {notes || 'No thoughts recoreded for this item.'}
+            {notes || 'No thoughts recorded for this item.'}
           </p>
         </div>
 
@@ -133,6 +144,4 @@ export const ItemViewState = () => {
       </div>
     </>
   );
-};
-
-const fieldListStyle = `flex flex-col gap-8 pb-24`;
+}

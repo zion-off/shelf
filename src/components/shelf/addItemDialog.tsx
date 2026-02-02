@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, ChangeEvent } from 'react';
+import { useParams } from 'next/navigation';
 import { getLinkMetadata } from '@/actions/item/getLinkMetadata';
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Form } from '@/components/ui/form';
@@ -15,10 +16,12 @@ import { addItemFormValues } from '@/types/shelf';
 import { useCallback } from 'react';
 import { Plus } from 'lucide-react';
 import { FormInput } from '@/components/ui/formInput';
+import { slugToFolderId } from '@/lib/folderUtils';
 
 export default function AddItemDialog() {
   const { toast } = useToast();
-  const { currentFolder } = useHomeContext();
+  const params = useParams();
+  const currentFolderId = params.folderId ? slugToFolderId(params.folderId as string) : null;
   const { itemDialogOpen, toggleItemDialogOpen, saving, toggleSaving, addSingleItem } = useHomeContext();
   const [thumbnail, setThumbnail] = useState<string>('');
   const [formValues, setFormValues] = useState({
@@ -74,10 +77,9 @@ export default function AddItemDialog() {
 
   const onSubmit = useCallback(
     async (values: addItemFormValues) => {
-      console.log('Form submitted with values:', values);
       toggleSaving();
       try {
-        const newItem = await addItem({ ...values, thumbnail }, currentFolder);
+        const newItem = await addItem({ ...values, thumbnail }, currentFolderId);
         toggleItemDialogOpen();
         form.reset();
         setFormValues({
@@ -102,7 +104,7 @@ export default function AddItemDialog() {
         toggleSaving();
       }
     },
-    [form, currentFolder, toggleItemDialogOpen, addSingleItem, toast, toggleSaving, thumbnail]
+    [form, currentFolderId, toggleItemDialogOpen, addSingleItem, toast, toggleSaving, thumbnail]
   );
 
   const handleOpenChange = useCallback(

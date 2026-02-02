@@ -117,11 +117,11 @@ export default function ApiKeySection({ initialApiKeys, showHeading = false }: A
           {apiKeys.map((key) => (
             <div
               key={key._id}
-              className="bg-z-background-secondary flex items-center justify-between p-3 rounded-md border dark:border-gray-800"
+              className="bg-z-background-secondary flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3 rounded-md border dark:border-gray-800"
             >
-              <div className="flex-1">
+              <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
-                  <code className="text-sm font-mono">sk_{'*'.repeat(32)}</code>
+                  <code className="text-sm font-mono truncate">sk_{'*'.repeat(32)}</code>
                 </div>
                 <p className="text-xs text-z-foreground mt-1">
                   Created {formatDate(key.createdAt)}
@@ -130,7 +130,7 @@ export default function ApiKeySection({ initialApiKeys, showHeading = false }: A
               </div>
               <Button
                 size="sm"
-                className="bg-z-destructive hover:bg-z-destructive-hover dark:text-white"
+                className="bg-z-destructive-warm hover:bg-z-destructive-warm-hover text-white w-full sm:w-auto shrink-0"
                 onClick={() => handleRevoke(key._id)}
               >
                 Revoke

@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import { Types } from 'mongoose';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -13,15 +14,23 @@ import { DrawerHeader } from '@/components/ui/drawer';
 import { Form } from '@/components/ui/form';
 import { FormInput, FormTextareaInput, CheckboxInput, FormDropdownInput } from '@/components/ui/formInput';
 import { updateItem } from '@/actions/item/updateItem';
+import { IItem } from '@/interfaces/models';
+import { folderIdToSlug } from '@/lib/folderUtils';
 
 interface EditFolderOptions {
   label: string;
   value: string | null;
 }
 
-export const ItemEditState = () => {
+interface ItemEditContentProps {
+  item: IItem;
+  folderId: string;
+}
+
+export function ItemEditContent({ item, folderId }: ItemEditContentProps) {
   const { toast } = useToast();
-  const { selectedItem: item, handleEditingChange, updateSelectedItem, deleteSelectedItem } = useHomeContext();
+  const router = useRouter();
+  const { handleEditingChange, updateItemInList, deleteItemFromList } = useHomeContext();
   const { folderState } = useSidebar();
 
   const options: EditFolderOptions[] = folderState.map((folder) => {
@@ -50,8 +59,6 @@ export const ItemEditState = () => {
 
   const onSubmit = useCallback(
     async (values: editItemFormValues) => {
-      if (!item) return;
-
       try {
         const updatedItem = await updateItem({
           _id: item._id.toString(),
@@ -65,10 +72,17 @@ export const ItemEditState = () => {
             duration: 3000
           });
         } else {
-          updateSelectedItem(values);
-          if (item.in_folder !== values.in_folder) {
-            deleteSelectedItem();
+          const currentFolderId = item.in_folder?.toString() ?? null;
+          const newFolderId = values.in_folder ?? null;
+
+          // If folder changed, remove from current list and navigate to new folder
+          if (currentFolderId !== newFolderId) {
+            deleteItemFromList(item._id.toString());
+            router.push(`/folder/${folderIdToSlug(newFolderId)}?item=${item._id}`);
+          } else {
+            updateItemInList(item._id.toString(), values);
           }
+
           toast({
             title: 'Success',
             description: `Updated ${JSON.parse(updatedItem).title} successfully`,
@@ -86,16 +100,12 @@ export const ItemEditState = () => {
         form.reset();
       }
     },
-    [item, handleEditingChange, toast, form, updateSelectedItem, deleteSelectedItem]
+    [item, handleEditingChange, toast, form, updateItemInList, deleteItemFromList, router]
   );
-
-  if (!item) {
-    return null;
-  }
 
   return (
     <>
-      <DrawerHeader className='py-0 md:pt-10 mb-5 md:mb-10'>
+      <DrawerHeader className="py-0 md:pt-10 mb-5 md:mb-10">
         <div className="cursor-pointer text-sm font-normal">
           <span className="pr-4 text-green-500" onClick={form.handleSubmit(onSubmit)}>
             Save
@@ -107,27 +117,27 @@ export const ItemEditState = () => {
       </DrawerHeader>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className={fieldListStyle}>
-          <div className={fieldGroupStyle}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-2 pb-8 md:gap-8 md:pb-24">
+          <div className="flex flex-col md:gap-4">
             <FormInput formControl={form.control} name="title" placeholder="Title" label="Title" />
           </div>
 
-          <div className={fieldGroupStyle}>
+          <div className="flex flex-col md:gap-4">
             <FormInput formControl={form.control} name="author" placeholder="Author" label="Author" />
           </div>
 
-          <div className={fieldGroupStyle}>
+          <div className="flex flex-col md:gap-4">
             <FormTextareaInput
               formControl={form.control}
               name="link"
               label="Link"
               placeholder="https://example.com"
               className="resize-none"
-              rows={window.innerWidth < 768 ? 1 : 2}
+              rows={typeof window !== 'undefined' && window.innerWidth < 768 ? 1 : 2}
             />
           </div>
 
-          <div className={fieldGroupStyle}>
+          <div className="flex flex-col md:gap-4">
             <FormTextareaInput
               formControl={form.control}
               name="notes"
@@ -138,7 +148,7 @@ export const ItemEditState = () => {
             />
           </div>
 
-          <div className={fieldGroupStyle}>
+          <div className="flex flex-col md:gap-4">
             <FormDropdownInput
               formControl={form.control}
               name="in_folder"
@@ -155,7 +165,4 @@ export const ItemEditState = () => {
       </Form>
     </>
   );
-};
-
-const fieldListStyle = `flex flex-col gap-2 pb-8 md:gap-8 md:pb-24`;
-const fieldGroupStyle = `flex flex-col md:gap-4`;
+}

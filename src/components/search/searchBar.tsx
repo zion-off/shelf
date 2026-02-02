@@ -3,14 +3,13 @@
 import { useState, useEffect, memo } from 'react';
 import { createPortal } from 'react-dom';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { motion } from 'motion/react';
 import { noise } from '@/utils';
 import { Input } from '@/components/ui/input';
 import { searchItems } from '@/actions/search/searchItems';
-import { getItemsInFolder } from '@/actions/item';
-import { useHomeContext } from '@/context/homeContext';
-import { useSidebar } from '@/components/ui/sidebar';
 import { IItem } from '@/interfaces';
+import { folderIdToSlug } from '@/lib/folderUtils';
 
 export default function SearchBar() {
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -18,8 +17,7 @@ export default function SearchBar() {
   const [portalElement, setPortalElement] = useState<HTMLElement | null>(null);
   const [searchResults, setSearchResults] = useState<IItem[]>([]);
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>(searchTerm);
-  const { handleDrawerOpenChange, handleSelectedItemChange, updateAllItems, setLoadingItems } = useHomeContext();
-  const { openFolderByID } = useSidebar();
+  const router = useRouter();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -129,18 +127,14 @@ export default function SearchBar() {
                       key={article._id.toString()}
                       variants={listItem}
                       className="last:pb-20"
-                      onClick={async () => {
+                      onClick={() => {
                         setSearchTerm('');
                         setSearchResults([]);
-                        openFolderByID(article.in_folder);
-                        handleSelectedItemChange(article);
                         setSearching(false);
-                        handleDrawerOpenChange(true);
-                        setLoadingItems(true);
-                        const items = await getItemsInFolder({
-                          folderID: article.in_folder ? article.in_folder.toString() : null
-                        });
-                        updateAllItems(items);
+                        const folderSlug = folderIdToSlug(
+                          article.in_folder ? article.in_folder.toString() : null
+                        );
+                        router.push(`/folder/${folderSlug}?item=${article._id}`);
                       }}
                     >
                       <SearchItem item={article} />
