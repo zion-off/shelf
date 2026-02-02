@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
 import AuthCheck from "@/auth/authCheck";
@@ -19,6 +19,10 @@ export const metadata: Metadata = {
     apple: { url: "/apple-touch-icon.png", sizes: "180x180" },
   },
   manifest: "/site.webmanifest",
+};
+
+export const viewport: Viewport = {
+  themeColor: "#161413",
 };
 
 export default function RootLayout({
