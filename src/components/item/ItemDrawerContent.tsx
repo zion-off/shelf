@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback } from 'react';
+import { ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { IItem } from '@/interfaces/models';
@@ -55,12 +56,19 @@ export function ItemDrawerContent({ item, folderId, readOnly = false }: ItemDraw
 
   const { title, author, notes, link, read, created_at, last_modified } = item;
 
+  const formatDate = (date: Date) =>
+    new Date(date).toLocaleString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+
   return (
     <>
       <DrawerHeader>
         <DrawerTitle className="flex flex-col gap-5">
           {!readOnly && (
-            <div className="cursor-pointer flex gap-1 w-full justify-end">
+            <div className="cursor-pointer flex pb-2 w-full justify-between">
               <span className="px-1" onClick={() => handleEditingChange(true)}>
                 📝
               </span>
@@ -88,9 +96,27 @@ export function ItemDrawerContent({ item, folderId, readOnly = false }: ItemDraw
               </span>
             </div>
           )}
-          <p className="break-words">{title}</p>
+          {link ? (
+            <Link
+              href={link}
+              target="_blank"
+              className="inline-flex items-start gap-2 break-words hover:underline underline-offset-2"
+            >
+              <span className="break-words">{title}</span>
+              <ExternalLink className="size-3.5 shrink-0 mt-1 text-muted-foreground" />
+            </Link>
+          ) : (
+            <p className="break-words">{title}</p>
+          )}
         </DrawerTitle>
-        <DrawerDescription>{author}</DrawerDescription>
+        <DrawerDescription className="flex items-center gap-2">
+          <span>{author}</span>
+          {read && (
+            <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-sm bg-z-background-secondary text-z-foreground-secondary uppercase tracking-wide">
+              Read
+            </span>
+          )}
+        </DrawerDescription>
       </DrawerHeader>
       <div className="flex flex-col gap-8 pb-24">
         <div>
@@ -100,47 +126,10 @@ export function ItemDrawerContent({ item, folderId, readOnly = false }: ItemDraw
           </p>
         </div>
 
-        {link && (
-          <div className="max-w-full break-words">
-            <label className="text-z-foreground">Link</label>
-            <div>
-              <Link href={link} target="_blank" className="text-muted-foreground hover:underline">
-                {link}
-              </Link>
-            </div>
-          </div>
-        )}
-
-        <div>
-          <label className="text-z-foreground">Created at</label>
-          <p className="text-muted-foreground">
-            {new Date(created_at).toLocaleString('en-US', {
-              year: 'numeric',
-              month: '2-digit',
-              day: '2-digit',
-              hour: '2-digit',
-              minute: '2-digit',
-              hour12: true
-            })}
-          </p>
-        </div>
-        <div>
-          <label className="text-z-foreground">Last modified</label>
-          <p className="text-muted-foreground">
-            {new Date(last_modified).toLocaleString('en-US', {
-              year: 'numeric',
-              month: '2-digit',
-              day: '2-digit',
-              hour: '2-digit',
-              minute: '2-digit',
-              hour12: true
-            })}
-          </p>
-        </div>
-        <div>
-          <label className="text-z-foreground">Finished reading</label>
-          <p className="text-muted-foreground">{read ? 'Yes' : 'No'}</p>
-        </div>
+        <p className="text-xs text-muted-foreground">
+          Added {formatDate(created_at)}
+          {last_modified && last_modified !== created_at && <> · edited {formatDate(last_modified)}</>}
+        </p>
       </div>
     </>
   );

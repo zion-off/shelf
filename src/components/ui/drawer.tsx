@@ -68,7 +68,7 @@ const DrawerContent = React.forwardRef<
           <div className="md:hidden py-4 flex h-full justify-center">
             <div className="h-2 w-[100px] rounded-full bg-muted" />
           </div>
-          <div className="flex flex-col h-full w-full md:pt-10 px-12 min-w-0">{children}</div>
+          <div className="flex flex-col h-full w-full md:pt-10 px-6 md:pl-2 md:pr-8 min-w-0">{children}</div>
         </div>
       </DrawerPrimitive.Content>
     </DrawerPortal>
