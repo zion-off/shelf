@@ -4,7 +4,6 @@ import { memo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { IItem } from '@/interfaces/models';
-import { noise } from '@/utils';
 
 interface ItemCardProps {
   item: IItem;
@@ -37,7 +36,12 @@ export const ItemCard = memo(function ItemCard({ item, folderId, isSharePage = f
               ).toString('base64')}`}
             />
           ) : (
-            <div style={{ ...noise }} className={`bg-[#${placeholderCover}] w-full h-full bg-noise`} />
+            <div className="relative w-full h-full overflow-hidden" style={{ backgroundColor: `#${placeholderCover}` }}>
+              <div className="absolute inset-0 bg-gradient-to-br from-black/0 to-black/40" />
+              <span className="absolute inset-0 flex items-center justify-center font-gambarino text-7xl text-white/20 select-none">
+                {title.charAt(0).toUpperCase()}
+              </span>
+            </div>
           )}
         </div>
         <div className="grow flex flex-col p-2 text-z-background bg-z-background-secondary text-xs">

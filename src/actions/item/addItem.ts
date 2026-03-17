@@ -6,7 +6,7 @@ import mongo from '@/lib/mongodb';
 import { IItem } from '@/interfaces/models';
 import { AddItem, ItemData } from '@/interfaces/items/AddItem';
 import Item from '@/models/item.model';
-import { getRandomHex } from '@/utils';
+import { getPlaceholderColor } from '@/utils';
 import { revalidateTag } from 'next/cache';
 
 export async function addItem(
@@ -21,7 +21,7 @@ export async function addItem(
     owner: owner,
     title: title,
     author: author,
-    placeholderCover: getRandomHex(),
+    placeholderCover: getPlaceholderColor(title),
     in_folder: folderId ? new mongoose.Types.ObjectId(folderId) : null
   };
 

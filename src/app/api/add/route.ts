@@ -6,7 +6,7 @@ import mongo from '@/lib/mongodb';
 import Item from '@/models/item.model';
 import Folder from '@/models/folder.model';
 import mongoose from 'mongoose';
-import { getRandomHex } from '@/utils';
+import { getPlaceholderColor } from '@/utils';
 import { revalidateTag } from 'next/cache';
 
 export async function POST(request: NextRequest) {
@@ -89,7 +89,7 @@ export async function POST(request: NextRequest) {
       author: metadata.author || 'Unknown',
       link: link,
       thumbnail: metadata.thumbnail,
-      placeholderCover: getRandomHex(),
+      placeholderCover: getPlaceholderColor(metadata.title || link),
       in_folder: folderId
     };
 

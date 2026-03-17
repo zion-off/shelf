@@ -5,7 +5,6 @@ import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { motion } from 'motion/react';
-import { noise } from '@/utils';
 import { Input } from '@/components/ui/input';
 import { searchItems } from '@/actions/search/searchItems';
 import { IItem } from '@/interfaces';
@@ -173,7 +172,12 @@ const SearchItem = memo(function SearchItem({ item }: { item: IItem }) {
       ).toString('base64')}`}
     />
   ) : (
-    <div style={{ ...noise }} className={`bg-[#${placeholderCover}] w-full bg-noise rounded-md h-[150px]`} />
+    <div className="relative w-full rounded-md h-[150px] overflow-hidden" style={{ backgroundColor: `#${placeholderCover}` }}>
+      <div className="absolute inset-0 bg-gradient-to-br from-black/0 to-black/40 rounded-md" />
+      <span className="absolute inset-0 flex items-center justify-center font-gambarino text-8xl text-white/20 select-none">
+        {title.charAt(0).toUpperCase()}
+      </span>
+    </div>
   );
 
   return (
