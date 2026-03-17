@@ -95,6 +95,9 @@ const withPWA = withPWAInit({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    serverComponentsExternalPackages: ['metascraper', 'metascraper-title', 'metascraper-author', 'metascraper-image', 're2'],
+  },
   images: {
     remotePatterns: [
       {
