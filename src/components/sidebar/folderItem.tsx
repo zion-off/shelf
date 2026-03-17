@@ -53,9 +53,21 @@ export function FolderItem({ folder }: FolderItemProps) {
 
   return (
     <SidebarMenuSubItem className="group/fav">
-      <SidebarMenuSubButton asChild {...(isActive ? { isActive: true } : {})}>
+      <SidebarMenuSubButton
+        asChild
+        {...(isActive ? { isActive: true } : {})}
+        className={
+          !folder
+            ? 'hover:bg-transparent hover:text-sidebar-foreground data-[active=true]:bg-transparent data-[active=true]:text-sidebar-foreground'
+            : ''
+        }
+      >
         <Link href={`/folder/${folderSlug}`} onClick={handleClick} className="flex justify-between cursor-pointer">
-          {folder?.name ? <p className="pl-2">{folder.name}</p> : <p>Ungrouped</p>}
+          {folder?.name ? (
+            <p className="pl-2">{folder.name}</p>
+          ) : (
+            <p className="text-xs font-medium tracking-widest uppercase text-sidebar-foreground/40">Ungrouped</p>
+          )}
           <div className="flex items-center gap-1 text-xs" onClick={(e) => e.stopPropagation()}>
             {folder ? (
               <DropdownMenu>

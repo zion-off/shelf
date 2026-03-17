@@ -25,7 +25,7 @@ export function FolderListClient({ folders, defaultFolder }: FolderListClientPro
     <>
       <FolderSection title="Public" folders={publicFolders} />
       <FolderSection title="Private" folders={privateFolders} />
-      <SidebarMenuItem className="cursor-pointer">
+      <SidebarMenuItem>
         <SidebarMenuSub className="ml-0 border-l-0 px-1.5">
           <FolderItem folder={null} />
         </SidebarMenuSub>
