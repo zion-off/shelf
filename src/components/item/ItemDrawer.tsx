@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter, useSearchParams, useParams } from 'next/navigation';
 import { Drawer, DrawerContent } from '@/components/ui/drawer';
 import { ItemDrawerContent } from '@/components/item/ItemDrawerContent';
@@ -16,7 +16,7 @@ export function ItemDrawer() {
   const searchParams = useSearchParams();
   const drawerDirection = useDrawerDirection();
   const { items, handleEditingChange } = useHomeContext();
-  const [item, setItem] = useState<IItem | null>(null);
+  const [fetchedItem, setFetchedItem] = useState<IItem | null>(null);
   const [loading, setLoading] = useState(false);
   const lastItemIdRef = useRef<string | null>(null);
 
@@ -24,42 +24,32 @@ export function ItemDrawer() {
   const itemId = searchParams.get('item');
   const isOpen = !!itemId;
 
-  // Handle item loading and editing state reset
+  const localItem = itemId ? (items.find((i) => i._id.toString() === itemId) ?? null) : null;
+  const item = localItem ?? fetchedItem;
+
   useEffect(() => {
-    // Skip if itemId hasn't changed
-    if (itemId === lastItemIdRef.current) {
-      return;
-    }
+    if (itemId === lastItemIdRef.current) return;
     lastItemIdRef.current = itemId;
 
     if (!itemId) {
-      setItem(null);
+      setFetchedItem(null);
       return;
     }
 
-    // Reset editing state when opening a new item
     handleEditingChange(false);
 
-    // First try to find the item in the local state (for faster rendering)
-    const localItem = items.find((i) => i._id.toString() === itemId);
-    if (localItem) {
-      setItem(localItem);
-      setLoading(false);
-      return;
-    }
+    if (localItem) return;
 
-    // Otherwise fetch from server
     setLoading(true);
-    getItemById({ itemId }).then((fetchedItem) => {
-      setItem(fetchedItem);
+    getItemById({ itemId }).then((result) => {
+      setFetchedItem(result);
       setLoading(false);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [itemId, items]);
+  }, [itemId, localItem]);
 
   const handleOpenChange = (open: boolean) => {
     if (!open) {
-      // Remove the item query param to close the drawer
       router.push(`/folder/${folderId}`, { scroll: false });
     }
   };
